@@ -1,7 +1,7 @@
 FROM node:22.15.0-alpine
 
 # DIRECTORY UTILIZZATA NEL CONTAINER
-WORKDIR /usr/src/app
+WORKDIR /usr/src/ArtificialQI
 
 RUN npm install -g @angular/cli@19.1.0 
 
@@ -10,7 +10,7 @@ COPY ./app/package*.json .
 RUN --mount=type=cache,target=/root/.npm npm ci 
 
 # COPIA IL PROGETTO ANGULAR
-COPY ./app/ .
+COPY ./ArtificialQI/ .
 
 # PORTA UTILIZZATA DAL CONTAINER PER PUBBLICARE IL SERVIZIO
 EXPOSE 4200

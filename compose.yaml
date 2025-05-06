@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15.1-alpine
+    container_name: ArtificialQIDB
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=user
+      - POSTGRES_DB=artificialqi
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+    restart: unless-stopped
+
+  flaskapi:
+    image: FlaskAPI:latest
+    container_name: ArtificialQIAPI
+    build: ./back-end/
+    environment:
+      - DB_URL=postgresql://user:user@postgres:5432/artificialqi
+    networks:
+      # - frontend
+      - backend
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    depends_on:
+      - postgres
+    volumes:
+      - type: bind
+        source: ./back-end/ArtificialQI
+        target: /usr/src/ArtificialQI
+
+  angularclient:
+    image: AngularClient:latest
+    container_name: ArtificialQIClient
+    build: ./front-end/
+    # networks:
+    #   - frontend
+    ports:
+      - 4200:4200
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./front-end/ArtificialQI/src
+        target: /usr/src/ArtificialQI/src
+    depends_on:
+      - flaskapi
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+  # frontend:

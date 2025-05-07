@@ -30,6 +30,15 @@ class QuestionAnswerPair(MethodView):
         QaDto = request.form['QaDTO']
         return 200
     
+    @handle_exceptions
+    def update_qa(self, dataset_id:int, qa_id:int):
+        QaDto = request.form['QaDTO']
+        return 200
+    
+    @handle_exceptions
+    def delete_qa(self, dataset_id:int, qa_id:int):
+        return 200
+    
 
 
 """

@@ -1,9 +1,5 @@
 mat-form-field {
-  border-radius: 12px;
-}
-
-mat-form-field input {
-  border-radius: 8px;  /* Raggio più piccolo per l'input */
+    overflow: hidden;      /* Assicura che il contenitore non esca dai bordi */
 }
 
 .search-bar {

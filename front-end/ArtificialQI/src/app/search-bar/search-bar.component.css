@@ -1,7 +1,15 @@
+mat-form-field {
+  border-radius: 12px;
+}
+
+mat-form-field input {
+  border-radius: 8px;  /* Raggio più piccolo per l'input */
+}
+
 .search-bar {
     width: 100%;
-    border-radius: 25%;
 }
+
 .circle-button {
     border-radius: 50%;
     width: 40px;

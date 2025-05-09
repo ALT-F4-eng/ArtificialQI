@@ -1,40 +1,55 @@
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from flask.views import MethodView
 from uuid import UUID
 from tools.handle_exceptions import handle_exceptions
+from models.qa_use_case import QaUseCase
+from components.dataset_page_dto_mapper import DatasetPageDtoMapper
+from components.question_answer_pair_dto_mapper import QuestionAnswerPairDtoMapper
+
 
 class QuestionAnswerPair(MethodView):
-
-    def __init__(self, id:UUID = UUID(int=0), dataset:UUID = UUID(int=0), content:PairContent = PairContent()):#per essere condivise tra ogni istanza, togliere il "def __init__(self):"
+    def __init__(self, id:UUID = UUID(int=0), dataset:UUID = UUID(int=0), question:str = '', answer:str = ''):
         self.id:UUID = id
         self.dataset:UUID = dataset
-        self.content:PairContent = content
+        self.question:str = question
+        self.answer:str = answer
+    
+    def get_id(self) -> UUID:
+        return self.id
 
-    def set_id(self, id:UUID):
-        self.id = id
-    
-    def set_dataset(self, dataset:UUID):
-        self.dataset = dataset
-    
-    def set_content(self, content:PairContent):
-        self.content = content
+    def get_dataset(self) -> UUID:
+        return self.dataset
+
+    def get_question(self) -> str:
+        return self.question
+
+    def get_answer(self) -> str:
+        return self.answer
     
     @handle_exceptions
     def get_qa_page(self, dataset_id:int):
         page = request.args.get('page', default=1, type=int)
         q = request.args.get('q', default='', type=str)
-        return 200
+        qaService:QaUseCase = QaService()
+        qaPage:Page = qaService.get_qa_page(PageNum(page), UUID(int=dataset_id), q)
+        return jsonify(DatasetPageDtoMapper().to_dto(qaPage)), 200
     
     @handle_exceptions
     def create_qa(self, dataset_id:int):
         QaDto = request.form['QaDTO']
-        return 200
+        qaService:QaUseCase = QaService()
+        qaPair:QuestionAnswerPair = qaService.create_qa(QaDto['question'], QaDto['answer'])
+        return jsonify(QuestionAnswerPairDtoMapper.to_dto(qaPair)), 200
     
     @handle_exceptions
     def update_qa(self, dataset_id:int, qa_id:int):
         QaDto = request.form['QaDTO']
-        return 200
+        qaService:QaUseCase = QaService()
+        qaPair:QuestionAnswerPair = qaService.update_qa(QuestionAnswerPairDtoMapper().to_domain(QaDto))
+        return jsonify(QuestionAnswerPairDtoMapper.to_dto(qaPair)), 200
     
     @handle_exceptions
     def delete_qa(self, dataset_id:int, qa_id:int):
-        return 200
+        qaService:QaUseCase = QaService()
+        id:UUID = qaService.delete_qa(dataset_id)
+        return jsonify({'id':id}), 200

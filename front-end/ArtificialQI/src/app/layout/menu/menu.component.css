@@ -1,0 +1,28 @@
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background: #4a90e2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav a {
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s, border-bottom 0.3s;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.2rem;
+}
+
+nav a:hover,
+nav a.active {
+  border-bottom: 2px solid white;
+}
+
+nav a.disabled {
+  color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  cursor: default;
+}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -6,6 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Dataset } from '../dataset.service'; 
 import { OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dataset-name-dialog.component';
+
+
 @Component({
   selector: 'app-dataset-element',
   standalone: true,
@@ -17,13 +21,25 @@ import { OnInit } from '@angular/core';
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
   @Input() dataset?: Dataset;
-  
+  private dialog = inject(MatDialog);
+
+  renamedataset = { name: 'Dataset 1' };
+
+
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
-  
-  renameDataset() {
-    console.log('Dataset rinominato');
+  openRenameDialog() {
+    const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
+      data: { name: this.renamedataset.name },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Nuovo nome:', result);
+        this.renamedataset.name = result;
+      }
+    });
   }
 
   copyDataset() {

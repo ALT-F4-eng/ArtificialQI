@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 //import { RouterOutlet } from '@angular/router';
-import { SearchBarComponent } from './shared/search-bar/search-bar.component';
-import { FileUploadComponent } from './features/json-file-upload/json-file-upload.component';
-import { DatasetElementComponent } from './features/dataset-element/dataset-element.component';
+import { DatasetListPageComponent } from './features/dataset-list-page/dataset-list-page.component';
 
 @Component({
   selector: 'app-root',
-  imports: [SearchBarComponent,FileUploadComponent,DatasetElementComponent],
+  imports: [DatasetListPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'ArtificialQI';
+  //mockDataset =  { name: 'Chaonima', lastModified: new Date('2025-05-01') };
 }

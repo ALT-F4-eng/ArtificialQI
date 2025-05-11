@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FileUploadComponent } from './json-file-upload.component';
+import { DatasetListViewComponent } from './dataset-list-view.component';
 
-describe('JsonFileUploadComponent', () => {
-  let component: FileUploadComponent;
-  let fixture: ComponentFixture<FileUploadComponent>;
+describe('DatasetListViewComponent', () => {
+  let component: DatasetListViewComponent;
+  let fixture: ComponentFixture<DatasetListViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FileUploadComponent]
+      imports: [DatasetListViewComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FileUploadComponent);
+    fixture = TestBed.createComponent(DatasetListViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

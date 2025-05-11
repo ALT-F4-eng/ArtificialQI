@@ -6,10 +6,11 @@ from datetime import date
 from models.dataset_use_case import DatasetUseCase
 from components.dataset_dto_mapper import DatasetDtoMapper
 from components.dataset_list_dto_mapper import DatasetListDtoMapper
+from models.dataset_service import DatasetService
 
 
 class Dataset(MethodView):
-    def __init__(self, id:UUID = UUID(int=0), dim:int = 0, name:str = '', first_save_date:date = date(), tmp:bool = False, origin:UUID = UUID(int=0)):#per essere condivise tra ogni istanza, togliere il "def __init__(self):"
+    def __init__(self, id:UUID = UUID(int=0), dim:int = 0, name:str = '', first_save_date:date = date.today(), tmp:bool = False, origin:UUID = UUID(int=0)):#per essere condivise tra ogni istanza, togliere il "def __init__(self):"
         self.id:UUID = id
         self.dim:int = dim
         self.name:str = name
@@ -55,8 +56,11 @@ class Dataset(MethodView):
         copy = request.form['copy']#CHE ME NE FACCIO
         dataset:Dataset = DatasetDtoMapper().to_domain(datasetDto)
         datasetService:DatasetUseCase = DatasetService()
-        datasetService.create_dataset(dataset)
-        return jsonify(datasetDto), 200
+        if copy:
+            created_dataset:Dataset = datasetService.create_dataset_tmp(dataset)
+        if file:
+            created_dataset:Dataset = datasetService.create_from_json(dataset)
+        return jsonify(DatasetDtoMapper().to_dto(created_dataset)), 200
 
     @handle_exceptions
     def update_dataset(self, dataset_id:int):

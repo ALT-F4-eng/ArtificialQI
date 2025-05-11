@@ -1,11 +1,13 @@
-from port.dataset import Dataset
 from tools.dataset_dto import DatasetDto
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from port.dataset import Dataset
 
 class DatasetDtoMapper:
     def __init__(self):
         self.page_size = 10 #BO, NON SO
 
-    def to_dto(self, dataset: Dataset) -> DatasetDto:
+    def to_dto(self, dataset: 'Dataset') -> DatasetDto:
         total_elements = dataset.get_dim()
         max_page = (total_elements + self.page_size - 1) // self.page_size
         return DatasetDto(
@@ -19,7 +21,8 @@ class DatasetDtoMapper:
             total_elements
         ).to_dict()
     
-    def to_domain(self, dto:DatasetDto) -> Dataset:
+    def to_domain(self, dto:DatasetDto) -> 'Dataset':
+        from port.dataset import Dataset
         return Dataset(
             id=dto.get_id(),
             dim=dto.get_element_n(),

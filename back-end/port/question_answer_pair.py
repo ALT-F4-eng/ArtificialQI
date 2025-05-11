@@ -3,8 +3,9 @@ from flask.views import MethodView
 from uuid import UUID
 from tools.handle_exceptions import handle_exceptions
 from models.qa_use_case import QaUseCase
-from components.dataset_page_dto_mapper import DatasetPageDtoMapper
 from components.question_answer_pair_dto_mapper import QuestionAnswerPairDtoMapper
+from models.qa_service import QaService
+
 
 
 class QuestionAnswerPair(MethodView):
@@ -25,14 +26,6 @@ class QuestionAnswerPair(MethodView):
 
     def get_answer(self) -> str:
         return self.answer
-    
-    @handle_exceptions
-    def get_qa_page(self, dataset_id:int):
-        page = request.args.get('page', default=1, type=int)
-        q = request.args.get('q', default='', type=str)
-        qaService:QaUseCase = QaService()
-        qaPage:Page = qaService.get_qa_page(PageNum(page), UUID(int=dataset_id), q)
-        return jsonify(DatasetPageDtoMapper().to_dto(qaPage)), 200
     
     @handle_exceptions
     def create_qa(self, dataset_id:int):

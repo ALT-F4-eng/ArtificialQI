@@ -1,4 +1,4 @@
-from dataset_dto import DatasetDto
+from tools.dataset_dto import DatasetDto
 
 class DatasetListDto:
     def __init__(self, dataset_list:list[DatasetDto]):

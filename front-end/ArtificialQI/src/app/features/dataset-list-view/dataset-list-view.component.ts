@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
-import { DatasetService, Dataset } from '../dataset.service';
+import { Dataset } from '../dataset.service';
 
 @Component({
   selector: 'app-dataset-list-view',
@@ -15,10 +15,5 @@ import { DatasetService, Dataset } from '../dataset.service';
 })
 
 export class DatasetListViewComponent {
-  datasets: Dataset[] = [];
-  constructor(private datasetService: DatasetService) {}
-
-  ngOnInit(): void {
-    this.datasets = this.datasetService.getDataset();
-  }
+  @Input() datasets: Dataset[] = [];
 }

@@ -14,7 +14,8 @@ const MOCK_DATASET: Dataset[] = [
     { name: 'Dataset Epsilon', lastModified: new Date('2025-09-25') },
     { name: 'Dataset Zeta', lastModified: new Date('2025-10-30') },
     { name: 'Dataset Eta', lastModified: new Date('2025-11-05') },
-    { name: 'Dataset Theta', lastModified: new Date('2025-12-12') }
+    { name: 'Dataset Theta', lastModified: new Date('2025-12-12') },
+    { name: 'Dataset Theta2', lastModified: new Date('2025-12-12') }
 ];
 
 @Injectable({

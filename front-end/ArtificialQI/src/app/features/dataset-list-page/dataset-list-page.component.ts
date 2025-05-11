@@ -5,6 +5,7 @@ import { DatasetListViewComponent } from '../../features/dataset-list-view/datas
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { DatasetService, Dataset } from '../dataset.service';
 
 @Component({
   selector: 'app-dataset-list-page',
@@ -15,5 +16,17 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class DatasetListPageComponent {
-
+  mockDatasets: Dataset[] = [];
+  filteredDatasets: Dataset[] = [];
+  constructor(private datasetService: DatasetService) {}
+  ngOnInit(): void {
+    this.mockDatasets = this.datasetService.getDataset();
+    this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
+  }
+  handleSearch(term: string) {
+    const normalized = term.toLowerCase();
+    this.filteredDatasets = this.mockDatasets.filter(dataset =>
+      dataset.name.toLowerCase().includes(normalized)
+    );
+  }
 }

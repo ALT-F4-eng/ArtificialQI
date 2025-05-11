@@ -1,9 +1,15 @@
 <mat-form-field class="search-bar">
   <mat-label>Ricerca dei dataset salvati</mat-label>
   <input matInput [(ngModel)]="searchTerm" placeholder="Digita qualcosa per cercare dataset che voui" (keydown.enter)="onSearch()"/> <!-- funziona anche con il tasto di invio -->
-  <button mat-icon-button matSuffix (click)="onSearch($event)" class="circle-button">
+  <!-- Pulsante di clear (visibile solo se c'è testo) -->
+   <span matSuffix class="button-group">
+  <button *ngIf="searchTerm" mat-icon-button (click)="clearSearch()" aria-label="Cancella campo" class="circle-button">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button mat-icon-button (click)="onSearch($event)" class="circle-button">
     <mat-icon>search</mat-icon>
   </button>
+  </span>
 </mat-form-field>
 
 <!-- [(ngModel)]: Si occupa del two-way data binding -->

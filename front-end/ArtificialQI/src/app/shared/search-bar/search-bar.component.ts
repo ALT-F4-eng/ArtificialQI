@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent {
+
+  @Output() search = new EventEmitter<string>();
+  @Output() clear = new EventEmitter<void>();
+  
   searchTerm: string = '';
 
   onSearch(event?: Event) {
@@ -22,5 +26,11 @@ export class SearchBarComponent {
     }
     console.log('Cercando:', this.searchTerm);
     // Aggiungi la logica per la ricerca
+     this.search.emit(this.searchTerm.trim());
   }
+  
+  clearSearch() {
+    this.searchTerm = '';
+    this.search.emit('');
+}
 }

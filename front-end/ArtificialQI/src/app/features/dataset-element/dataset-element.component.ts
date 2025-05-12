@@ -21,14 +21,13 @@ import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dat
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
   @Input() dataset?: Dataset;
-  private dialog = inject(MatDialog);
-
-  renamedataset = { name: 'Dataset 1' };
-
-
+  
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
+    
+  private dialog = inject(MatDialog);
+  renamedataset = { name: '' };
   openRenameDialog() {
     const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
       data: { name: this.renamedataset.name },

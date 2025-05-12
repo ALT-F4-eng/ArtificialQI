@@ -16,6 +16,8 @@ import { DatasetService, Dataset } from '../dataset.service';
 })
 
 export class DatasetListPageComponent {
+  //comportamento che sicuramente si puo migliorare e cambiare
+  //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
   mockDatasets: Dataset[] = [];
   filteredDatasets: Dataset[] = [];
   constructor(private datasetService: DatasetService) {}
@@ -23,6 +25,7 @@ export class DatasetListPageComponent {
     this.mockDatasets = this.datasetService.getDataset();
     this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
   }
+  
   handleSearch(term: string) {
     const normalized = term.toLowerCase();
     this.filteredDatasets = this.mockDatasets.filter(dataset =>

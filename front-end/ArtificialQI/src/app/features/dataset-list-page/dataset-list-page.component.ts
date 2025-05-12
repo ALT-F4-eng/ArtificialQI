@@ -6,11 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetService, Dataset } from '../dataset.service';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dataset-list-page',
   standalone: true,
-  imports: [SearchBarComponent,FileUploadComponent,DatasetListViewComponent,MatIconModule,MatDividerModule,MatButtonModule],
+  imports: [SearchBarComponent,FileUploadComponent,DatasetListViewComponent,MatIconModule,MatDividerModule,MatButtonModule,RouterModule],
   templateUrl: './dataset-list-page.component.html',
   styleUrl: './dataset-list-page.component.css'
 })
@@ -31,5 +32,12 @@ export class DatasetListPageComponent {
     this.filteredDatasets = this.mockDatasets.filter(dataset =>
       dataset.name.toLowerCase().includes(normalized)
     );
+  }
+
+  renameDataset(index: number, newName: string) {
+    // Rinomina il dataset chiamando il servizio
+    const updatedDataset = this.datasetService.renameDataset(index, newName);
+    // Aggiorna la lista dei dataset per riflettere i cambiamenti
+    this.mockDatasets = [...this.mockDatasets];
   }
 }

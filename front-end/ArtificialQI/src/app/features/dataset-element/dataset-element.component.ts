@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -8,6 +8,7 @@ import { Dataset } from '../dataset.service';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dataset-name-dialog.component';
+import { DatasetService } from '../dataset.service';
 
 
 @Component({
@@ -21,35 +22,46 @@ import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dat
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
   @Input() dataset?: Dataset;
-  
+  @Output() rename = new EventEmitter<string>(); // Emette il nuovo nome al padre
+
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
-    
   private dialog = inject(MatDialog);
-  renamedataset = { name: '' };
+
   openRenameDialog() {
+    if (!this.dataset) return; // Se non c'è un dataset, esci
     const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
-      data: { name: this.renamedataset.name },
+      data: { name: this.dataset.name }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Nuovo nome:', result);
-        this.renamedataset.name = result;
+        console.log('Nuovo nome nel elemento:', result);
+        this.rename.emit(result);  // Invia il nuovo nome al padre tramite l'evento
       }
     });
   }
 
   copyDataset() {
-    console.log('Dataset copiato');
+    if (this.dataset) {
+      const copiedDataset = { ...this.dataset };
+      console.log('Dataset copiato:', copiedDataset);
+      // Puoi aggiungere logica per "salvare" il dataset copiato nel mock o un altro array
+    }
   }
 
   deleteDataset() {
-    console.log('Dataset eliminato');
+    if (this.dataset) {
+      console.log('Dataset eliminato:', this.dataset.name);
+      // Qui dovresti aggiungere la logica per eliminare il dataset dal "database" (mock o altro)
+    }
   }
 
   loadDataset() {
-    console.log('Dataset caricato');
+    if (this.dataset) {
+      console.log('Dataset caricato:', this.dataset.name);
+      // Puoi aggiungere logica per caricare il dataset (ad esempio, simula il download)
+    }
   }
 }

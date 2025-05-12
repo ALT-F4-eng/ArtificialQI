@@ -1,10 +1,16 @@
-import { Component,Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
 import { Dataset } from '../dataset.service';
+
+// dataset-list-view.component.ts
+export interface RenameEvent {
+  index: number;
+  newName: string;
+}
 
 @Component({
   selector: 'app-dataset-list-view',
@@ -13,7 +19,12 @@ import { Dataset } from '../dataset.service';
   templateUrl: './dataset-list-view.component.html',
   styleUrls: ['./dataset-list-view.component.css']
 })
-
 export class DatasetListViewComponent {
   @Input() datasets: Dataset[] = [];
+  @Output() rename = new EventEmitter<RenameEvent>();
+
+  onRename(index: number, newName: string) {
+    console.log('Nuovo nome nel list view:', newName);
+    this.rename.emit({ index, newName });
+  }
 }

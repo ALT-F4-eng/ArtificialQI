@@ -1,5 +1,5 @@
 <p>dataset-list-view works!</p>
 <mat-list>
-  <app-dataset-element *ngFor="let item of datasets" [dataset]="item"></app-dataset-element>
+  <app-dataset-element *ngFor="let item of datasets; let i = index" [dataset]="item" (rename)="onRename(i, $event)" ></app-dataset-element>
 </mat-list>
 

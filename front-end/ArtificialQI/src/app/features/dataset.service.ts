@@ -24,8 +24,17 @@ const MOCK_DATASET: Dataset[] = [
 
 export class DatasetService {
   constructor() {}
+  private datasets: Dataset[] = [...MOCK_DATASET]; // Crea una copia mutabile del mock
 
   getDataset(): Dataset[] {
-    return MOCK_DATASET;
+    return this.datasets;
+  }
+  // Metodo per rinominare un dataset
+  renameDataset(index: number, newName: string): void {
+    if (this.datasets[index]) {
+      this.datasets[index].name = newName;
+      this.datasets[index].lastModified = new Date(); // aggiorna data di modifica
+      console.log('servizio', this.datasets[index]);
+    }
   }
 }

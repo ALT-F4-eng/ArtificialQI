@@ -26,8 +26,9 @@ export class DatasetElementComponent implements OnInit {
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
-  private dialog = inject(MatDialog);
+
   @Output() rename = new EventEmitter<string>(); // Emette il nuovo nome al padre
+  private dialog = inject(MatDialog);
   openRenameDialog() {
     if (!this.dataset) return; // Se non c'è un dataset, esci
     const dialogRef = this.dialog.open(DatasetNameDialogComponent, {

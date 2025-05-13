@@ -1,8 +1,6 @@
-import { render, screen } from '@testing-library/angular';
-import { userEvent } from '@testing-library/user-event';
+import { render } from '@testing-library/angular';
 import { DatasetListPageComponent } from './dataset-list-page.component';
 import { DatasetService, Dataset } from '../dataset.service';
-import { of } from 'rxjs';
 
 // Mock dati
 const mockDatasets: Dataset[] = [
@@ -19,6 +17,7 @@ const mockDatasetService = {
 };
 
 describe('DatasetListPageComponent (Jest)', () => {
+    // Verifica che getDataset() sia stato chiamato → segnale che il componente ha cercato di caricare i dati al ngOnInit.
   it('dovrebbe renderizzare e caricare i dataset', async () => {
     await render(DatasetListPageComponent, {
       componentProviders: [{ provide: DatasetService, useValue: mockDatasetService }],
@@ -28,7 +27,7 @@ describe('DatasetListPageComponent (Jest)', () => {
 
     // Non verifichiamo il DOM completo, ma si potrebbe usare getByText()
   });
-
+  // Verifica che la funzione di ricerca (handleSearch) filtri correttamente i dati.
   it('filtra i dataset correttamente', async () => {
     const view = await render(DatasetListPageComponent, {
       componentProviders: [{ provide: DatasetService, useValue: mockDatasetService }],
@@ -39,7 +38,7 @@ describe('DatasetListPageComponent (Jest)', () => {
     expect(instance.filteredDatasets.length).toBe(1);
     expect(instance.filteredDatasets[0].name).toBe('Dataset Uno');
   });
-
+  //Testa che chiamando renameDataset() venga effettivamente invocato il servizio mock.
   it('rinomina un dataset', async () => {
     const view = await render(DatasetListPageComponent, {
       componentProviders: [{ provide: DatasetService, useValue: mockDatasetService }],
@@ -49,6 +48,8 @@ describe('DatasetListPageComponent (Jest)', () => {
     instance.renameDataset(0, 'Nome Nuovo');
     expect(mockDatasetService.renameDataset).toHaveBeenCalledWith(0, 'Nome Nuovo');
   });
+    //Simula la chiamata a datasetCopied(index). Verifica che venga chiamato copyDataset(index) sul servizio.
+
 
   it('clona un dataset', async () => {
     const view = await render(DatasetListPageComponent, {
@@ -59,7 +60,7 @@ describe('DatasetListPageComponent (Jest)', () => {
     instance.datasetCopied(1);
     expect(mockDatasetService.copyDataset).toHaveBeenCalledWith(1);
   });
-
+    //Test simile al precedente, ma verifica l'eliminazione.
   it('elimina un dataset', async () => {
     const view = await render(DatasetListPageComponent, {
       componentProviders: [{ provide: DatasetService, useValue: mockDatasetService }],

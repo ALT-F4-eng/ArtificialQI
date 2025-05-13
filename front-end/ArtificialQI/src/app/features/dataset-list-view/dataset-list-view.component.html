@@ -1,10 +1,12 @@
 <p>dataset-list-view works!</p>
-<mat-list>
-  <app-dataset-element *ngFor="let item of datasets; let i = index" [dataset]="item" 
-  (rename)="onRename(i, $event)" 
-  (copyClicked)="onCopy(i)"
-  (delete)="onDelete(i)"
-  (datasetLoaded)="onDatasetLoaded($event)" >
-</app-dataset-element>
+<mat-list role="list">
+  <app-dataset-element
+    *ngFor="let item of datasets; let i = index"
+    [dataset]="item"
+    (rename)="onRename(i, $event)"
+    (copyClicked)="onCopy(i)"
+    (delete)="onDelete(i)"
+    (datasetLoaded)="onDatasetLoaded($event)"
+    role="listitem"
+  ></app-dataset-element>
 </mat-list>
-

@@ -4,25 +4,29 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Dataset } from '../dataset.service'; 
+import { Dataset } from '../dataset.service';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dataset-name-dialog.component';
 import { RouterModule, Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-dataset-element',
   standalone: true,
-  imports: [CommonModule, MatCardModule, DatePipe, MatButtonModule, RouterModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    DatePipe,
+    MatButtonModule,
+    RouterModule,
+  ],
   templateUrl: './dataset-element.component.html',
-  styleUrls: ['./dataset-element.component.css']
+  styleUrls: ['./dataset-element.component.css'],
 })
-
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
   @Input() dataset?: Dataset;
-  
+
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
@@ -32,17 +36,17 @@ export class DatasetElementComponent implements OnInit {
   openRenameDialog() {
     if (!this.dataset) return; // Se non c'è un dataset, esci
     const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
-      data: { name: this.dataset.name }
+      data: { name: this.dataset.name },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Nuovo nome nel elemento:', result);
-        this.rename.emit(result);  // Invia il nuovo nome al padre tramite l'evento
+        this.rename.emit(result); // Invia il nuovo nome al padre tramite l'evento
       }
     });
   }
-  
+
   @Output() copyClicked = new EventEmitter<void>();
   copyDataset() {
     if (this.dataset) {
@@ -61,7 +65,7 @@ export class DatasetElementComponent implements OnInit {
       // Qui dovresti aggiungere la logica per eliminare il dataset dal "database" (mock o altro)
     }
   }
-  
+
   @Output() datasetLoaded = new EventEmitter<Dataset>();
   loadDataset() {
     if (this.dataset) {

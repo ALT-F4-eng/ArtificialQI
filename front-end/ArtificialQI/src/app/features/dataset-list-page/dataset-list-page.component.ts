@@ -11,11 +11,18 @@ import { RouterModule, Router } from '@angular/router';
 @Component({
   selector: 'app-dataset-list-page',
   standalone: true,
-  imports: [SearchBarComponent,FileUploadComponent,DatasetListViewComponent,MatIconModule,MatDividerModule,MatButtonModule,RouterModule],
+  imports: [
+    SearchBarComponent,
+    FileUploadComponent,
+    DatasetListViewComponent,
+    MatIconModule,
+    MatDividerModule,
+    MatButtonModule,
+    RouterModule,
+  ],
   templateUrl: './dataset-list-page.component.html',
-  styleUrl: './dataset-list-page.component.css'
+  styleUrl: './dataset-list-page.component.css',
 })
-
 export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
@@ -26,10 +33,13 @@ export class DatasetListPageComponent {
     this.mockDatasets = this.datasetService.getDataset();
     this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
   }
-  
+  createDataset() {
+    this.router.navigate(['/datasetContentPage']); // si puo cambiare
+  }
+
   handleSearch(term: string) {
     const normalized = term.toLowerCase();
-    this.filteredDatasets = this.mockDatasets.filter(dataset =>
+    this.filteredDatasets = this.mockDatasets.filter((dataset) =>
       dataset.name.toLowerCase().includes(normalized)
     );
   }
@@ -47,19 +57,19 @@ export class DatasetListPageComponent {
     this.mockDatasets = [...this.datasetService.getDataset()];
     console.log('Dataset copiato page:', this.mockDatasets[index]);
   }
-  
+
   datasetDeleted(index: number) {
     console.log('Indice ricevuto per cancellazione page:', index);
     this.datasetService.deleteDataset(index);
     this.filteredDatasets = [...this.datasetService.getDataset()];
     this.mockDatasets = [...this.datasetService.getDataset()];
-   // this.mockDatasets = [...this.mockDatasets];
+    // this.mockDatasets = [...this.mockDatasets];
     //console.log('Dataset eliminato page:', this.mockDatasets[index]);
   }
   onDatasetLoaded(dataset: Dataset) {
-  // funzionalità da testare dopo la creazione del datasetcontentpage
+    // funzionalità da testare dopo la creazione del datasetcontentpage
     this.router.navigate(['/datasetContentPage'], {
-      queryParams: { name: dataset.name }
+      queryParams: { name: dataset.name },
     });
   }
 }

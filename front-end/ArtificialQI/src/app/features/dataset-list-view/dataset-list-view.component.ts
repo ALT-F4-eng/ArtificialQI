@@ -15,9 +15,15 @@ export interface RenameEvent {
 @Component({
   selector: 'app-dataset-list-view',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatCardModule, MatButtonModule, DatasetElementComponent],
+  imports: [
+    CommonModule,
+    MatListModule,
+    MatCardModule,
+    MatButtonModule,
+    DatasetElementComponent,
+  ],
   templateUrl: './dataset-list-view.component.html',
-  styleUrls: ['./dataset-list-view.component.css']
+  styleUrls: ['./dataset-list-view.component.css'],
 })
 export class DatasetListViewComponent {
   @Input() datasets: Dataset[] = [];
@@ -27,8 +33,8 @@ export class DatasetListViewComponent {
     console.log('Nuovo nome nel list view:', newName);
     this.rename.emit({ index, newName });
   }
-  
-  @Output() datasetCopied  = new EventEmitter<number>();
+
+  @Output() datasetCopied = new EventEmitter<number>();
   onCopy(index: number) {
     this.datasetCopied.emit(index);
   }
@@ -38,7 +44,7 @@ export class DatasetListViewComponent {
     console.log('Indice ricevuto per cancellazione list view:', index);
     this.datasetDeleted.emit(index);
   }
-  
+
   @Output() datasetLoaded = new EventEmitter<Dataset>();
   onDatasetLoaded(dataset: Dataset) {
     this.datasetLoaded.emit(dataset);

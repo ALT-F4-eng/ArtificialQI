@@ -27,9 +27,8 @@ import { model } from '@angular/core';
     FormsModule,
   ],
   templateUrl: './dataset-name-dialog.component.html',
-  styleUrl: './dataset-name-dialog.component.css'
+  styleUrl: './dataset-name-dialog.component.css',
 })
-
 export class DatasetNameDialogComponent {
   private dialogRef = inject(MatDialogRef<DatasetNameDialogComponent>);
   private data = inject(MAT_DIALOG_DATA) as { name: string };
@@ -40,4 +39,3 @@ export class DatasetNameDialogComponent {
     this.dialogRef.close(this.name.trim());
   }
 }
-

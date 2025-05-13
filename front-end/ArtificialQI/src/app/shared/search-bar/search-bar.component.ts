@@ -15,10 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 export class SearchBarComponent {
 
   @Output() search = new EventEmitter<string>();
-  @Output() clear = new EventEmitter<void>();
-  
   searchTerm: string = '';
-
   onSearch(event?: Event) {
     if (event) {// per evitare che venga anche cliccato campo di input della ricerca
       event.stopPropagation();// Impedisce il click di "salire" all'input
@@ -26,9 +23,10 @@ export class SearchBarComponent {
     }
     console.log('Cercando:', this.searchTerm);
     // Aggiungi la logica per la ricerca
-     this.search.emit(this.searchTerm.trim());
+    this.search.emit(this.searchTerm.trim());
   }
   
+  @Output() clear = new EventEmitter<void>();
   clearSearch() {
     this.searchTerm = '';
     this.search.emit('');

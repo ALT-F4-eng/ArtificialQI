@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 //usato per il mock
 export interface Dataset {
   name: string;
@@ -37,4 +38,26 @@ export class DatasetService {
       console.log('servizio', this.datasets[index]);
     }
   }
+
+  copyDataset(index: number): void {
+  const original = this.datasets[index];
+  if (original) {
+    const copiedDataset = {
+      name: original.name + '(copia)',
+      lastModified: new Date()
+    };
+      this.datasets = [...this.datasets, copiedDataset];
+      console.log('tutti dataset', this.datasets);
+    }
+  } 
+  
+  deleteDataset(index: number): void {
+    console.log('Indice ricevuto per cancellazione:', index);
+    if (index >= 0 && index < this.datasets.length) {
+     console.log('splice:', this.datasets.splice(index, 1)); // rimuove l'elemento all'indice
+      this.datasets = [...this.datasets]; // ricrea array per forzare update
+    }
+    console.log('Stato attuale:', this.datasets);
+  }
+
 }

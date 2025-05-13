@@ -21,10 +21,26 @@ export interface RenameEvent {
 })
 export class DatasetListViewComponent {
   @Input() datasets: Dataset[] = [];
-  @Output() rename = new EventEmitter<RenameEvent>();
 
+  @Output() rename = new EventEmitter<RenameEvent>();
   onRename(index: number, newName: string) {
     console.log('Nuovo nome nel list view:', newName);
     this.rename.emit({ index, newName });
+  }
+  
+  @Output() datasetCopied  = new EventEmitter<number>();
+  onCopy(index: number) {
+    this.datasetCopied.emit(index);
+  }
+
+  @Output() datasetDeleted = new EventEmitter<number>();
+  onDelete(index: number) {
+    console.log('Indice ricevuto per cancellazione list view:', index);
+    this.datasetDeleted.emit(index);
+  }
+  
+  @Output() datasetLoaded = new EventEmitter<Dataset>();
+  onDatasetLoaded(dataset: Dataset) {
+    this.datasetLoaded.emit(dataset);
   }
 }

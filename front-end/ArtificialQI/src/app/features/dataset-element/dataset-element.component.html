@@ -8,9 +8,9 @@
         </div>
         <div class="dataset-actions">
             <button mat-raised-button (click)="openRenameDialog()" >Rinomina</button>
-            <button mat-raised-button >Copia</button>
-            <button mat-raised-button >Elimina</button>
-            <button mat-raised-button >Carica</button>
+            <button mat-raised-button (click)="copyDataset()" >Copia</button>
+            <button mat-raised-button (click)="deleteDataset()">Elimina</button>
+            <button mat-raised-button (click)="loadDataset()">Carica</button>
         </div>
     </div>
   </mat-card-content>

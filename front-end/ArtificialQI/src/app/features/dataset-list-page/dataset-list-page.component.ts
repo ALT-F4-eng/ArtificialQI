@@ -21,7 +21,7 @@ export class DatasetListPageComponent {
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
   mockDatasets: Dataset[] = [];
   filteredDatasets: Dataset[] = [];
-  constructor(private datasetService: DatasetService) {}
+  constructor(private datasetService: DatasetService, private router: Router) {}
   ngOnInit(): void {
     this.mockDatasets = this.datasetService.getDataset();
     this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
@@ -36,8 +36,30 @@ export class DatasetListPageComponent {
 
   renameDataset(index: number, newName: string) {
     // Rinomina il dataset chiamando il servizio
-    const updatedDataset = this.datasetService.renameDataset(index, newName);
+    this.datasetService.renameDataset(index, newName);
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
-    this.mockDatasets = [...this.mockDatasets];
+    //this.mockDatasets = [...this.mockDatasets];
+  }
+
+  datasetCopied(index: number) {
+    this.datasetService.copyDataset(index);
+    this.filteredDatasets = [...this.datasetService.getDataset()];
+    this.mockDatasets = [...this.datasetService.getDataset()];
+    console.log('Dataset copiato page:', this.mockDatasets[index]);
+  }
+  
+  datasetDeleted(index: number) {
+    console.log('Indice ricevuto per cancellazione page:', index);
+    this.datasetService.deleteDataset(index);
+    this.filteredDatasets = [...this.datasetService.getDataset()];
+    this.mockDatasets = [...this.datasetService.getDataset()];
+   // this.mockDatasets = [...this.mockDatasets];
+    //console.log('Dataset eliminato page:', this.mockDatasets[index]);
+  }
+  onDatasetLoaded(dataset: Dataset) {
+  // funzionalità da testare dopo la creazione del datasetcontentpage
+    this.router.navigate(['/datasetContentPage'], {
+      queryParams: { name: dataset.name }
+    });
   }
 }

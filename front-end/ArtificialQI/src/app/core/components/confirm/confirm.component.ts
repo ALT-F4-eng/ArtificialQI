@@ -18,6 +18,7 @@ export class ConfirmComponent {
   onConfirm() {
     this.confirmed.emit();
   }
+
   onCancel() {
     this.canceled.emit();
   }

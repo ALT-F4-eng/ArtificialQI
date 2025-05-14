@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router'; // Importa ActivatedRoute
+import { of } from 'rxjs'; // Per mockare paramMap
 
 import { MenuComponent } from './menu.component';
 
@@ -8,7 +10,13 @@ describe('MenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuComponent]
+      imports: [MenuComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: of({}) } } // Mock di ActivatedRoute
+        }
+      ]
     })
     .compileComponents();
 

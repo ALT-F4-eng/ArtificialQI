@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter, Routes, Router } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { By } from '@angular/platform-browser';
+import { Routes } from '@angular/router';
 
 import { StandardPageComponent } from './standard-page.component';
 
@@ -38,9 +39,16 @@ describe('StandardPageComponent (Jest)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StandardPageComponent],
-      declarations: [AppMenuStub, AppFooterStub],
-      providers: [provideRouter(routes)],
+      imports: [
+        StandardPageComponent,
+        AppMenuStub,
+        AppFooterStub,
+      ],
+      declarations: [
+      ],
+      providers: [
+        provideRouter(routes),
+      ],
     }).compileComponents();
 
     router = TestBed.inject(Router);

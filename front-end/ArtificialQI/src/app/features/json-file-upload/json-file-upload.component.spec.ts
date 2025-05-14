@@ -46,11 +46,12 @@ describe('FileUploadComponent', () => {
     });
 
     // Ottieni l'elemento input file
-    const fileInput = screen.getByLabelText('Carica file JSON'); // Assicurati che l'input file sia accessibile con l'etichetta giusta
+    const fileInput = screen.getByTestId('file-input'); // Assicurati che l'input file sia accessibile con l'etichetta giusta
 
     // Verifica che l'attributo 'accept' sia correttamente impostato a ".json"
     expect(fileInput).toHaveAttribute('accept', '.json');
   });
+  
   //dato che input file è predefinito da angular, alcuni test non sono necessari basta controllare che venga creato il componente e mostrato la finestra il che è stato testato sopra
   it('dovrebbe creare correttamente il componente FileUploadComponent', async () => {
     const { fixture } = await render(FileUploadComponent, {});

@@ -22,7 +22,7 @@ const mockDatasetService = {
   deleteDataset: jest.fn(),
 };
 
-describe('DatasetListPageComponent (Jest)', () => {
+describe('DatasetListPageComponent (con Jest e angular)', () => {
   // Verifica che getDataset() sia stato chiamato → segnale che il componente ha cercato di caricare i dati al ngOnInit.
   it('dovrebbe visualizzare il componente di ricerca', async () => {
     const { container } = await render(DatasetListPageComponent, {
@@ -95,7 +95,7 @@ describe('DatasetListPageComponent (Jest)', () => {
   });
 
   // Verifica che la funzione di ricerca (handleSearch) filtri correttamente i dati.
-  it('DatasetListView dovrebbe ottenere correttamente la lista filtrata dei dataset salvati dopo un operazione di ricercaz, e lo visualizza correttamente gli elementi', async () => {
+  it('DatasetListView dovrebbe ottenere correttamente la lista filtrata dei dataset salvati dopo un operazione di ricerca, e lo visualizza correttamente gli elementi', async () => {
     const view = await render(DatasetListPageComponent, {
       componentProviders: [
         { provide: DatasetService, useValue: mockDatasetService },
@@ -186,7 +186,7 @@ describe('DatasetListPageComponent (Jest)', () => {
     });
   });
 
-  it('should create', async () => {
+  it('dovrebbe creare correttamente il componente DatasetListPageComponent', async () => {
     const { fixture } = await render(DatasetListPageComponent, {
       componentProviders: [
         { provide: DatasetService, useValue: mockDatasetService },

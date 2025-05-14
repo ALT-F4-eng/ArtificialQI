@@ -9,4 +9,9 @@
     (datasetLoaded)="onDatasetLoaded($event)"
     role="listitem"
   ></app-dataset-element>
+  <!-- Messaggio quando non ci sono dataset -->
+  <ng-container *ngIf="datasets.length === 0">
+    <p>Nessun dataset salvato</p> <!-- basta cambiare questa parte e sostituire con il componente di messaggio-->
+  </ng-container>
+
 </mat-list>

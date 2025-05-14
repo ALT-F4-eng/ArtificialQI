@@ -32,10 +32,9 @@ describe('DatasetListViewComponent con render()', () => {
   });
 
   it('dovrebbe creare correttamente il componente DatasetListViewComponent', async () => {
-  const { fixture } = await render(DatasetListViewComponent, {
-  });
+    const { fixture } = await render(DatasetListViewComponent, {});
 
-  const component = fixture.componentInstance;
-  expect(component).toBeTruthy();
-});
+    const component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+  });
 });

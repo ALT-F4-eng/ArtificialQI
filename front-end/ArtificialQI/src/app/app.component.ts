@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-//import { RouterOutlet } from '@angular/router';
-import { DatasetListPageComponent } from './features/dataset-list-page/dataset-list-page.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [DatasetListPageComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

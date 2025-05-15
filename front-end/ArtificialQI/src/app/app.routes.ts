@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { StandardPageComponent } from './layout/standard-page/standard-page.component';
 import { HomePageComponent } from './home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
+import { DatasetListPageComponent } from './features/dataset-list-page/dataset-list-page.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,7 @@ export const routes: Routes = [
       { path: '', component: HomePageComponent },
       { path: 'test', component: MenuTestingComponent },
       { path: 'llm', component: MenuTestingComponent },
-      { path: 'dataset', component: MenuTestingComponent }
+      { path: 'dataset', component: DatasetListPageComponent }
     ],
   },
 ];

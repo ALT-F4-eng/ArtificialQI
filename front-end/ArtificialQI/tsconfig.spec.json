@@ -6,9 +6,9 @@
     "outDir": "./out-tsc/spec",
     "types": [
       "jest",
-      "node"
-    ]
+      "node"]
   },
+  "files": ["src/setupJest.ts"],
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts"

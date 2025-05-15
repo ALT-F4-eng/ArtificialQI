@@ -9,4 +9,5 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'ArtificialQI';
+  //mockDataset =  { name: 'Chaonima', lastModified: new Date('2025-05-01') };
 }

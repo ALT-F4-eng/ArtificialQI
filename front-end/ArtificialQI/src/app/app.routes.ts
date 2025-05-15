@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 //import { datasetContentPageComponent } from './dataset-content-page/dataset-content-page.component';
 // path: 'datasetContentPage', component: datasetContentPageComponent
 import { StandardPageComponent } from './layout/standard-page/standard-page.component';
-import { HomePageComponent } from './home/home-page/home-page.component';
+import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
 import { DatasetListPageComponent } from './features/dataset-list-page/dataset-list-page.component';
 

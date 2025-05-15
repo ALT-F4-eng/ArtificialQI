@@ -45,6 +45,8 @@ export class ContentComponent implements AfterViewInit {
   }
 
   private isTestEnvironment(): boolean {
-    return !!process.env['JEST_WORKER_ID'];
-  }
+  return typeof process !== 'undefined' &&
+         typeof process.env !== 'undefined' &&
+         !!process.env['JEST_WORKER_ID'];
+}
 }

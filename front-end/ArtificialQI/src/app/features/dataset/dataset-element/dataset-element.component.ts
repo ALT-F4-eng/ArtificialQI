@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +7,8 @@ import { Dataset } from '../../../core/services/dataset.service';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-dataset-element',
@@ -19,6 +19,7 @@ import { RouterModule, Router } from '@angular/router';
     DatePipe,
     MatButtonModule,
     RouterModule,
+    ConfirmComponent,
   ],
   templateUrl: './dataset-element.component.html',
   styleUrls: ['./dataset-element.component.css'],
@@ -56,9 +57,17 @@ export class DatasetElementComponent implements OnInit {
     }
   }
 
+  showConfirm = false;
+  showConfirmComponent() {
+    this.showConfirm = true;
+  }
+  hideConfirmComponent() {
+    this.showConfirm = false;
+  }
+
   @Output() delete = new EventEmitter<number>();
-  deleteDataset() {
-    //qua si inserisce la logica per verificare che l'utente voglia davvero eliminare il dataset, poi si fa veramente l'emit nel caso di conferma.
+  onConfirmDelete() {
+    this.showConfirm = false;
     if (this.dataset) {
       this.delete.emit(); // comunica al padre quale dataset eliminare
       //console.log('Dataset eliminato:', this.dataset.name);

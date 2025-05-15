@@ -1,10 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/angular';
 import { DatasetElementComponent } from './dataset-element.component';
-import { Dataset } from '../dataset.service';
+import { Dataset } from '../../../core/services/dataset.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
 
 const mockDataset: Dataset = {
   name: 'Dataset Esempio',

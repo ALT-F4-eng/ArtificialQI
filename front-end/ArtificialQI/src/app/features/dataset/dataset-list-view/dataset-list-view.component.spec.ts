@@ -30,7 +30,17 @@ describe('DatasetListViewComponent con render()', () => {
     expect(listItems[0]).toHaveTextContent('Dataset Uno');
     expect(listItems[1]).toHaveTextContent('Dataset Due');
   });
-
+  
+  it('non mostra la lista se non ci sono dataset', async () => {
+    await render(DatasetListViewComponent, {
+      componentProperties: {
+      datasets: [] // nessun dataset passato
+    }
+    });
+    const noDataMessage  = screen.getByText('Nessun dataset salvato');
+    expect(noDataMessage ).toBeInTheDocument();
+  });
+  
   it('dovrebbe creare correttamente il componente DatasetListViewComponent', async () => {
     const { fixture } = await render(DatasetListViewComponent, {});
 

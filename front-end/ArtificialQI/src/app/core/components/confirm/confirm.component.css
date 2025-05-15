@@ -1,3 +1,6 @@
+p {
+  color: black;
+}
 .confirm-overlay {
   position: fixed;
   top: 0;

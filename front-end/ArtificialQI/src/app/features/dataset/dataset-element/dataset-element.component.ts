@@ -4,10 +4,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { Dataset } from '../dataset.service';
+import { Dataset } from '../../../core/services/dataset.service';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dataset-name-dialog.component';
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { RouterModule, Router } from '@angular/router';
 
 @Component({

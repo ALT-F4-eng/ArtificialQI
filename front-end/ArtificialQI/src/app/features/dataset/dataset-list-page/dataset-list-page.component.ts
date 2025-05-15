@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
-import { FileUploadComponent } from '../../features/json-file-upload/json-file-upload.component';
-import { DatasetListViewComponent } from '../../features/dataset-list-view/dataset-list-view.component';
+import { FileUploadComponent } from '../../../features/dataset/json-file-upload/json-file-upload.component';
+import { DatasetListViewComponent } from '../../../features/dataset/dataset-list-view/dataset-list-view.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';

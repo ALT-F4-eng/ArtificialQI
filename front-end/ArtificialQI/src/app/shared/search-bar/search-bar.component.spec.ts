@@ -34,9 +34,9 @@ describe('SearchBarComponent', () => {
     const input = screen.getByPlaceholderText(/digita qualcosa/i);
 
     await fireEvent.input(input, {
-      target: { value: 'Test UTF-8 æøå ✓ こんにちは' },
+      target: { value: 'Test UTF-8 æøå ✓ こんにちは草尼玛' },
     });
-    expect(input).toHaveValue('Test UTF-8 æøå ✓ こんにちは');
+    expect(input).toHaveValue('Test UTF-8 æøå ✓ こんにちは草尼玛');
   });
 
   it("dovrebbe visualizzare l'icona della cerca", async () => {

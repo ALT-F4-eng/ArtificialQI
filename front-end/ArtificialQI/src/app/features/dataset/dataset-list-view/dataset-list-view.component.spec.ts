@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/angular';
 import { DatasetListViewComponent } from './dataset-list-view.component';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
-import { Dataset } from '../dataset.service';
+import { Dataset } from '../../dataset.service';
 
 // Mock dati
 const mockDatasets: Dataset[] = [

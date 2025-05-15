@@ -4,7 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
-import { Dataset } from '../../dataset.service';
+import { Dataset } from '../../../core/services/dataset.service';
 
 // dataset-list-view.component.ts
 export interface RenameEvent {

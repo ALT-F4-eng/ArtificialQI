@@ -5,7 +5,7 @@ import { DatasetListViewComponent } from '../../features/dataset-list-view/datas
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { DatasetService, Dataset } from '../../dataset.service';
+import { DatasetService, Dataset } from '../../../core/services/dataset.service';
 import { RouterModule, Router } from '@angular/router';
 
 @Component({

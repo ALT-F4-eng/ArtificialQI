@@ -2,11 +2,11 @@ import { render } from '@testing-library/angular';
 import { fireEvent } from '@testing-library/angular';
 import { screen } from '@testing-library/dom';
 import { DatasetListPageComponent } from './dataset-list-page.component';
-import { DatasetService, Dataset } from '../dataset.service';
+import { DatasetService, Dataset } from '../../../core/services/dataset.service';
 import { provideRouter } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { DatasetNameDialogComponent } from '../../shared/dataset-name-dialog/dataset-name-dialog.component';
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { of } from 'rxjs'; // Assicurati di importare 'of'
 // Mock dati
 const mockDatasets: Dataset[] = [

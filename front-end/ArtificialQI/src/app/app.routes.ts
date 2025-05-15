@@ -4,7 +4,7 @@ import { Routes } from '@angular/router';
 import { StandardPageComponent } from './layout/standard-page/standard-page.component';
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
-import { DatasetListPageComponent } from './features/dataset-list-page/dataset-list-page.component';
+import { DatasetListPageComponent } from './features/dataset/dataset-list-page/dataset-list-page.component';
 
 export const routes: Routes = [
   {

@@ -1,0 +1,23 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { LlmDto } from '../models/llm-dto.model';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class LlmService {
+  constructor(private http: HttpClient) {}
+
+  getAllLlms(): Observable<LlmDto[]> {
+    return this.http.get<LlmDto[]>('/llms'); // URL del tuo backend
+  }
+
+  deleteLlm(id: number): Observable<any> {
+    return this.http.delete(`/llms/${id}`);
+  }
+
+  getLlm(id: number): Observable<LlmDto> {
+    return this.http.get<LlmDto>(`/llms/${id}`);
+  }
+
+}
+

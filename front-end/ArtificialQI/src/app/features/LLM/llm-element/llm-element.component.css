@@ -1,0 +1,28 @@
+mat-card-content {
+  color: black; /* colore del carattere */
+}
+
+.llm-element {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* per adattarsi su schermi piccoli */
+}
+
+.info {
+  max-width: 80%;
+}
+
+.llm-actions button {
+  margin-right: 10px;
+}
+
+.llm-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

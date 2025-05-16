@@ -5,14 +5,11 @@ import { DatasetListViewComponent } from '../../../features/dataset/dataset-list
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  DatasetService,
-  Dataset,
-} from '../../../core/services/dataset.service';
+import { DatasetService } from '../../../core/services/dataset.service';
+import { datasetDto } from '../../../core/models/dataset-dto.model';
 import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
-
 
 @Component({
   selector: 'app-dataset-list-page',
@@ -34,12 +31,12 @@ import { CommonModule } from '@angular/common';
 export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
-  mockDatasets: Dataset[] = [];
-  filteredDatasets: Dataset[] = [];
+  mockDatasets: datasetDto[] = [];
+  filteredDatasets: datasetDto[] = [];
   showConfirmDelete = false;
   showConfirmLoad = false;
   datasetid?: number;
-  datasetSelected?: Dataset;
+  datasetSelected?: datasetDto;
 
   constructor(private datasetService: DatasetService, private router: Router) {}
   ngOnInit(): void {
@@ -63,7 +60,7 @@ export class DatasetListPageComponent {
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
     //this.mockDatasets = [...this.mockDatasets];
   }
-  
+
   datasetCopied(index: number) {
     this.datasetService.copyDataset(index);
     this.filteredDatasets = [...this.datasetService.getDataset()];
@@ -72,10 +69,10 @@ export class DatasetListPageComponent {
   }
 
   // delete
-  onDatasetDeleteRequest(index: number) {
+  onDatasetDeleteRequest(dataset: datasetDto) {
     this.showConfirmDelete = true;
-    this.datasetid = index;
-    console.log('Indice ricevuto per cancellazione page:', index);
+    this.datasetid = dataset.id;
+    console.log('Indice ricevuto per cancellazione page:', dataset.id);
   }
 
   onDatasetDeleteConfirmed() {
@@ -92,20 +89,22 @@ export class DatasetListPageComponent {
     this.datasetid = undefined;
     this.showConfirmDelete = false;
   }
-  
+
   // load
-  onDatasetLoadRequest(dataset: Dataset) {
+  onDatasetLoadRequest(dataset: datasetDto) {
     this.showConfirmLoad = true;
+    this.datasetid = dataset.id;// datasetid o datasetselected  da capire nel futuro 
+    
     this.datasetSelected = dataset;
     console.log('Dataset caricato:', dataset);
   }
   onDatasetLoadConfirmed() {
-    if (this.datasetSelected!== undefined) {
-     // funzionalità da testare dopo la creazione del datasetcontentpage
-     // da cambiare
+    if (this.datasetSelected !== undefined) {
+      // funzionalità da testare dopo la creazione del datasetcontentpage
+      // da cambiare
       this.router.navigate(['/datasetContentPage'], {
-      queryParams: { name: this.datasetSelected.name },
-    });
+        queryParams: { name: this.datasetSelected.name },
+      });
     }
   }
   onDatasetLoadCanceled() {

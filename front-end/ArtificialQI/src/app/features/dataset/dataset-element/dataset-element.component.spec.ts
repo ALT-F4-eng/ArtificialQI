@@ -1,13 +1,18 @@
 import { render, screen, fireEvent } from '@testing-library/angular';
 import { DatasetElementComponent } from './dataset-element.component';
-import { Dataset } from '../../../core/services/dataset.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
-
-const mockDataset: Dataset = {
-  name: 'Dataset Esempio',
-  lastModified: new Date('2023-01-01'),
+import { datasetDto } from '../../../core/models/dataset-dto.model';
+const mockDataset: datasetDto = {
+  id: 1,
+  name: 'Dataset Alpha',
+  last_mod: new Date('2025-05-01'),
+  creation: new Date('2025-04-01'),
+  origin_id: 0,
+  tmp: false,
+  max_page: 12,
+  element_n: 120,
 };
 
 describe('DatasetElementComponent', () => {
@@ -17,7 +22,7 @@ describe('DatasetElementComponent', () => {
       imports: [MatButtonModule, MatCardModule],
     });
 
-    const nameElement = screen.getByText('Dataset Esempio');
+    const nameElement = screen.getByText('Dataset Alpha');
     expect(nameElement).toBeInTheDocument();
   });
 
@@ -27,7 +32,7 @@ describe('DatasetElementComponent', () => {
       imports: [MatButtonModule, MatCardModule, DatePipe],
     });
     const datePipe = new DatePipe('en-US'); // o 'it-IT'
-    const expectedDate = datePipe.transform(mockDataset.lastModified, 'short');
+    const expectedDate = datePipe.transform(mockDataset.last_mod, 'short');
     const dateElement = screen.getByText(`Ultima modifica: ${expectedDate}`);
     expect(dateElement).toBeInTheDocument();
   });
@@ -100,12 +105,10 @@ describe('DatasetElementComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-   it('dovrebbe creare correttamente il componente DatasetListViewComponent', async () => {
-    const { fixture } = await render(DatasetElementComponent, {
-    });
-  
+  it('dovrebbe creare correttamente il componente DatasetListViewComponent', async () => {
+    const { fixture } = await render(DatasetElementComponent, {});
+
     const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
-
 });

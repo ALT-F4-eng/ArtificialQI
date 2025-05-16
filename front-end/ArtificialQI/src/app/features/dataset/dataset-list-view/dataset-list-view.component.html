@@ -5,7 +5,7 @@
     [dataset]="item"
     (renameSignal)="onRename(i, $event)"
     (copySignal)="onCopy(i)"
-    (deleteSignal)="onDelete(i)"
+    (deleteSignal)="onDelete($event)"
     (loadSignal)="onDatasetLoaded($event)"
     role="listitem"
   ></app-dataset-element>

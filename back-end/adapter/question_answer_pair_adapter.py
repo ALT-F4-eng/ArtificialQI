@@ -1,2 +1,0 @@
-class QuestionAnswerPairAdapter:
-    pass

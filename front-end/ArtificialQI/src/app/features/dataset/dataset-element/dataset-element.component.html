@@ -8,20 +8,10 @@
       </div>
       <div class="dataset-actions">
         <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>
-        <button mat-raised-button (click)="copyDataset()">Copia</button>
-        <button mat-raised-button (click)="showConfirmComponent()">Elimina</button>
-        <button mat-raised-button (click)="loadDataset()">Carica</button>
+        <button mat-raised-button (click)="onCopySignal()">Copia</button>
+        <button mat-raised-button (click)="onDeleteSignal()">Elimina</button>
+        <button mat-raised-button (click)="onLoadSignal()">Carica</button>
       </div>
     </div>
-     <!-- Componente di conferma -->
-    <app-confirm
-      *ngIf="showConfirm"
-      [message]="'Sei sicuro di voler eliminare questo dataset?'"
-      [confirmLabel]="'Sì, elimina'"
-      [cancelLabel]="'Annulla'"
-      (confirmed)="onConfirmDelete()"
-      (canceled)="hideConfirmComponent()"
-    ></app-confirm>
-
   </mat-card-content>
 </mat-card>

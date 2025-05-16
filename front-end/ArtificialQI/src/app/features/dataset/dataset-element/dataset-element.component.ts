@@ -8,7 +8,6 @@ import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { RouterModule } from '@angular/router';
-import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-dataset-element',
@@ -19,7 +18,6 @@ import { ConfirmComponent } from '../../../core/components/confirm/confirm.compo
     DatePipe,
     MatButtonModule,
     RouterModule,
-    ConfirmComponent,
   ],
   templateUrl: './dataset-element.component.html',
   styleUrls: ['./dataset-element.component.css'],
@@ -32,7 +30,7 @@ export class DatasetElementComponent implements OnInit {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
 
-  @Output() rename = new EventEmitter<string>(); // Emette il nuovo nome al padre
+  @Output() renameSignal = new EventEmitter<string>(); // Emette il nuovo nome al padre
   private dialog = inject(MatDialog);
   openRenameDialog() {
     if (!this.dataset) return; // Se non c'è un dataset, esci
@@ -43,42 +41,31 @@ export class DatasetElementComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Nuovo nome nel elemento:', result);
-        this.rename.emit(result); // Invia il nuovo nome al padre tramite l'evento
+        this.renameSignal.emit(result); // Invia il nuovo nome al padre tramite l'evento
       }
     });
   }
 
-  @Output() copyClicked = new EventEmitter<void>();
-  copyDataset() {
+  @Output() copySignal = new EventEmitter<void>();
+  onCopySignal() {
     if (this.dataset) {
-      this.copyClicked.emit();
+      this.copySignal.emit();
       console.log('Dataset copiato:', this.dataset.name);
       // Puoi aggiungere logica per "salvare" il dataset copiato nel mock o un altro array
     }
   }
 
-  showConfirm = false;
-  showConfirmComponent() {
-    this.showConfirm = true;
-  }
-  hideConfirmComponent() {
-    this.showConfirm = false;
-  }
-
-  @Output() delete = new EventEmitter<number>();
-  onConfirmDelete() {
-    this.showConfirm = false;
+  @Output() deleteSignal = new EventEmitter<number>();
+  onDeleteSignal() {
     if (this.dataset) {
-      this.delete.emit(); // comunica al padre quale dataset eliminare
-      //console.log('Dataset eliminato:', this.dataset.name);
-      // Qui dovresti aggiungere la logica per eliminare il dataset dal "database" (mock o altro)
+      this.deleteSignal.emit(); // comunica al padre quale dataset eliminare
     }
   }
 
-  @Output() datasetLoaded = new EventEmitter<Dataset>();
-  loadDataset() {
+  @Output() loadSignal = new EventEmitter<Dataset>();
+  onLoadSignal() {
     if (this.dataset) {
-      this.datasetLoaded.emit(this.dataset);
+      this.loadSignal.emit(this.dataset);
       console.log('Dataset caricato:', this.dataset.name);
       // Puoi aggiungere logica per caricare il dataset (ad esempio, simula il download)
     }

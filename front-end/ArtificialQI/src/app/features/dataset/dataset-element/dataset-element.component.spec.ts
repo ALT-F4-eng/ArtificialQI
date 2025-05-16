@@ -78,7 +78,7 @@ describe('DatasetElementComponent', () => {
       imports: [MatButtonModule, MatCardModule],
     });
 
-    const spy = jest.spyOn(fixture.componentInstance.copyClicked, 'emit');
+    const spy = jest.spyOn(fixture.componentInstance.copySignal, 'emit');
 
     const copyButton = screen.getByText('Copia');
     fireEvent.click(copyButton);
@@ -92,7 +92,7 @@ describe('DatasetElementComponent', () => {
       imports: [MatButtonModule, MatCardModule],
     });
 
-    const spy = jest.spyOn(fixture.componentInstance.delete, 'emit');
+    const spy = jest.spyOn(fixture.componentInstance.deleteSignal, 'emit');
 
     const deleteButton = screen.getByText('Elimina');
     fireEvent.click(deleteButton);

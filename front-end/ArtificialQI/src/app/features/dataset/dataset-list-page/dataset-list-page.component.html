@@ -8,6 +8,24 @@
   [datasets]="filteredDatasets"
   (rename)="renameDataset($event.index, $event.newName)"
   (datasetCopied)="datasetCopied($event)"
-  (datasetDeleted)="datasetDeleted($event)"
-  (datasetLoaded)="onDatasetLoaded($event)"
+  (datasetDeleted)="onDatasetDeleteRequest($event)"
+  (datasetLoaded)="onDatasetLoadRequest($event)"
 ></app-dataset-list-view>
+
+<app-confirm
+      *ngIf="showConfirmDelete"
+      [message]="'Sei sicuro di voler eliminare questo dataset?'"
+      [confirmLabel]="'Sì, elimina'"
+      [cancelLabel]="'Annulla'"
+      (confirmed)="onDatasetDeleteConfirmed()"
+      (canceled)="onDatasetDeleteCanceled()"
+></app-confirm>
+<app-confirm
+      *ngIf="showConfirmLoad"
+      [message]="'Sei sicuro di voler caricare questo dataset?'"
+      [confirmLabel]="'Sì, carica'"
+      [cancelLabel]="'Annulla'"
+      (confirmed)="onDatasetLoadConfirmed()"
+      (canceled)="onDatasetLoadCanceled()"
+></app-confirm>
+<!-- message component -->

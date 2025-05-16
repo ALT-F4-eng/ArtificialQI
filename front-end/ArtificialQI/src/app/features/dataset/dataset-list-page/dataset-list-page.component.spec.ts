@@ -2,7 +2,10 @@ import { render } from '@testing-library/angular';
 import { fireEvent } from '@testing-library/angular';
 import { screen } from '@testing-library/dom';
 import { DatasetListPageComponent } from './dataset-list-page.component';
-import { DatasetService, Dataset } from '../../../core/services/dataset.service';
+import {
+  DatasetService,
+  Dataset,
+} from '../../../core/services/dataset.service';
 import { provideRouter } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -154,7 +157,9 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
     });
 
     const instance = view.fixture.componentInstance;
-    instance.datasetDeleted(0);
+    // Imposta selectedDatasetId prima di chiamare il metodo
+    instance.datasetid = 0;
+    instance.onDatasetDeleteConfirmed();
     expect(mockDatasetService.deleteDataset).toHaveBeenCalledWith(0);
   });
 
@@ -185,6 +190,50 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
       data: { name: 'Dataset Uno' }, // A seconda di come gestisci il dataset, puoi adattare questa parte
     });
   });
+  it('dovrebbe impostare showConfirmLoad a true quando viene emesso datasetLoaded', async () => {
+    const { fixture } = await render(DatasetListPageComponent, {
+      componentProperties: {
+        filteredDatasets: mockDatasets,
+      },
+    });
+
+    const component = fixture.componentInstance;
+
+    // Simulo l’evento datasetLoaded emesso dal figlio
+    component.onDatasetLoadRequest(mockDatasets[0]);
+
+    fixture.detectChanges();
+
+    expect(component.showConfirmLoad).toBe(true);
+    expect(component.datasetSelected).toEqual(mockDatasets[0]);
+
+    // Inoltre controllo che l'app-confirm per il caricamento sia visibile
+    const confirmDialog = fixture.nativeElement.querySelector('app-confirm');
+    expect(confirmDialog).toBeTruthy();
+  });
+  
+  it('dovrebbe impostare showConfirmDelete a true quando viene emesso datasetDeleted', async () => {
+    const { fixture } = await render(DatasetListPageComponent, {
+      componentProperties: {
+        filteredDatasets: mockDatasets,
+      },
+    });
+
+    const component = fixture.componentInstance;
+
+    // Simulo l’evento datasetLoaded emesso dal figlio
+    component.onDatasetDeleteRequest(mockDatasets[0]);// da cambiare il delete ma prima cambiamo dto 
+
+    fixture.detectChanges();
+
+    expect(component.showConfirmDelete).toBe(true);
+    expect(component.datasetSelected).toEqual(mockDatasets[0]);
+
+    // Inoltre controllo che l'app-confirm per il caricamento sia visibile
+    const confirmDialog = fixture.nativeElement.querySelector('app-confirm');
+    expect(confirmDialog).toBeTruthy();
+  });
+  
 
   it('dovrebbe creare correttamente il componente DatasetListPageComponent', async () => {
     const { fixture } = await render(DatasetListPageComponent, {

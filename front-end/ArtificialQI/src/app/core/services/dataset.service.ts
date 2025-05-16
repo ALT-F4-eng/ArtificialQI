@@ -41,12 +41,23 @@ export class DatasetService {
   copyDataset(index: number): void {
     const original = this.datasets[index];
     if (original) {
+      const baseName = `${original.name} (copia)`;
+      let newName = baseName;
+      let counter = 1;
+
+      // Finché esiste un dataset con quel nome, aggiungi un numero crescente
+      while (this.datasets.some((datasetElement) => datasetElement.name === newName)) {
+        newName = `${baseName} ${counter}`;
+        counter++;
+      }
+
       const copiedDataset = {
-        name: original.name + '(copia)',
+        name: newName,
         lastModified: new Date(),
       };
+
       this.datasets = [...this.datasets, copiedDataset];
-      console.log('tutti dataset', this.datasets);
+      console.log('Dataset copiato:', newName);
     }
   }
 
@@ -57,5 +68,9 @@ export class DatasetService {
       this.datasets = [...this.datasets]; // ricrea array per forzare update
     }
     console.log('Stato attuale:', this.datasets);
+  }
+  // da implementare 
+  loadDataset(){
+
   }
 }

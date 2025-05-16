@@ -5,13 +5,20 @@ import { DatasetListViewComponent } from '../../../features/dataset/dataset-list
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { DatasetService, Dataset } from '../../../core/services/dataset.service';
+import {
+  DatasetService,
+  Dataset,
+} from '../../../core/services/dataset.service';
 import { RouterModule, Router } from '@angular/router';
+import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-dataset-list-page',
   standalone: true,
   imports: [
+    CommonModule,
     SearchBarComponent,
     FileUploadComponent,
     DatasetListViewComponent,
@@ -19,6 +26,7 @@ import { RouterModule, Router } from '@angular/router';
     MatDividerModule,
     MatButtonModule,
     RouterModule,
+    ConfirmComponent,
   ],
   templateUrl: './dataset-list-page.component.html',
   styleUrl: './dataset-list-page.component.css',
@@ -28,6 +36,11 @@ export class DatasetListPageComponent {
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
   mockDatasets: Dataset[] = [];
   filteredDatasets: Dataset[] = [];
+  showConfirmDelete = false;
+  showConfirmLoad = false;
+  datasetid?: number;
+  datasetSelected?: Dataset;
+
   constructor(private datasetService: DatasetService, private router: Router) {}
   ngOnInit(): void {
     this.mockDatasets = this.datasetService.getDataset();
@@ -50,7 +63,7 @@ export class DatasetListPageComponent {
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
     //this.mockDatasets = [...this.mockDatasets];
   }
-
+  
   datasetCopied(index: number) {
     this.datasetService.copyDataset(index);
     this.filteredDatasets = [...this.datasetService.getDataset()];
@@ -58,18 +71,45 @@ export class DatasetListPageComponent {
     console.log('Dataset copiato page:', this.mockDatasets[index]);
   }
 
-  datasetDeleted(index: number) {
+  // delete
+  onDatasetDeleteRequest(index: number) {
+    this.showConfirmDelete = true;
+    this.datasetid = index;
     console.log('Indice ricevuto per cancellazione page:', index);
-    this.datasetService.deleteDataset(index);
-    this.filteredDatasets = [...this.datasetService.getDataset()];
-    this.mockDatasets = [...this.datasetService.getDataset()];
-    // this.mockDatasets = [...this.mockDatasets];
-    //console.log('Dataset eliminato page:', this.mockDatasets[index]);
   }
-  onDatasetLoaded(dataset: Dataset) {
-    // funzionalità da testare dopo la creazione del datasetcontentpage
-    this.router.navigate(['/datasetContentPage'], {
-      queryParams: { name: dataset.name },
+
+  onDatasetDeleteConfirmed() {
+    if (this.datasetid !== undefined) {
+      this.datasetService.deleteDataset(this.datasetid);
+      this.filteredDatasets = [...this.datasetService.getDataset()];
+      this.mockDatasets = [...this.datasetService.getDataset()];
+      this.showConfirmDelete = false;
+      console.log('Dataset eliminato page:', this.mockDatasets[this.datasetid]);
+    }
+  }
+
+  onDatasetDeleteCanceled() {
+    this.datasetid = undefined;
+    this.showConfirmDelete = false;
+  }
+  
+  // load
+  onDatasetLoadRequest(dataset: Dataset) {
+    this.showConfirmLoad = true;
+    this.datasetSelected = dataset;
+    console.log('Dataset caricato:', dataset);
+  }
+  onDatasetLoadConfirmed() {
+    if (this.datasetSelected!== undefined) {
+     // funzionalità da testare dopo la creazione del datasetcontentpage
+     // da cambiare
+      this.router.navigate(['/datasetContentPage'], {
+      queryParams: { name: this.datasetSelected.name },
     });
+    }
+  }
+  onDatasetLoadCanceled() {
+    this.datasetSelected = undefined;
+    this.showConfirmLoad = false;
   }
 }

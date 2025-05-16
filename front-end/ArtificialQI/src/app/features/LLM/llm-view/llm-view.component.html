@@ -1,0 +1,51 @@
+<mat-card class="llm-card">
+  <mat-card-header>
+    <mat-card-title>{{ llm.name }}</mat-card-title>
+    <mat-card-subtitle>Ultima modifica: {{ llm.last_mod | date: 'short' }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <section class="llm-section">
+      <label>URL</label>
+      <p>{{ llm.url }}</p>
+    </section>
+
+    <section class="llm-section">
+      <label>Header</label>
+      <mat-list>
+        <mat-list-item *ngFor="let pair of llm.kv_header">
+          <div class="kv-item">
+            <strong>{{ pair.key }}:</strong> <span>{{ pair.value }}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </section>
+
+    <section class="llm-section">
+      <label>Body</label>
+      <mat-list>
+        <mat-list-item *ngFor="let pair of llm.kv_body">
+          <div class="kv-item">
+            <strong>{{ pair.key }}:</strong> <span>{{ pair.value }}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </section>
+
+    <section class="llm-section">
+      <label>Chiave domanda</label>
+      <p>{{ llm.key_req }}</p>
+    </section>
+
+    <section class="llm-section">
+      <label>Chiave risposta</label>
+      <p>{{ llm.key_resp }}</p>
+    </section>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-flat-button color="primary" (click)="onModifyRequest()">Modifica</button>
+  </mat-card-actions>
+</mat-card>

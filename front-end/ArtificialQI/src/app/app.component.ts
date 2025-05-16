@@ -4,7 +4,7 @@ import { LlmListPageComponent } from './features/LLM/llm-list-page/llm-list-page
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LlmListPageComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

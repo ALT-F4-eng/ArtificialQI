@@ -14,4 +14,8 @@ export class MockLlmService {
     this.llms.splice(index, 1); // Rimuove dalla lista
     return of(void 0); // Restituisce un Observable<void>
   }
+
+  getLlm(id: number) {
+    return of(this.llms.find(llm => llm.id === id));
+  }
 }

@@ -11,7 +11,6 @@ import { ConfirmComponent } from '../../../shared/confirm-message/confirm.compon
 
 @Component({
   selector: 'app-llm-list-page',
-  standalone: true,
   imports: [
     ConfirmComponent,
     CommonModule,
@@ -32,7 +31,7 @@ export class LlmListPageComponent implements OnInit{
     confirmMessage = '';
     deletingId?: number;
 
-    constructor(private llmService: LlmService) {}
+    constructor(private llmService: LlmService, private router: Router) {}
 
     ngOnInit(): void {
       this.llmService.getAllLlms().subscribe({
@@ -88,7 +87,7 @@ export class LlmListPageComponent implements OnInit{
     }
 
     onLlmViewRequest(id: number){
-      console.log("richiesto caricamento");
+      this.router.navigate(['/llm', id]);
     }
 
     createLlm() {

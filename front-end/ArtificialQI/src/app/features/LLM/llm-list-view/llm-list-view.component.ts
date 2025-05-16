@@ -8,7 +8,6 @@ import {LlmDto} from '../../../core/models/llm-dto.model'
 
 @Component({
   selector: 'app-llm-list-view',
-  standalone: true,
   imports: [
     CommonModule,
     MatListModule,

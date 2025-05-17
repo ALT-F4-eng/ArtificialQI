@@ -23,19 +23,16 @@ class DatasetService(DatasetUseCase):
     @staticmethod
     def generate_name(name: str) -> str:
         """
-        Genera un nome di dataset valido per una copia.
-
-        Preconditions:
-            - Il nome ricevuto in input deve essere valido ovvero non vuoto o composto da soli spazi.
-
-        Postconditions:
-            - Restituisce un nome di dataset che può essere utilizzato in modo sicuro per una copia.
+        Genera un nome valido per una copia di dataset, aggiungendo un suffisso unico.
 
         Args:
-            name (str): Nome del dataset originale che deve essere copiato.
+            name (str): Nome del dataset originale.
 
         Returns:
-            str: Un nuovo nome di dataset basato sul nome ricevuto in input seguito dal suffisso  '-copy-<UUID>'.
+            str: Nuovo nome con suffisso '-copy-<UUID>'.
+
+        Raises:
+            ValueError: Se il nome è nullo o composto solo da spazi.
         """
         if name is None or not name.strip():
             raise ValueError
@@ -46,27 +43,18 @@ class DatasetService(DatasetUseCase):
     def copy_dataset(self, id:UUID) -> Dataset:
 
         """
-        Crea una copia del dataset identificato dall'id ricevuto in input.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id indicato.
-            - Il dataset da copiare non è una working copy o un dataset temporaneo.
-            - Il meotodo generate_name genera un nome di dataset valido.
-
-        Postconditions:
-            - Viene creata una copia del dataset indicato.
-            - La copia creata contiene gli stessi elementi del dataset originario.
+        Crea una copia di un dataset esistente, compresi i suoi elementi.
 
         Args:
-            - id (UUID): id del dataset da copiare.
-        
+            id (UUID): Identificativo del dataset da copiare.
+
         Returns:
-            - Dataset: La copia del dataset appena creata.
+            Dataset: Copia del dataset appena creata.
 
         Raises:
-            - InvalidDatasetOperationException
-            - DatasetNonExistentException
-            - PersistenceException
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset non è salvato.
+            PersistenceException: Se si verifica un errore durante il salvataggio della copia o la duplicazione del contenuto.
         """
 
         # Controlla che il dataset da copiare esiste
@@ -99,16 +87,13 @@ class DatasetService(DatasetUseCase):
     
     def create_dataset_tmp(self) -> Dataset:
         """
-        Crea un nuovo dataset temporaneo vuoto.        
+        Crea e salva un nuovo dataset temporaneo vuoto.
 
-        Postconditions:
-            - Viene creato un nuovo dataset temporaneo. 
-        
         Returns:
-            - Dataset: Il dataset temporaneo appena creato.
+            Dataset: Dataset temporaneo creato.
 
         Raises:
-            - PersistenceException
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
         # Creazione di un nuovo dataset temporaneo
@@ -125,26 +110,17 @@ class DatasetService(DatasetUseCase):
     
     def delete_dataset(self, id:UUID) -> UUID:
         """
-        Elimina il dataset identificato dall'id indicato.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id indicato.
-
-        Postconditions:
-            - Vengono eliminati i metadati riguardanti il dataset.
-            - Viene eliminato il contenuto del dataset.
-            - Vengono eliminati i metadati dei test eseguiti utilizzando il dataset.
-            - Vengono eliminati i risultati contenuti nei test.
+        Elimina un dataset, il suo contenuto, i test associati e i relativi risultati.
 
         Args:
-            - id (UUID): id del dataset da eliminare.
-        
+            id (UUID): Identificativo del dataset da eliminare.
+
         Returns:
-            - UUID: id del dataset eliminato.
+            UUID: ID del dataset eliminato.
 
         Raises:
-            - DatasetNonExistentException
-            - PersistenceException 
+            DatasetNonExistentException: Se il dataset non esiste.
+            PersistenceException: Se si verifica un errore durante l'eliminazione dei dati associati.
         """
 
         # Controllo che il dataset da eliminare esista
@@ -184,27 +160,19 @@ class DatasetService(DatasetUseCase):
 
     def update_dataset(self, name:str, id:UUID) -> Dataset:
         """
-        Aggiorna il nome del dataset identificato dall'id indicato, utilizzando il nome ricevuto.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id ricevuto.
-            - Il dataset da aggiornare non è una working copy o un temporaneo.
-            - Il nuovo nome ricevuto è valido ovvero non è vuoto o composto da soli spazi.
-
-        Postconditions:
-            - Il nome del dataset viene aggiornato.
+        Aggiorna il nome di un dataset salvato.
 
         Args:
-            - id (UUID): id del dataset da aggiornare.
-            - name (str): Nuovo nome del dataset.
-        
+            name (str): Nuovo nome del dataset.
+            id (UUID): Identificativo del dataset da aggiornare.
+
         Returns:
-            - Dataset: Il dataset aggiornato.
+            Dataset: Dataset aggiornato.
 
         Raises:
-            - DatasetNonExistentException
-            - PersistenceException
-            - InvalidDatasetOperationException
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset è temporaneo o non salvato.
+            PersistenceException: Se si verifica un errore durante l'aggiornamento.
         """
 
         # Ottiene il dataset da aggiornare e controlla che l'operazione sia andata a buon fine
@@ -231,17 +199,18 @@ class DatasetService(DatasetUseCase):
 
     def get_all_datasets(self, q:str = '') -> list[Dataset]:
         """
-        Restituisce la lista dei dataset salvati che contengono 'q' nel proprio nome.
+        Recupera tutti i dataset salvati, opzionalmente filtrati per nome.
 
         Args:
-            - q (str): Query da utilizzare per filtrare la ricerca.
-        
+            q (str): Filtro opzionale per il nome del dataset.
+
         Returns:
-            - list[Dataset]: Lista dei dataset risultante dalla ricerca.
+            list[Dataset]: Elenco dei dataset trovati.
 
         Raises:
-            - PersistenceException
+            PersistenceException: Se si verifica un errore durante l'accesso ai dati.
         """
+
 
         # Ottiene i dataset e controlla che l'operazione sia andata a buon fine
         datasets: Optional[list[Dataset]] = self._dataset_repo.get_all_datasets(q)
@@ -254,19 +223,16 @@ class DatasetService(DatasetUseCase):
 
     def get_dataset_by_id(self, id:UUID) -> Dataset:
         """
-        Restituisce il dataset identificato dall'id dato.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id dato.
+        Recupera un dataset dato il suo identificativo.
 
         Args:
-            - id (UUID): id del dataset da ottenere.
-        
+            id (UUID): ID del dataset.
+
         Returns:
-            - Dataset: Dataset identificato dall'id.
+            Dataset: Dataset corrispondente.
 
         Raises:
-            - DatasetNonExistentException
+            DatasetNonExistentException: Se il dataset non esiste.
         """
 
         # Ottenimento dataset identificato dall'id e controllo della sua esistenza
@@ -279,23 +245,19 @@ class DatasetService(DatasetUseCase):
     
     def save_tmp(self, id:UUID, name:str) -> Dataset:
         """
-        Salva il dataset temporaneo identificato dall'id ricevuto a cui assegna il nome dato.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id dato.
-            - Il dataset è temporaneo.
-            - Il nome ricevuto è un nome di dataset valido ovvero non è vuoto o composto da soli spazi.
+        Salva un dataset temporaneo come dataset definitivo, assegnando un nome.
 
         Args:
-            - id (UUID): id del dataset temporaneo da salvare.
-        
+            id (UUID): ID del dataset temporaneo.
+            name (str): Nome da assegnare al dataset.
+
         Returns:
-            - Dataset: Dataset salvato.
+            Dataset: Dataset salvato.
 
         Raises:
-            - DatasetNonExistentException
-            - InvalidDatasetOperationException
-            - PersistenceException
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset non è temporaneo.
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
         # Ottenimento del dataset e controllo della sua esistenza
@@ -325,22 +287,18 @@ class DatasetService(DatasetUseCase):
 
     def save_working_copy(self, id:UUID) -> Dataset:
         """
-        Salva il dataset working copy identificato dall'id ricevuto.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id dato.
-            - Il dataset è una working copy di un dataset salvato.
+        Salva una working copy, sovrascrivendo il dataset salvato da cui deriva.
 
         Args:
-            - id (UUID): id della working copy da salvare.
-        
+            id (UUID): ID della working copy.
+
         Returns:
-            - Dataset: Dataset salvato.
+            Dataset: Dataset salvato.
 
         Raises:
-            - DatasetNonExistentException
-            - PersistenceException
-            - InvalidDatasetOperationException
+            DatasetNonExistentException: Se la working copy non esiste.
+            InvalidDatasetOperationException: Se il dataset non è una working copy.
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
         # Controllo che la working copy esista e che sia effettivamente una working copy
@@ -354,15 +312,17 @@ class DatasetService(DatasetUseCase):
             raise InvalidDatasetOperationException("Il dataset da salvare deve essere una copia di lavoro di un dataset salvato.")
 
         
-        # Controllo che il dataset salvato da cui è stata originata la working copy esista
+        # Ottiene l'origine della working copy
         origin_to_update: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(dataset_to_save.origin)
 
-        if origin_to_update is None:
-            raise PersistenceException(f"Errore di persistenza durante il salvataggio del dataset.")
+        # Eliminazione del dataset di origine gestendo le eventuali eccezioni
+        try:
+            self.delete_dataset(origin_to_update.id)
+        except DatasetNonExistentException: 
+            raise DatasetNonExistentException("L'origine del dataset da salvare non è corretta.")
+        except PersistenceException:
+            raise PersistenceException("Errore di persistenza durante il salvataggio del dataset.")
 
-
-        # Eliminazione del dataset di origine
-        self.delete_dataset(origin_to_update.id)
         
         # Aggiornamento della working copy a dataset salvato e controllo del risultato dell'operazione
         updated_dataset: Dataset = DatasetFactory.saved(dataset_to_save.id, dataset_to_save.dim, origin_to_update.name, origin_to_update.first_save_date, date.today())
@@ -370,28 +330,24 @@ class DatasetService(DatasetUseCase):
         res: Optional[Dataset] = self._dataset_repo.update_dataset(updated_dataset)
 
         if res is None:
-            raise PersistenceException(f"Errore di persistenza durante il salvataggio del dataset.")
+            raise PersistenceException("Errore di persistenza durante il salvataggio del dataset.")
         
         return res
 
     def create_working_copy(self, origin: UUID) -> Dataset:
         """
-        Crea una working copy per il dataset identificato dall'id ricevuto.
-
-        Preconditions:
-            - Esiste un dataset identificato dall'id dato.
-            - Il dataset è un dataset salvato.
+        Crea una working copy da un dataset salvato esistente.
 
         Args:
-            - id (UUID): id dell dataset salvare per cui generare una working copy.
-        
+            origin (UUID): ID del dataset salvato da cui derivare la working copy.
+
         Returns:
-            - Dataset: Working copy appena creata.
+            Dataset: Working copy creata.
 
         Raises:
-            - PersistenceException
-            - InvalidDatasetOperationException
-            - DatasetNonExistentException
+            DatasetNonExistentException: Se il dataset di origine non esiste.
+            InvalidDatasetOperationException: Se il dataset di origine non è salvato.
+            PersistenceException: Se si verifica un errore durante la creazione o la duplicazione dei contenuti.
         """
 
         # Controllo che il dataset per cui creare una working copy esista e sia un dataset salvato

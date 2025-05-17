@@ -1,66 +1,51 @@
 from uuid import UUID
 from datetime import date
 from dataclasses import dataclass
+from core.test_statistics import TestStatistics
 
 @dataclass
-class TestStatistics:
-
-    similarity_avg: float
-    similarity_std_dev: float
-    result_distribution: list[int]
-    correct_percentage: float
-    
-def function_factory_test_statistics(similarity_avg: float, similarity_std_dev: float, result_distribution: list[int], correct_percentage: float) -> TestStatistics:
-    
-
-    DISTRIBUTION_BEANS: int = 5
-
-    if similarity_avg is None or similarity_avg < 0:
-        raise Exception
-    
-    if similarity_std_dev is None or similarity_avg < 0:
-        raise Exception
-    
-    if result_distribution is None or len(result_distribution) > DISTRIBUTION_BEANS:
-        raise Exception
-    
-    if correct_percentage is None or (correct_percentage > 1 or correct_percentage < 0):
-        raise Exception
-    
-    return TestStatistics(similarity_avg, similarity_std_dev, result_distribution, correct_percentage)
-
 class Test:
+    id:UUID
+    dataset:UUID
+    llm:UUID
+    index:TestStatistics
+    tmp:bool
+    execution_date:date
 
-    def __init__(self, id: UUID, dataset: UUID, llm: UUID, index: TestStatistics, tmp: bool, execution_date: date):
-        self._id: UUID = id
-        self._dataset : UUID = dataset
-        self._llm : UUID = llm
-        self._index: TestStatistics = index
-        self._tmp: bool = tmp
-        self._execution_date: date = execution_date
-
-    @property
-    def id(self) -> UUID:
-        return self._id
-
-    @property
-    def dataset(self) -> UUID:
-        return self._dataset
-
-    @property
-    def llm(self) -> UUID:
-        return self._llm
-
-    @property
-    def index(self) -> TestStatistics:
-        return self._index
-
-    @property
-    def tmp(self) -> bool:
-        return self._tmp
+def function_factory_test(id:UUID, dataset:UUID, llm:UUID, index:TestStatistics, tmp:bool, execution_date:date = date.today()) -> Test:
+    """
+    Crea un'istanza dell'entità Test a partire dai parametri forniti.
     
-    @property
-    def execution_date(self) -> date:
-        return self._execution_date
+    Args:
+        id (UUID): Identificativo univoco del test.
+        dataset (UUID): Identificativo del dataset associato al test.
+        llm (UUID): Identificativo del modello linguistico utilizzato.
+        index (TestStatistics): Statistiche associate al test.
+        tmp (bool): Indica se il test è temporaneo.
+        execution_date (date, opzionale): Data di esecuzione del test (default: data corrente).
+
+    Returns:
+        Test: Nuova istanza del test creata con i parametri specificati.
+
+    Raises:
+        ValueError: Se uno dei parametri obbligatori è None.
+    """
+    if id is None:
+        raise ValueError
     
+    if dataset is None:
+        raise ValueError
     
+    if llm is None:
+        raise ValueError
+    
+    if index is None:
+        raise ValueError
+    
+    if tmp is None:
+        raise ValueError
+    
+    if date is None:
+        raise ValueError
+    
+    return Test(id, dataset, llm, index, tmp, execution_date)

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { datasetDto } from '../../../core/models/dataset-dto.model';
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
@@ -24,7 +24,7 @@ import { RouterModule } from '@angular/router';
 })
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
-  @Input() dataset?: datasetDto;
+  @Input() dataset?: DatasetDto;
 
   ngOnInit() {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
@@ -55,14 +55,14 @@ export class DatasetElementComponent implements OnInit {
     }
   }
 
-  @Output() deleteSignal = new EventEmitter<datasetDto>();
+  @Output() deleteSignal = new EventEmitter<DatasetDto>();
   onDeleteSignal() {
     if (this.dataset) {
       this.deleteSignal.emit(this.dataset); // comunica al padre quale dataset eliminare
     }
   }
 
-  @Output() loadSignal = new EventEmitter<datasetDto>();
+  @Output() loadSignal = new EventEmitter<DatasetDto>();
   onLoadSignal() {
     if (this.dataset) {
       this.loadSignal.emit(this.dataset);

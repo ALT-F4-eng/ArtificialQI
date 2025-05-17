@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { datasetDto } from '../models/dataset-dto.model';
+import { DatasetDto } from '../models/dataset-dto.model';
 
-export const MOCK_DATASETS: datasetDto[] = [
+export const MOCK_DATASETS: DatasetDto[] = [
   {
     id: 1,
     name: 'Dataset Alpha',
@@ -159,9 +159,9 @@ export const MOCK_DATASETS: datasetDto[] = [
 })
 export class DatasetService {
   constructor() {}
-  private datasets: datasetDto[] = [...MOCK_DATASETS]; // Crea una copia mutabile del mock
+  private datasets: DatasetDto[] = [...MOCK_DATASETS]; // Crea una copia mutabile del mock
 
-  getDataset(): datasetDto[] {
+  getDataset(): DatasetDto[] {
     return this.datasets;
   }
   // Metodo per rinominare un dataset
@@ -188,7 +188,7 @@ export class DatasetService {
         counter++;
       }
 
-      const copiedDataset: datasetDto = {
+      const copiedDataset: DatasetDto = {
         id: this.generateUniqueId(), // o altro sistema per generare ID univoci
         name: newName,
         last_mod: new Date(),

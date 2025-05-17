@@ -1,4 +1,4 @@
-export interface datasetDto {
+export interface DatasetDto {
   id: number;
   name: string;
   last_mod: Date;

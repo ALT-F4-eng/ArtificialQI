@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetService } from '../../../core/services/dataset.service';
-import { datasetDto } from '../../../core/models/dataset-dto.model';
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
@@ -31,12 +31,12 @@ import { CommonModule } from '@angular/common';
 export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
-  mockDatasets: datasetDto[] = [];
-  filteredDatasets: datasetDto[] = [];
+  mockDatasets: DatasetDto[] = [];
+  filteredDatasets: DatasetDto[] = [];
   showConfirmDelete = false;
   showConfirmLoad = false;
   datasetid?: number;
-  datasetSelected?: datasetDto;
+  datasetSelected?: DatasetDto;
 
   constructor(private datasetService: DatasetService, private router: Router) {}
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class DatasetListPageComponent {
   }
 
   // delete
-  onDatasetDeleteRequest(dataset: datasetDto) {
+  onDatasetDeleteRequest(dataset: DatasetDto) {
     this.showConfirmDelete = true;
     this.datasetid = dataset.id;
     console.log('Indice ricevuto per cancellazione page:', dataset.id);
@@ -91,7 +91,7 @@ export class DatasetListPageComponent {
   }
 
   // load
-  onDatasetLoadRequest(dataset: datasetDto) {
+  onDatasetLoadRequest(dataset: DatasetDto) {
     this.showConfirmLoad = true;
     this.datasetid = dataset.id;// datasetid o datasetselected  da capire nel futuro 
     

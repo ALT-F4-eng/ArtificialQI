@@ -154,7 +154,7 @@ export const MOCK_DATASETS: DatasetDto[] = [
   },
 ];
 
-@Injectable({
+@Injectable({//Angular, registra automaticamente questo servizio come singleton disponibile in tutta l'applicazione.
   providedIn: 'root',
 })
 export class DatasetService {

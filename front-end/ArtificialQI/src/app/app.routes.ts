@@ -5,6 +5,7 @@ import { StandardPageComponent } from './layout/standard-page/standard-page.comp
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
 import { DatasetListPageComponent } from './features/dataset/dataset-list-page/dataset-list-page.component';
+import { DatasetContentPageComponent } from './features/dataset/dataset-content-page/dataset-content-page.component';// per testing
 
 export const routes: Routes = [
   {
@@ -14,7 +15,8 @@ export const routes: Routes = [
       { path: '', component: HomePageComponent },
       { path: 'test', component: MenuTestingComponent },
       { path: 'llm', component: MenuTestingComponent },
-      { path: 'dataset', component: DatasetListPageComponent }
+      { path: 'dataset', component: DatasetListPageComponent },
+      { path: 'datasetContentPage', component: DatasetContentPageComponent }
     ],
   },
 ];

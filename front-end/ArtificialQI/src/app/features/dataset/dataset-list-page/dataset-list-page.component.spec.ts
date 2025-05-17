@@ -8,9 +8,9 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { of } from 'rxjs'; // Assicurati di importare 'of'
-import { datasetDto } from '../../../core/models/dataset-dto.model';
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
 // Mock dati
-const mockDatasets: datasetDto[] = [
+const mockDatasets: DatasetDto[] = [
   {
     id: 1,
     name: 'Dataset Uno',

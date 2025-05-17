@@ -1,2 +1,5 @@
 <p>dataset-content-page works!</p>
-<h2>{{ dataset?.name }}</h2>
+<h2>
+  {{ dataset?.name || "Nuovo Dataset" }}
+  <span *ngIf="!dataset?.name" class="temporary-label">Temporaneo</span>
+</h2>

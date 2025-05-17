@@ -3,3 +3,13 @@
   {{ dataset?.name || "Nuovo Dataset" }}
   <span *ngIf="!dataset?.name" class="temporary-label">Temporaneo</span>
 </h2>
+
+
+
+
+<button mat-raised-button (click)="saveDataset()">
+  <mat-icon>save</mat-icon> Salva le modifiche
+</button>
+<button mat-raised-button (click)="testDataset()">
+<mat-icon>bug_report</mat-icon> Test Dataset <!-- OPPURE play_arrow -->
+</button>

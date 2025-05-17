@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 //Dto che serve
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
@@ -10,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dataset-content-page',
-  imports: [CommonModule,],
+  imports: [CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
 })
@@ -33,6 +36,8 @@ export class DatasetContentPageComponent {
     }
   });
   }
+  saveDataset(){}
+  testDataset(){}
 }
 
 /*

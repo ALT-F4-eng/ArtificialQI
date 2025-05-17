@@ -17,14 +17,20 @@ app-test-element {
   display: block;
   border-radius: 12px;
   background-color: #ffffff;
-
-  /* Shadow base */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 
 app-test-element:hover {
-  /* Shadow on hover */
   transform: translateY(-4px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+}
+
+.empty-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
+  color: #888;
 }

@@ -19,17 +19,21 @@ export class MockTestService {
     }
 
     deleteTest(ID: number) {
-        const index = MOCK_TEST.findIndex((test) => test.ID === ID);
-        if (index !== -1) {
-            MOCK_TEST.splice(index, 1);
-        }
+    const index = MOCK_TEST.findIndex((test) => test.ID === ID);
+    if (index !== -1) {
+        MOCK_TEST.splice(index, 1);
     }
+    return of(null); // per compatibilità con Observable<void>
+}
+
     renameTest(ID: number, newName: string) {
-        const test = MOCK_TEST.find((test) => test.ID === ID);
-        if (test) {
-            test.name = newName;
-        }
+    const test = MOCK_TEST.find((test) => test.ID === ID);
+    if (test) {
+        test.name = newName;
     }
+    return of(test);
+}
+
     getTest(ID: number) {
         const test = MOCK_TEST.find((test) => test.ID === ID);
         if (test) {

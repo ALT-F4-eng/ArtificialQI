@@ -40,9 +40,11 @@ export class TestListViewComponent {
 
   @Output() testDeleted = new EventEmitter<number>();
   onDelete(index: number) {
-    console.log('Indice ricevuto per cancellazione list view:', index);
-    this.testDeleted.emit(index);
+  const testToDelete = this.tests[index];
+  if (testToDelete) {
+    this.testDeleted.emit(testToDelete.ID); 
   }
+}
 
   @Output() testLoaded = new EventEmitter<TestDto>();
   onTestLoaded(test: TestDto) {

@@ -5,7 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
-import { Test } from '../../../core/services/test.service';
+import { TestService } from '../../../core/services/test.service';
+import { TestDto } from '../../../core/models/test-dto.model';
 import { TestNameDialogComponent } from '../../../shared/components/test-name-dialog/test-name-dialog.component';
 
 
@@ -21,7 +22,7 @@ import { TestNameDialogComponent } from '../../../shared/components/test-name-di
   styleUrl: './test-element.component.css'
 })
 export class TestElementComponent {
-  @Input() test?: Test;
+  @Input() test?: TestDto;
 
   ngOnInit() {
     console.log(this.test); // Dovresti vedere i dati passati dal padre
@@ -41,14 +42,14 @@ export class TestElementComponent {
       }
     });
   }
-  @Output() delete = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<number>();
   deletetest() {
     if (this.test) {
-      this.delete.emit();
+      this.delete.emit(this.test.ID); // Invia l'ID del test al padre
       console.log('Test cancellato:', this.test.name);
     }
   }
-  @Output() testLoaded = new EventEmitter<Test>();
+  @Output() testLoaded = new EventEmitter<TestDto>();
   loadtest() {
     if (this.test) {
       this.testLoaded.emit(this.test);

@@ -25,13 +25,17 @@ import { ConfirmComponent } from '../../../core/components/confirm/confirm.compo
   templateUrl: './test-list-page.component.html',
   styleUrl: './test-list-page.component.css'
 })
-export class TestListPageComponent implements OnInit {
-  showConfirm: false;
+export class TestListPageComponent {
+  showConfirm= false;
+  confirmMessage= '';
+  deletingId?: number;
   mockTests: TestDto[] = [];
   filteredTests: TestDto[] = [];
+
+
   constructor(private testService: TestService, private router: Router) {}
   ngOnInit(): void {
-    this.testService.getTests().subscribe((tests: TestDto[]) => {
+    this.testService.getAllTests().subscribe((tests: TestDto[]) => {
       this.mockTests = tests;
       this.filteredTests = [...this.mockTests]; // mostra tutti inizialmente
     });
@@ -50,11 +54,15 @@ export class TestListPageComponent implements OnInit {
   }
   testDeleted(index: number) {
     this.testService.deleteTest(index);
-    this.filteredTests = [...this.testService.getTest()];
-    this.mockTests = [...this.testService.getTest()];
+    this.testService.getAllTests().subscribe((tests: TestDto[]) => {
+      this.filteredTests = [...tests];
+    });
+    this.testService.getAllTests().subscribe((tests: TestDto[]) => {
+      this.mockTests = [...tests];
+    });
     console.log('Test cancellato page:', this.mockTests[index]);
   }
-  onTestLoaded(test: Test) {
+  onTestLoaded(test: TestDto) {
     this.router.navigate(['/test'], {
       state: { test: test },
     });
@@ -79,16 +87,16 @@ export class TestListPageComponent implements OnInit {
             console.error('Errore durante la delete:', err);
           }
         }) qui sincronizzazione e richiesta degli Test ogni modifica effettuata */
-        this.TestService.deleteTest(this.deletingId).subscribe({
+        this.testService.deleteTest(this.deletingId).subscribe({
           next: () => {
             // Rimuovi l'elemento dalla lista
-            this.Tests = this.Tests.filter(Test => Test.id !== this.deletingId);
+            this.mockTests = this.mockTests.filter(Test => Test.ID !== this.deletingId);
             this.showConfirm = false;
-            console.log(Test con ID ${this.deletingId} eliminato con successo.);
+            console.log(`Test con ID ${this.deletingId} eliminato con successo.`);
             this.deletingId = undefined;
           },
           error: (err) => {
-            console.error(Errore durante l'eliminazione dell'Test con ID ${this.deletingId}:, err);
+            console.error(`Errore durante l'eliminazione dell'Test con ID ${this.deletingId}:`, err);
           }
         });
       } // viene tolto dalla lista Tests in locale con filter se la delete va a buon fine 

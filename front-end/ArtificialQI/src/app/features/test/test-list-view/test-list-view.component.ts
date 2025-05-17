@@ -4,7 +4,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { TestElementComponent } from '../test-element/test-element.component';
-import { Test } from '../../../core/services/test.service';
+import { TestService } from '../../../core/services/test.service';
+import { TestDto } from '../../../core/models/test-dto.model';
 
 export interface RenameEvent {
   index: number;
@@ -24,7 +25,7 @@ export interface RenameEvent {
   styleUrl: './test-list-view.component.css'
 })
 export class TestListViewComponent {
-  @Input() tests: Test[] = [];
+  @Input() tests: TestDto[] = [];
 
   @Output() rename = new EventEmitter<RenameEvent>();
   onRename(index: number, newName: string) {
@@ -43,8 +44,8 @@ export class TestListViewComponent {
     this.testDeleted.emit(index);
   }
 
-  @Output() testLoaded = new EventEmitter<Test>();
-  onTestLoaded(test: Test) {
+  @Output() testLoaded = new EventEmitter<TestDto>();
+  onTestLoaded(test: TestDto) {
     this.testLoaded.emit(test);
   }
 }

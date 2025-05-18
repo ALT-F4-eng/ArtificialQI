@@ -4,7 +4,9 @@
   <span *ngIf="!dataset?.name" class="temporary-label">Temporaneo</span>
 </h2>
 
+<app-search-bar (search)="handleSearchQA($event)"></app-search-bar>
 
+<app-dataset-page-view></app-dataset-page-view>
 
 
 <button mat-raised-button (click)="saveDataset()">

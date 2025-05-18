@@ -2,18 +2,21 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute } from '@angular/router';
 
 //Dto che serve
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
 //service che serve
 import { QAService } from '../../../core/services/qa.service';
-//servizi
-import { ActivatedRoute } from '@angular/router';
+
+// sotto componenti 
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view.component';
 
 @Component({
   selector: 'app-dataset-content-page',
-  imports: [CommonModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, SearchBarComponent, DatasetPageViewComponent],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
 })
@@ -36,8 +39,13 @@ export class DatasetContentPageComponent {
     }
   });
   }
+  handleSearchQA(term: string) {
+    const normalized = term.toLowerCase();
+  }
+
   saveDataset(){}
   testDataset(){}
+
 }
 
 /*

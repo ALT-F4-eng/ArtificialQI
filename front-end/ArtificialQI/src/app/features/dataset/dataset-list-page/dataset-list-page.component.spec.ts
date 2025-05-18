@@ -64,7 +64,7 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
     const button = screen.getByRole('button', { name: /crea dataset/i });
     expect(button).toBeInTheDocument();
   });
-
+  // tocca rivedere
   it('dovrebbe reindirizzare alla pagina di creazione dataset quando si clicca su "Crea dataset"', async () => {
     const routerMock = {
       navigate: jest.fn(),
@@ -81,7 +81,7 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
     const button = screen.getByRole('button', { name: /crea dataset/i });
     fireEvent.click(button);
 
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/datasetContentPage']);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/datasetContentPage'], { queryParams: { mode: 'create' } });
   });
 
   it('dovrebbe visualizzare il pulsante per caricare un dataset da un file JSON', async () => {
@@ -123,7 +123,7 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
 
     const instance = view.fixture.componentInstance;
 
-    instance.handleSearch('Uno');
+    instance.handleSearchDataset('Uno');
     view.fixture.detectChanges(); // forza il re-render della view
 
     expect(instance.filteredDatasets.length).toBe(1);

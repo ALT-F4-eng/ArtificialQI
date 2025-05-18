@@ -47,7 +47,7 @@ export class DatasetListPageComponent {
     this.router.navigate(['/datasetContentPage'], { queryParams: { mode: 'create' } });
   }
 
-  handleSearch(term: string) {
+  handleSearchDataset(term: string) {
     const normalized = term.toLowerCase();
     this.filteredDatasets = this.mockDatasets.filter((dataset) =>
       dataset.name.toLowerCase().includes(normalized)

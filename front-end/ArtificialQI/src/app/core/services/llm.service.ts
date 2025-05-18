@@ -19,5 +19,13 @@ export class LlmService {
     return this.http.get<LlmDto>(`/llms/${id}`);
   }
 
+  createLlm(llm: LlmDto): Observable<LlmDto> {
+    return this.http.post<any>('/llms', llm);
+  }
+
+  saveLlm(llm: LlmDto): Observable<LlmDto> {
+    return this.http.post<any>(`/llms/${llm.id}`, llm);
+  }
+
 }
 

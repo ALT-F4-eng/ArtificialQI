@@ -1,0 +1,58 @@
+<form [formGroup]="llmForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>URL</mat-label>
+    <input matInput formControlName="url" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Chiave domanda</mat-label>
+    <input matInput formControlName="key_req" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Chiave risposta</mat-label>
+    <input matInput formControlName="key_resp" />
+  </mat-form-field>
+
+  <h3>Header</h3>
+  <div formArrayName="kv_header">
+    <div *ngFor="let group of kvHeader.controls; let i = index" [formGroupName]="i" class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Key</mat-label>
+        <input matInput formControlName="key" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Value</mat-label>
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button color="primary" type="button" (click)="addHeader()">+ Header</button>
+  </div>
+
+  <h3>Body</h3>
+  <div formArrayName="kv_body">
+    <div *ngFor="let group of kvBody.controls; let i = index" [formGroupName]="i" class="row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Key</mat-label>
+        <input matInput formControlName="key" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Value</mat-label>
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button color="primary" type="button" (click)="addBody()">+ Body</button>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" type="submit">Salva</button>
+    <button mat-button type="button" (click)="onCancel()">Annulla</button>
+  </div>
+</form>

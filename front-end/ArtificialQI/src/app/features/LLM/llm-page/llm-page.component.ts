@@ -45,7 +45,7 @@ export class LlmPageComponent implements OnInit{
     }
 
     onModifyLlmRequest(id: number){
-
+      this.router.navigate(['/llm-form', id]);
     }
 
 }

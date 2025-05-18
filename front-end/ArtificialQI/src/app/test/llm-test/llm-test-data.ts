@@ -8,8 +8,8 @@ export const llmMockList: LlmDto[] = [
     url: "https://api.openai.com/v1/chat/completions",
     key_req: "prompt",
     key_resp: "choices",
-    kv_body: new Set(),
-    kv_header: new Set()
+    kv_body: [],
+    kv_header: []
   },
   {
     id: 2,
@@ -18,8 +18,8 @@ export const llmMockList: LlmDto[] = [
     url: "https://api.anthropic.com/v1/messages",
     key_req: "messages",
     key_resp: "completion",
-    kv_body: new Set(),
-    kv_header: new Set()
+    kv_body: [],
+    kv_header: []
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ export const llmMockList: LlmDto[] = [
     url: "https://api.mistral.ai/v1/completions",
     key_req: "input",
     key_resp: "result",
-    kv_body: new Set(),
-    kv_header: new Set()
+    kv_body: [],
+    kv_header: []
   }
 ];

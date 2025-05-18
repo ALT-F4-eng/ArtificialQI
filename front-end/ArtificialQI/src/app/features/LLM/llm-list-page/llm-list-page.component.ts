@@ -92,5 +92,6 @@ export class LlmListPageComponent implements OnInit{
 
     createLlm() {
       console.log("richiesta creazione");
+      this.router.navigate(['/llm-form']);
     }
 }

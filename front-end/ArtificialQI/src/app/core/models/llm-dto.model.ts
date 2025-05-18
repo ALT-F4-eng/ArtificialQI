@@ -7,6 +7,6 @@ export interface LlmDto {
   url: string;
   key_req: string;
   key_resp: string;
-  kv_body: Set<KeyValuePairDto>;
-  kv_header: Set<KeyValuePairDto>;
+  kv_body: KeyValuePairDto[];
+  kv_header: KeyValuePairDto[];
 }

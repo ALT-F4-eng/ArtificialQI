@@ -1,27 +1,28 @@
 from abc import ABC, abstractmethod
-from uuid import UUID
-from core.dataset import Dataset
 from typing import Optional
+from uuid import UUID
+
+from core.dataset import Dataset
+
 
 class DatasetRepository(ABC):
-    
-    @abstractmethod 
+
+    @abstractmethod
     def delete_dataset(self, id: UUID) -> Optional[UUID]:
         raise NotImplementedError
-    
-    @abstractmethod 
+
+    @abstractmethod
     def update_dataset(self, dataset: Dataset) -> Optional[Dataset]:
         raise NotImplementedError
-    
-    @abstractmethod 
+
+    @abstractmethod
     def create_dataset(self, dataset: Dataset) -> Optional[Dataset]:
         raise NotImplementedError
-    
-    @abstractmethod 
+
+    @abstractmethod
     def get_dataset_by_id(self, id: UUID) -> Optional[Dataset]:
         raise NotImplementedError
-    
-    @abstractmethod 
-    def get_all_datasets(self, q:str) -> Optional[list[Dataset]]:
+
+    @abstractmethod
+    def get_all_datasets(self, q: str) -> Optional[list[Dataset]]:
         raise NotImplementedError
-    

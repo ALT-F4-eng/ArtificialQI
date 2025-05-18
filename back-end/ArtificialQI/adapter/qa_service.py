@@ -4,8 +4,12 @@ from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepo
 
 
 class QaService(QaUseCase):
-    
-    def __init__(self, qa_repo:QuestionAnswerPairRepository = QuestionAnswerPairRepository(), dataset_repo:DatasetRepository = DatasetRepository()):
+
+    def __init__(
+        self,
+        qa_repo: QuestionAnswerPairRepository = QuestionAnswerPairRepository(),
+        dataset_repo: DatasetRepository = DatasetRepository(),
+    ):
         super().__init__()
-        self.qa_repo:QuestionAnswerPairRepository = qa_repo
-        self.dataset_repo:DatasetRepository = dataset_repo
+        self.qa_repo: QuestionAnswerPairRepository = qa_repo
+        self.dataset_repo: DatasetRepository = dataset_repo

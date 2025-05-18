@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
-import { TestService } from '../../../core/services/test.service';
 import { TestDto } from '../../../core/models/test-dto.model';
 import { TestNameDialogComponent } from '../../../shared/components/test-name-dialog/test-name-dialog.component';
 

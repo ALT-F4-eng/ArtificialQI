@@ -1,17 +1,18 @@
 <p>dataset-content-page works!</p>
 <h2>
-  {{ dataset?.name || "Nuovo Dataset" }}
+  {{ dataset.name }}
   <span *ngIf="!dataset?.name" class="temporary-label">Temporaneo</span>
 </h2>
 
-<app-search-bar (search)="handleSearchQA($event)"></app-search-bar>
+<app-search-bar (search) = "handleSearchQA($event)"></app-search-bar>
 
-<app-dataset-page-view></app-dataset-page-view>
+<app-dataset-page-view [datasetPage] = "datasetPage" ></app-dataset-page-view>
 
 
 <button mat-raised-button (click)="saveDataset()">
   <mat-icon>save</mat-icon> Salva le modifiche
 </button>
+
 <button mat-raised-button (click)="testDataset()">
 <mat-icon>bug_report</mat-icon> Test Dataset <!-- OPPURE play_arrow -->
 </button>

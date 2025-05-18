@@ -1,0 +1,28 @@
+mat-card-content {
+  color: white; /* colore del carattere */
+}
+
+.qa-element {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* per adattarsi su schermi piccoli */
+}
+
+.info {
+  max-width: 80%;
+}
+
+.qa-actions button {
+  margin-right: 10px;
+}
+
+.qa-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

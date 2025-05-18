@@ -1,15 +1,15 @@
 <p>qaelement works!</p>
-<mat-card class="dataset-element">
+<mat-card class="qa-element">
   <mat-card-content>
     <div class="header">
       <div class="info">
-
+        <h3>{{ qa?.question }}</h3>
+        <h3>{{ qa?.answer }}</h3>
+        <p> etichietta per indicare uno dei campi vuoti</p>
       </div>
-      <div class="dataset-actions">
-        <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>
-        <button mat-raised-button (click)="onCopySignal()">Copia</button>
-        <button mat-raised-button (click)="onDeleteSignal()">Elimina</button>
-        <button mat-raised-button (click)="onLoadSignal()">Carica</button>
+      <div class="qa-actions">
+        <button mat-raised-button >Modifica</button>
+        <button mat-raised-button >Elimina</button>
       </div>
     </div>
   </mat-card-content>

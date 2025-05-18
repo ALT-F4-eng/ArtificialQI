@@ -4,9 +4,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 
 //
-import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
+import { QADto } from '../../../core/models/qa-dto.model';
 //
-
+import { QAElementComponent } from '../qaelement/qaelement.component';
 export interface ModifyEvent {
   index: number;
   newQuestion: string;
@@ -15,11 +15,11 @@ export interface ModifyEvent {
 
 @Component({
   selector: 'app-qalist-view',
-  imports: [CommonModule, MatListModule, MatCardModule],
+  imports: [CommonModule, MatListModule, MatCardModule, QAElementComponent],
   templateUrl: './qalist-view.component.html',
   styleUrl: './qalist-view.component.css',
 })
 export class QAListViewComponent {
-  @Input() qa_s?: DatasetPageDto;
+  @Input() qaList?: QADto[] = [];
   
 }

@@ -9,7 +9,8 @@ import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
 //service che serve
 import { QAService } from '../../../core/services/qa.service';
-
+import { emptyDataset } from '../../../core/models/dataset-dto.model';
+import { emptyDatasetPage } from '../../../core/models/datasetpage-dto.model';
 // sotto componenti 
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view.component';
@@ -24,18 +25,19 @@ import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view
 export class DatasetContentPageComponent {
   //dataset!: DatasetDto;
   //datasetQA!: DatasetPageDto;
-  dataset: DatasetDto | null = null;
-  datasetQA: DatasetPageDto | null = null;
+  dataset!: DatasetDto;
+  datasetPage!: DatasetPageDto;
 
   constructor(private qaService: QAService, private route: ActivatedRoute) {} //private router: Router
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
     const mode = params['mode'];
     if (mode === 'create') {
-      // logica per creazione da zero
+      this.dataset = emptyDataset;
+      this.datasetPage = emptyDatasetPage;
     } else if (mode === 'edit') {
       this.dataset = this.qaService.getDataset();
-      this.datasetQA = this.qaService.getDatasetQA();
+      this.datasetPage = this.qaService.getDatasetPage();
     }
   });
   }

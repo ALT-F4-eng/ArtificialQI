@@ -1,12 +1,12 @@
 <p>qalist-view works!</p>
 <mat-list role="list">
-  <app-dataset-element
-    *ngFor="let item of qa_s;"
-    [qa_s]="item"
+  <app-qaelement
+    *ngFor="let item of qaList;"
+    [qa]="item"
     role="listitem"
-  ></app-dataset-element>
+  ></app-qaelement>
   <!-- Messaggio quando non ci sono dataset -->
-  <ng-container *ngIf="qa_s.length === 0">
+  <ng-container *ngIf="qaList?.length === 0">
     <p>Nessuna coppia di domanda e risposta presente</p> <!-- paragrafo contenente il messaggio che viene visualizzato dall’utente nel caso non ci siano dataset salvati nel sistem, si puo anche scrivere altro-->
   </ng-container>
 </mat-list>

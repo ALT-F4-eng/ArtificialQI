@@ -48,7 +48,7 @@ export const MOCK_DATASETPAGEQA: DatasetPageDto = {
 export class QAService {
   constructor() {}
   private dataset:DatasetDto = {...MOCK_DATASET};
-  private datasetQA: DatasetPageDto = {
+  private datasetPage: DatasetPageDto = {
     ...MOCK_DATASETPAGEQA,//copia
     qa_list: [...MOCK_DATASETPAGEQA.qa_list],
   }; // Crea una copia mutabile del mock, ... spread operator, serve a copiare o espandere gli elementi, [...] copia o espande un array. ed necessario dichiarare allinterno delle parentesi grafe
@@ -57,8 +57,8 @@ export class QAService {
     return this.dataset;
   }
   
-  getDatasetQA(): DatasetPageDto {
-    return this.datasetQA;
+  getDatasetPage(): DatasetPageDto {
+    return this.datasetPage;
   }
   
   // Metodo per rinominare un dataset

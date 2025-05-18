@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 //sottocomponenti 
 import { QAListViewComponent } from '../qalist-view/qalist-view.component';
+import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
 @Component({
   selector: 'app-dataset-page-view',
   imports: [QAListViewComponent],
@@ -10,5 +11,6 @@ import { QAListViewComponent } from '../qalist-view/qalist-view.component';
 })
 
 export class DatasetPageViewComponent {
-
+  @Input() datasetPage?: DatasetPageDto;
+  
 }

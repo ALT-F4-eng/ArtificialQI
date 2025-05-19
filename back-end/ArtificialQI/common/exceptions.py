@@ -1,27 +1,30 @@
-
 class PersistenceException(Exception):
-    
+
     def __init__(self, msg: str):
         super().__init__(msg)
+
 
 class DatasetNonExistentException(Exception):
 
     def __init__(self, msg: str):
         super().__init__(msg)
 
+
 class InvalidDatasetOperationException(Exception):
 
     def __init__(self, msg: str):
         super().__init__(msg)
 
-class InvalidDatasetNameException(Exception):
 
-    def __init__(self, msg: str = "Il nome di un dataset non può essere vuoto."):
+class TestNonExistentException(Exception):
+
+    def __init__(self, msg: str):
         super().__init__(msg)
 
-class InvalidDatasetSavedDateException(Exception):
 
-    def __init__(self, msg: str="La data dell'ultimo salvataggio non può essere minore della data del primo salvataggio."):
+class InvalidTestOperationException(Exception):
+
+    def __init__(self, msg: str):
         super().__init__(msg)
 
 class InvalidDatasetDimensionException(Exception):

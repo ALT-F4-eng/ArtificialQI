@@ -1,11 +1,12 @@
-from uuid import UUID
-from core.question_answer_pair import QuestionAnswerPair
-from core.page import Page
 from abc import ABC, abstractmethod
+from uuid import UUID
+
+from core.page import Page
+from core.question_answer_pair import QuestionAnswerPair
 
 
 class QaUseCase(ABC):
-    
+
     @abstractmethod
     def create_qa(self, question:str, answer:str) -> QuestionAnswerPair:
         raise NotImplementedError

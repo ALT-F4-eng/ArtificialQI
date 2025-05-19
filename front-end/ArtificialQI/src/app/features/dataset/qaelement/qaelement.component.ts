@@ -26,7 +26,7 @@ export class QAElementComponent {
     const dialogRef = this.dialog.open(QADialogComponent, {
       width: '95vw', // 95% della larghezza della finestra
       maxHeight: '90vh', // 90% dell'altezza della finestra
-      panelClass: 'big-edit-dialog', // <- solo per questo
+     // panelClass: 'big-edit-dialog', // <- solo per questo
       data: { title: "Modifica QA esistente", question: this.qa.question, answer: this.qa.answer },
     });
     dialogRef.afterClosed().subscribe((result: { question: string; answer: string }) => {

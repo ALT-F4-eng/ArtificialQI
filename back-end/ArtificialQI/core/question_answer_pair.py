@@ -10,20 +10,6 @@ class QuestionAnswerPair:
     question: str
     answer: str
 
-
-
-    @dataset.setter
-    def dataset(self, dataset: UUID):
-        self._dataset = dataset
-
-    @question.setter
-    def question(self, question: str) -> None:
-        self._question = question
-
-    @answer.setter
-    def answer(self, answer: str) -> None:
-        self._answer = answer
-
 def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID) -> QuestionAnswerPair:
     """
     Crea un'istanza della classe QuestionAnswerPair a partire dalle informazioni fornite.

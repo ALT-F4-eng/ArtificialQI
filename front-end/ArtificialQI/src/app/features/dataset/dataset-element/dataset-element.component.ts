@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './dataset-element.component.html',
   styleUrls: ['./dataset-element.component.css'],
 })
+
 export class DatasetElementComponent implements OnInit {
   //sarano due dati passati dal padre
   @Input() dataset?: DatasetDto;

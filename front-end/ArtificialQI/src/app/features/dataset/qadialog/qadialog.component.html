@@ -1,0 +1,26 @@
+<h1 mat-dialog-title>Modifica</h1>
+<mat-dialog-content>
+    
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Domanda</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="question"
+      rows="10"
+    ></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Risposta</mat-label>
+    <textarea
+      matInput
+      [(ngModel)]="answer"
+      rows="10"
+    ></textarea>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Annulla</button>
+  <button mat-raised-button (click)="confirm()">Salva</button>
+</mat-dialog-actions>

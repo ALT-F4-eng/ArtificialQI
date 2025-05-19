@@ -1,17 +1,44 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { QADto } from '../../../core/models/qa-dto.model';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
 
+import { QADialogComponent } from '../qadialog/qadialog.component';
 
 @Component({
   selector: 'app-qaelement',
-  imports: [MatCardModule,MatButtonModule],
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, NgIf],
   templateUrl: './qaelement.component.html',
-  styleUrl: './qaelement.component.css'
+  styleUrl: './qaelement.component.css',
 })
 export class QAElementComponent {
   @Input() qa?: QADto;
+
+  @Output() modifySignal = new EventEmitter<QADto>(); // Emette il nuovo nome al padre
+  private dialog = inject(MatDialog);
+  openModifyQADialog() {
+    if (!this.qa) return; // Se non c'è un qa, esci
+    const dialogRef = this.dialog.open(QADialogComponent, {
+      width: '95vw', // 95% della larghezza della finestra
+      maxHeight: '90vh', // 90% dell'altezza della finestra
+      panelClass: 'big-edit-dialog', // <- solo per questo
+      data: { question: this.qa.question, answer: this.qa.answer },
+    });
+    dialogRef.afterClosed().subscribe((result: { question: string; answer: string }) => {
+      if (result) {
+        console.log('Modifica ricevuta:', result);
+        // Emitto evento con id e nuovi dati
+        this.modifySignal.emit({
+          id: this.qa!.id,
+          question: result.question,
+          answer: result.answer
+        });
+      }
+    });
+  }
 }

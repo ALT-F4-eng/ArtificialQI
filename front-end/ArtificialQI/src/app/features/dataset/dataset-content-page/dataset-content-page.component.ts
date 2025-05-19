@@ -43,10 +43,14 @@ export class DatasetContentPageComponent {
   }
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
-  }
-
+  }/*
+  modifyQA(qa: QADto) {
+      console.log('Nuova domanda:', qa.question, 'Nuova risposta:', qa.answer);
+      this.modify.emit(qa);
+    }*/
   saveDataset(){}
   testDataset(){}
+  addQA(){}
 
 }
 

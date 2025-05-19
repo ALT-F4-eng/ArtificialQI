@@ -5,8 +5,12 @@
 </h2>
 
 <app-search-bar (search) = "handleSearchQA($event)"></app-search-bar>
+<button mat-raised-button (click)="addQA()">
+<mat-icon>add</mat-icon> addQA <!-- OPPURE play_arrow -->
+</button>
 
-<app-dataset-page-view [datasetPage] = "datasetPage" ></app-dataset-page-view>
+<app-dataset-page-view [datasetPage] = "datasetPage" 
+></app-dataset-page-view>
 
 
 <button mat-raised-button (click)="saveDataset()">

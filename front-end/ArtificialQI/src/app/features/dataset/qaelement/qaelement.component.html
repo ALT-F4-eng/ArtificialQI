@@ -1,15 +1,20 @@
-<p>qaelement works!</p>
 <mat-card class="qa-element">
   <mat-card-content>
     <div class="header">
       <div class="info">
-        <h3>{{ qa?.question }}</h3>
-        <h3>{{ qa?.answer }}</h3>
-        <p> etichietta per indicare uno dei campi vuoti</p>
+        <div>
+          {{ qa?.question }}
+          <span *ngIf="qa?.question?.trim() === ''">⚠️ La domanda è vuota </span>
+        </div>
+        <hr class="white-line" />
+        <div>
+          {{ qa?.answer }}
+          <span *ngIf="qa?.answer?.trim() === ''">⚠️ La risposta è vuota </span>
+        </div>
       </div>
       <div class="qa-actions">
-        <button mat-raised-button >Modifica</button>
-        <button mat-raised-button >Elimina</button>
+        <button mat-raised-button (click)="openModifyQADialog()">Modifica</button>
+        <button mat-raised-button>Elimina</button>
       </div>
     </div>
   </mat-card-content>

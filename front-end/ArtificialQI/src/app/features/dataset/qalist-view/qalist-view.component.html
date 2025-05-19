@@ -3,7 +3,9 @@
   <app-qaelement
     *ngFor="let item of qaList;"
     [qa]="item"
+    (modifySignal)="onModify($event.id,$event.question,$event.answer)"
     role="listitem"
+    
   ></app-qaelement>
   <!-- Messaggio quando non ci sono dataset -->
   <ng-container *ngIf="qaList?.length === 0">

@@ -36,7 +36,13 @@ export const MOCK_DATASETPAGEQA: DatasetPageDto = {
     {
       id: 4,
       question: "Che cos'è Angular?",
-      answer: 'Un framework per applicazioni web sviluppato da Google',
+      answer:
+        'Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,',
+    },
+    {
+      id: 5,
+      question: '',
+      answer: '',
     },
   ],
 };
@@ -47,22 +53,35 @@ export const MOCK_DATASETPAGEQA: DatasetPageDto = {
 })
 export class QAService {
   constructor() {}
-  private dataset:DatasetDto = {...MOCK_DATASET};
+  private dataset: DatasetDto = { ...MOCK_DATASET };
   private datasetPage: DatasetPageDto = {
-    ...MOCK_DATASETPAGEQA,//copia
+    ...MOCK_DATASETPAGEQA, //copia
     qa_list: [...MOCK_DATASETPAGEQA.qa_list],
   }; // Crea una copia mutabile del mock, ... spread operator, serve a copiare o espandere gli elementi, [...] copia o espande un array. ed necessario dichiarare allinterno delle parentesi grafe
-  
-  getDataset(): DatasetDto{
+
+  getDataset(): DatasetDto {
     return this.dataset;
   }
-  
+
   getDatasetPage(): DatasetPageDto {
     return this.datasetPage;
   }
-  
+
   // Metodo per rinominare un dataset
-  renameDataset(): void {}
+  modifyDatasetPage(id: number, newQuestion: string, newAnswer: string): void {
+    const index = this.datasetPage.qa_list.findIndex((qa) => qa.id === id);
+
+    if (index !== -1) {
+      this.datasetPage.qa_list[index] = {
+        ...this.datasetPage.qa_list[index], // preserva l'id e altri campi futuri
+        question: newQuestion,
+        answer: newAnswer,
+      };
+      console.log('modificato con successo')// si potrebbe mandare una notifica di successo
+    } else {
+      console.warn(`QA con id ${id} non trovato`);
+    }
+  }
 
   //altrimenti c'è possibilità che id vengono ripetuti
   generateUniqueId(): void {}

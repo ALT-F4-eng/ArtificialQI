@@ -28,3 +28,8 @@ class InvalidDatasetDimensionException(Exception):
 
     def __init__(self, msg: str = "La dimensione di un dataset non può essere negativa."):
         super().__init__(msg)
+
+class QaNonExistentException(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg)

@@ -39,7 +39,7 @@ class QuestionAnswerPair:
     def answer(self, answer: str) -> None:
         self._answer = answer
 
-def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID = UUID.uiid4())->QuestionAnswerPair:
+def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID) -> QuestionAnswerPair:
     """
     Crea un'istanza della classe QuestionAnswerPair a partire dalle informazioni fornite.
 

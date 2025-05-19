@@ -19,9 +19,9 @@ class QaUseCase(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def update_qa(qa:QuestionAnswerPair) -> QuestionAnswerPair:
+    def update_qa(self, qa:QuestionAnswerPair) -> QuestionAnswerPair:
         raise NotImplementedError
 
     @abstractmethod 
-    def delete_qa(id:UUID) -> UUID:
+    def delete_qa(self, id:UUID) -> UUID:
         raise NotImplementedError

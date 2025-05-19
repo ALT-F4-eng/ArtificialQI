@@ -14,7 +14,7 @@ class QuestionAnswerPairRepository(ABC):
         raise NotImplemented
     
     @abstractmethod
-    def delete_qa(self, qa: QuestionAnswerPair) -> Optional[UUID]:
+    def delete_qa(self, qa: UUID) -> Optional[UUID]:
         raise NotImplemented
     
     @abstractmethod
@@ -28,3 +28,7 @@ class QuestionAnswerPairRepository(ABC):
     @abstractmethod
     def get_qa_set(self, dataset: UUID, start: int, offset: int, q: str = "") -> Optional[set[QuestionAnswerPair]]:
         raise NotImplemented
+    
+    @abstractmethod 
+    def get_qa_by_id(self, id: UUID) -> Optional[QuestionAnswerPair]:
+        raise NotImplementedError

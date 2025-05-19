@@ -27,7 +27,7 @@ export class QAElementComponent {
       width: '95vw', // 95% della larghezza della finestra
       maxHeight: '90vh', // 90% dell'altezza della finestra
       panelClass: 'big-edit-dialog', // <- solo per questo
-      data: { question: this.qa.question, answer: this.qa.answer },
+      data: { title: "Modifica QA esistente", question: this.qa.question, answer: this.qa.answer },
     });
     dialogRef.afterClosed().subscribe((result: { question: string; answer: string }) => {
       if (result) {
@@ -41,4 +41,13 @@ export class QAElementComponent {
       }
     });
   }
+
+  @Output() deleteSignal = new EventEmitter<number>();
+    onDeleteSignal() {
+      if (this.qa) {
+        this.deleteSignal.emit(this.qa.id); // comunica al padre qa da eliminare
+      }
+    }
+
+
 }

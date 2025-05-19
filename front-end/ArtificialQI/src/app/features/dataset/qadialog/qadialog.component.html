@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Modifica</h1>
+<h1 mat-dialog-title>{{ title }}</h1>
 <mat-dialog-content>
     
   <mat-form-field appearance="fill" class="full-width">
@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Risposta</mat-label>
+    <mat-label>Risposta attesa</mat-label>
     <textarea
       matInput
       [(ngModel)]="answer"

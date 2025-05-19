@@ -82,9 +82,17 @@ export class QAService {
       console.warn(`QA con id ${id} non trovato`);
     }
   }
+  deleteQA(id: number): void {
+  const index = this.datasetPage.qa_list.findIndex((qa) => qa.id === id);
+  if (index !== -1) {
+    this.datasetPage.qa_list.splice(index, 1);
+    console.log(`Elemento con ID ${id} eliminato con successo.`);
+  } else {
+    console.warn(`Elemento con ID ${id} non trovato.`);
+  }
+}
 
   //altrimenti c'è possibilità che id vengono ripetuti
   generateUniqueId(): void {}
 
-  deleteDataset(): void {}
 }

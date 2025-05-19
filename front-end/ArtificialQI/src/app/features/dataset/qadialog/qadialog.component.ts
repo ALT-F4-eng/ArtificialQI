@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {
   MatDialogRef,
   MAT_DIALOG_DATA,
@@ -31,10 +31,12 @@ import { FormsModule } from '@angular/forms';
 export class QADialogComponent {
   private dialogRef = inject(MatDialogRef<QADialogComponent>);
   private data = inject(MAT_DIALOG_DATA) as {
+    title: string;
     question: string;
     answer: string;
   };
 
+  title: string = this.data.title;
   question: string = this.data.question;
   answer: string = this.data.answer;
   

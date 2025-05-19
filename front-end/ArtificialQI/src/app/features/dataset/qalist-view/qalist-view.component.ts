@@ -8,7 +8,6 @@ import { QADto } from '../../../core/models/qa-dto.model';
 //
 import { QAElementComponent } from '../qaelement/qaelement.component';
 
-
 @Component({
   selector: 'app-qalist-view',
   standalone: true,
@@ -16,13 +15,18 @@ import { QAElementComponent } from '../qaelement/qaelement.component';
   templateUrl: './qalist-view.component.html',
   styleUrl: './qalist-view.component.css',
 })
-
 export class QAListViewComponent {
   @Input() qaList?: QADto[] = [];
 
   @Output() modify = new EventEmitter<QADto>();
-  onModify(id:number, question:string, answer:string) {
+  onModify(id: number, question: string, answer: string) {
     console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
-    this.modify.emit({id, question, answer});
+    this.modify.emit({ id, question, answer });
+  }
+  
+  @Output() delete = new EventEmitter<number>();
+  onDelete(id:number) {
+    console.log('Indice ricevuto per cancellazione list view:', id);
+    this.delete.emit(id);
   }
 }

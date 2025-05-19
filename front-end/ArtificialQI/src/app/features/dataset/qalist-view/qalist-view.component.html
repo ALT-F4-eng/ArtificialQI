@@ -4,6 +4,7 @@
     *ngFor="let item of qaList;"
     [qa]="item"
     (modifySignal)="onModify($event.id,$event.question,$event.answer)"
+    (deleteSignal)="onDelete($event)"
     role="listitem"
     
   ></app-qaelement>

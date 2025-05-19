@@ -12,14 +12,17 @@ import { QAService } from '../../../core/services/qa.service';
   templateUrl: './dataset-page-view.component.html',
   styleUrl: './dataset-page-view.component.css',
 })
-
 export class DatasetPageViewComponent {
-  @Input() datasetPage?: DatasetPageDto;  
+  @Input() datasetPage?: DatasetPageDto;
   constructor(private qaService: QAService) {}
-  
-  modifyQA(id:number, question:string, answer:string) {
+  //chiama servizio di modifica
+  modifyQA(id: number, question: string, answer: string) {
     console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
     //chiama il servizio di modifica
-     this.qaService.modifyDatasetPage(id, question, answer);
+    this.qaService.modifyDatasetPage(id, question, answer);
+  }
+  //chiama servizio di cancellazione
+  deleteQA(id: number) {
+    this.qaService.deleteQA(id);
   }
 }

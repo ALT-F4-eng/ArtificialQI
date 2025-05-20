@@ -8,7 +8,7 @@ from core.llm import Llm
 class LlmUseCase(ABC):
 
     @abstractmethod
-    def create_create(self, llm: Llm) -> Llm:
+    def create_llm(self, llm: Llm) -> Llm:
         raise NotImplementedError
 
     @abstractmethod

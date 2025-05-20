@@ -15,7 +15,7 @@ def llm_factory_function(id: UUID, name:str, config:Config, last_mod: date) -> L
     if id is None:
         raise ValueError
 
-    if not config:
+    if config is None:
         raise ValueError
 
     return Llm(

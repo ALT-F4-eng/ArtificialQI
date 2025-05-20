@@ -1,7 +1,15 @@
 <p>page-navigation works!</p>
-<!-- Input per saltare alla pagina -->
-
-<div class="paginator-container">
+<div class="container">
+<nz-pagination
+  [nzPageSize]="pageSize"
+  [nzTotal]="totalItems"
+  [(nzPageIndex)]="currentPage"
+  (nzPageIndexChange)="onPageChange($event)"
+  nzShowQuickJumper
+  >
+</nz-pagination>
+</div>
+<!--<div class="paginator-container">
   <div class="go-to-page-inside">
     <p>Vai a pagina:</p>
     <input type="number" min="1" [max]="totalPages" [(ngModel)]="pageInput" />
@@ -15,4 +23,4 @@
     #paginator
   >
   </mat-paginator>
-</div>
+</div>-->

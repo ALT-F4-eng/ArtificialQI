@@ -21,7 +21,10 @@
 (onModify)="onChangeShowLabel()" 
 ></app-dataset-page-view>
 
-<app-page-navigation>
+<app-page-navigation
+  [totalItems]="totalItems"
+  [pageSize]="pageSize"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange($event)">
 </app-page-navigation>
-
 

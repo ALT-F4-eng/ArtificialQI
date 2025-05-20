@@ -40,6 +40,10 @@ export class DatasetContentPageComponent {
   datasetPage!: DatasetPageDto;
   showTamporaryLabel = false;
   detectWokingCopy = false; // si fa una working copy solo se nel caso l'utente modifica da un dataset caricato
+  // per le cose della pagina
+  totalItems = 0;
+  pageSize = 20;
+  currentPage = 1;
 
   constructor(private qaService: QAService, private route: ActivatedRoute) {} //private router: Router
   ngOnInit(): void {
@@ -53,19 +57,30 @@ export class DatasetContentPageComponent {
         this.dataset = this.qaService.getDataset();
         this.datasetPage = this.qaService.getDatasetPage();
         this.detectWokingCopy = true;
+        this.totalItems = 1000; // da API o metadato chiedere al back-end
       }
     });
   }
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
   }
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.loadPage(page);
+  }
+  loadPage(page: number) {
+    // Simulazione: sostituisci con chiamata HTTP reale
+    /*
+    this.apiService.getDatasetPage(page, this.pageSize).subscribe((data: DatasetPageDto) => {
+      this.datasetPage = data;
+    });*/
+  }
 
   private dialog = inject(MatDialog);
   addQA() {
     const dialogRef = this.dialog.open(QADialogComponent, {
-      //width: '95vw', // 95% della larghezza della finestra
-      //: '90vh', // 90% dell'altezza della finestra
-
+      width: '95vw', // 95% della larghezza della finestra
+      maxHeight: '90vh', // 90% dell'altezza della finestra
       data: { title: 'Crea nuova QA', question: '', answer: '' },
     });
     dialogRef

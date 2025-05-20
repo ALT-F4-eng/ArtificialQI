@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardTitle } from '@angular/material/card';
 import { MatCardModule } from '@angular/material/card';
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
 import { OnInit } from '@angular/core';
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
     DatePipe,
     MatButtonModule,
     RouterModule,
+    MatCardTitle,
   ],
   templateUrl: './dataset-element.component.html',
   styleUrls: ['./dataset-element.component.css'],

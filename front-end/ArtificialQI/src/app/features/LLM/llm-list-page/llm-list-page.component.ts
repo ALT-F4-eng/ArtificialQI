@@ -8,10 +8,12 @@ import { RouterModule, Router } from '@angular/router';
 import {LlmDto} from '../../../core/models/llm-dto.model';
 import {LlmService} from '../../../core/services/llm.service';
 import { ConfirmComponent } from '../../../shared/confirm-message/confirm.component';
+import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 
 @Component({
   selector: 'app-llm-list-page',
   imports: [
+    MessageBoxComponent,
     ConfirmComponent,
     CommonModule,
     LlmListViewComponent,
@@ -28,8 +30,11 @@ export class LlmListPageComponent implements OnInit{
     llms: LlmDto[] = [];
     loading = true;
     showConfirm = false;
+    showMessage = false;
     confirmMessage = '';
     deletingId?: number;
+    resultMessage = '';
+    messageType: 'success' | 'error' = 'error';
 
     constructor(private llmService: LlmService, private router: Router) {}
 
@@ -41,6 +46,9 @@ export class LlmListPageComponent implements OnInit{
         },
       error: (err) => {
           console.error('Errore durante il caricamento LLM:', err);
+          this.resultMessage = 'Errore durante il caricamento degli LLM salvati';
+          this.messageType = 'error';
+          this.showMessage = true;
           this.loading = false;
       },
       });
@@ -72,9 +80,17 @@ export class LlmListPageComponent implements OnInit{
             this.showConfirm = false;
             console.log(`LLM con ID ${this.deletingId} eliminato con successo.`);
             this.deletingId = undefined;
+            this.resultMessage = 'LLM eliminato con successo!';
+            this.messageType = 'success';
+            this.showMessage = true;
           },
           error: (err) => {
+            this.showConfirm = false;
+            this.deletingId = undefined;
             console.error(`Errore durante l'eliminazione dell'LLM con ID ${this.deletingId}:`, err);
+            this.messageType = 'error';
+            this.resultMessage = err.message;
+            this.showMessage = true;
           }
         });
       } // viene tolto dalla lista llms in locale con filter se la delete va a buon fine 
@@ -93,5 +109,11 @@ export class LlmListPageComponent implements OnInit{
     createLlm() {
       console.log("richiesta creazione");
       this.router.navigate(['/llm-form']);
+    }
+
+    onCloseMessage() {
+      this.showMessage = false;
+      this.resultMessage = '';
+      this.messageType = 'error'; 
     }
 }

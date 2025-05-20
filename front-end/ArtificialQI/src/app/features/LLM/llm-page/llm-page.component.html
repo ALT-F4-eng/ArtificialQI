@@ -1,3 +1,9 @@
+<app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
 
 <app-llm-view
   [llm]="llm"

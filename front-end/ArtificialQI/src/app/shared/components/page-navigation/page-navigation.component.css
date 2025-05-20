@@ -1,0 +1,44 @@
+/*.paginator-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+mat-paginator {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.go-to-page-inside {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.go-to-page-inside input {
+  width: 60px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font: inherit;
+}
+
+@media (max-width: 480px) {
+  .paginator-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .go-to-page-inside {
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .go-to-page-inside input {
+    width: 100%;
+  }
+}
+*/

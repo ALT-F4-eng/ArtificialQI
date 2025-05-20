@@ -18,6 +18,7 @@ import { SearchBarComponent } from '../../../shared/components/search-bar/search
 import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view.component';
 import { QADialogComponent } from '../qadialog/qadialog.component';
 import { LLMselectionListComponent } from '../llmselection-list/llmselection-list.component';
+import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
 
 @Component({
   selector: 'app-dataset-content-page',
@@ -27,6 +28,7 @@ import { LLMselectionListComponent } from '../llmselection-list/llmselection-lis
     MatButtonModule,
     SearchBarComponent,
     DatasetPageViewComponent,
+    PageNavigationComponent,
   ],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',

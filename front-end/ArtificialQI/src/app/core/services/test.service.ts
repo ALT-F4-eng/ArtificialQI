@@ -20,4 +20,8 @@ export class TestService {
     compareTest(test1: TestDto, test2: TestDto): Observable<any> {
         return this.http.post<any>('/test/compare', { test1, test2 });
     }
+
+    getAllResults(testID: number): Observable<any[]> {
+        return this.http.get<any[]>(`/test/${testID}/results`);
+    }
 }

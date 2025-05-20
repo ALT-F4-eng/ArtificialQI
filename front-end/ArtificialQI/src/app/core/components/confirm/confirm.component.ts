@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-confirm',
   standalone: true,
-  imports: [],
+  imports: [MatButtonModule],
   templateUrl: './confirm.component.html',
   styleUrl: './confirm.component.css'
 })

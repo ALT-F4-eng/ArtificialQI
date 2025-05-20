@@ -21,7 +21,7 @@
 
 .row {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 16px;
   margin-bottom: 0; /* margine gestito in half-width */
 }

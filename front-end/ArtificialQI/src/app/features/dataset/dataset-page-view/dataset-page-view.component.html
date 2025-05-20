@@ -2,5 +2,14 @@
 <app-qalist-view 
 [qaList] = "datasetPage?.qa_list"
 (modify)="modifyQA($event.id,$event.question,$event.answer)"
-(delete)="deleteQA($event)"
+(delete)="onQADeleteRequest($event)"
 ></app-qalist-view>
+
+<app-confirm
+      *ngIf="showConfirmDelete"
+      [message]="'Sei sicuro di voler eliminare questa coppia di domanda e risposta?'"
+      [confirmLabel]="'Sì, elimina'"
+      [cancelLabel]="'Annulla'"
+      (confirmed)="onQADeleteConfirmed()"
+      (canceled)="onQADeleteCanceled()"
+></app-confirm>

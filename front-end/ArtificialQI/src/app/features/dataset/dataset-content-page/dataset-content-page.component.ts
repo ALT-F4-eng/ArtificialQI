@@ -36,6 +36,8 @@ export class DatasetContentPageComponent {
   //datasetQA!: DatasetPageDto;
   dataset!: DatasetDto;
   datasetPage!: DatasetPageDto;
+  showTamporaryLabel = false;
+  detectWokingCopy = false; // si fa una working copy solo se nel caso l'utente modifica da un dataset caricato
 
   constructor(private qaService: QAService, private route: ActivatedRoute) {} //private router: Router
   ngOnInit(): void {
@@ -44,20 +46,17 @@ export class DatasetContentPageComponent {
       if (mode === 'create') {
         this.dataset = emptyDataset;
         this.datasetPage = emptyDatasetPage;
+        this.showTamporaryLabel = true;
       } else if (mode === 'edit') {
         this.dataset = this.qaService.getDataset();
         this.datasetPage = this.qaService.getDatasetPage();
+        this.detectWokingCopy = true;
       }
     });
   }
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
-  } /*
-  modifyQA(qa: QADto) {
-      console.log('Nuova domanda:', qa.question, 'Nuova risposta:', qa.answer);
-      this.modify.emit(qa);
-    }*/
-  saveDataset() {}
+  }
 
   private dialog = inject(MatDialog);
   addQA() {
@@ -67,7 +66,28 @@ export class DatasetContentPageComponent {
 
       data: { title: 'Crea nuova QA', question: '', answer: '' },
     });
+    dialogRef
+      .afterClosed()
+      .subscribe((result: { question: string; answer: string } | undefined) => {
+        if (result) {
+          this.onChangeShowLabel();
+          console.log('Hai cliccato Salva con:', result);
+        } else {
+          console.log('Hai cliccato Annulla o chiuso il dialog');
+        }
+      });
+    // this.showTamporaryLabel = true;
     // bisgona gestire cosa fa quando si chiude il dialog
+  }
+  saveDataset() {
+    this.showTamporaryLabel = false;
+    this.detectWokingCopy = true; // nel momento in cui l'utente salva il dataset diventa un dataset caricato
+  }
+  onChangeShowLabel() {
+    //mostra etichetta e fa una copia nel working copy?
+    if (this.detectWokingCopy) {
+      this.showTamporaryLabel = true;
+    }
   }
   openLlmDialog() {
     const mockLlmList: LlmDto[] = [
@@ -137,15 +157,6 @@ export class DatasetContentPageComponent {
   }
 }
 
-/*
-<h2>Domande e Risposte (pagina {{ dataset.page_n }})</h2>
-<ul>
-  <li *ngFor="let qa of dataset.qa_list">
-    <strong>{{ qa.question }}</strong><br>
-    Risposta: {{ qa.answer }}
-  </li>
-</ul>
-*/
 /* servira nel futuro quando i dati vengono forniti dal database e api bisognerebbe utilizzare async
 this.qaService.getDatasetAsync().subscribe(data => {
     this.dataset = data;

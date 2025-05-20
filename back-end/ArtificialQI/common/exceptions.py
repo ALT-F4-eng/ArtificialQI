@@ -36,3 +36,8 @@ class QaNonExistentException(Exception):
 
     def __init__(self, msg: str):
         super().__init__(msg)
+
+class LlmNonExistentException(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg)

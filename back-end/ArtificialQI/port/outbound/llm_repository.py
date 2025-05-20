@@ -12,7 +12,7 @@ class LlmRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update_dataset(self, llm: Llm) -> Optional[Llm]:
+    def update_llm(self, llm: Llm) -> Optional[Llm]:
         raise NotImplementedError
 
     @abstractmethod

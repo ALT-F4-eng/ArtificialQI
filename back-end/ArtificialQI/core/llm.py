@@ -8,4 +8,16 @@ class Llm:
     id: UUID
     name: str
     config: Config
-    last_save_date: date
+    last_mod: date
+
+def llm_factory_function(id: UUID, name:str, config:Config, last_mod: date) -> Llm:
+
+    if id is None:
+        raise ValueError
+
+    if not config:
+        raise ValueError
+
+    return Llm(
+        id=id, name=name, config=config, last_mod=last_mod
+    )

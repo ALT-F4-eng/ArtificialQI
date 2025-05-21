@@ -3,7 +3,7 @@ import { TestDto } from '../../core/models/test-dto.model';
 import { resultDto } from '../../core/models/result-dto.model';
 
 export const MOCK_TEST: TestDto[] = [
-    { name: 'Test Alpha', ID: 1, lastModified: new Date('2025-05-01'), Dataset: '1', LLM: 'LLM1', temp: false },
+    { name: 'Test Alpha', ID: 1, lastModified: new Date('2025-05-01'), Dataset: '1', LLM: 'LLM1', temp: true },
     { name: 'Test Beta', ID: 2, lastModified: new Date('2025-06-10'), Dataset: '2', LLM: 'LLM2', temp: false }
 ];
 
@@ -24,13 +24,22 @@ export class MockTestService {
     }
 
     saveTest(test: TestDto) {
-        const existingTest = MOCK_TEST.find((t) => t.ID === test.ID);
-        if (existingTest) {
-            Object.assign(existingTest, test);
-        } else {
-            MOCK_TEST.push(test);
-        }
-        return of(test);
+    const existingTest = MOCK_TEST.find((t) => t.ID === test.ID);
+    test.temp = false;
+
+    if (existingTest) {
+        Object.assign(existingTest, test);
+    } else {
+        MOCK_TEST.push(test);
+    }
+
+    return of(test);
+}
+
+
+
+    getAllResults(testID: number) {
+        return of(MOCK_RESULT);
     }
 
     compareTest(test1: TestDto, test2: TestDto) {

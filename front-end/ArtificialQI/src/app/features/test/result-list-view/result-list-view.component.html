@@ -1,1 +1,6 @@
-<p>result-list-view works!</p>
+<div class="result-list">
+  <app-result-element
+    *ngFor="let result of results"
+    [result]="result">
+  </app-result-element>
+</div>

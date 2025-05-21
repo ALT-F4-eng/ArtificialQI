@@ -1,1 +1,32 @@
-<p> Test page works!</p>
+<div class="test-page">
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- NameText -->
+  <h2 *ngIf="test">{{ test.name }}</h2>
+
+  <!-- TemporaryLabel -->
+  <p *ngIf="test?.temp" class="temp-label">⚠️ Questo test è temporaneo</p>
+
+  <!-- SummarySection (TODO: usare TestIndex) -->
+  <div class="summary-section">
+    <p><strong>Dataset:</strong> {{ test?.Dataset }}</p>
+    <p><strong>LLM:</strong> {{ test?.LLM }}</p>
+    <p><strong>Ultima modifica:</strong> {{ test?.lastModified | date:'short' }}</p>
+  </div>
+
+  <!-- Azioni -->
+  <div class="actions">
+    <button (click)="compareTest()">Confronta con un altro test</button>
+    <button *ngIf="test?.temp" (click)="saveTest()">Salva test</button>
+  </div>
+
+  <!-- ResultSection -->
+  <div class="result-section">
+    <h3>Risultati</h3>
+    <app-result-list-view [results]="results"></app-result-list-view>
+    <!-- TODO: inserire grafico -->
+  </div>
+</div>

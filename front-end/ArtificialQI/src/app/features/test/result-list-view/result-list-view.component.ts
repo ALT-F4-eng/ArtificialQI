@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { resultDto } from '../../../core/models/result-dto.model';
+import { ResultElementComponent } from '../result-element/result-element.component';
 
 @Component({
   selector: 'app-result-list-view',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ResultElementComponent],
   templateUrl: './result-list-view.component.html',
-  styleUrl: './result-list-view.component.css'
+  styleUrls: ['./result-list-view.component.css']
 })
 export class ResultListViewComponent {
-
+  @Input() results: resultDto[] = [];
 }

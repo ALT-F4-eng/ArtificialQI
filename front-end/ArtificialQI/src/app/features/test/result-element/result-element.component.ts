@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { resultDto } from '../../../core/models/result-dto.model';
 
 @Component({
   selector: 'app-result-element',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './result-element.component.html',
-  styleUrl: './result-element.component.css'
+  styleUrls: ['./result-element.component.css']
 })
 export class ResultElementComponent {
-
+  @Input() result!: resultDto;
 }

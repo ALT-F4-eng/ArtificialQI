@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule, Router } from '@angular/router';
 import {LlmDto} from '../../../core/models/llm-dto.model';
 import {LlmService} from '../../../core/services/llm.service';
-import { ConfirmComponent } from '../../../shared/confirm-message/confirm.component';
+import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 
 @Component({

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCardTitle } from '@angular/material/card';
+
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { TestDto } from '../../../core/models/test-dto.model';
@@ -16,6 +18,7 @@ import { TestNameDialogComponent } from '../../../shared/components/test-name-di
     MatCardModule,
     DatePipe,
     MatButtonModule,
+    MatCardTitle,
     RouterModule],
   templateUrl: './test-element.component.html',
   styleUrl: './test-element.component.css'

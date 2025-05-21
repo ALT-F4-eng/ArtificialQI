@@ -16,7 +16,7 @@ export const routes: Routes = [
       { path: 'testlist', component: TestListPageComponent },
       { path: 'llm', component: MenuTestingComponent },
       { path: 'dataset', component: DatasetListPageComponent },
-      { path: 'datasetContentPage', component: DatasetContentPageComponent }
+      { path: 'datasetContentPage', component: DatasetContentPageComponent },
       { path: 'test', component: MenuTestingComponent }
     ],
   },

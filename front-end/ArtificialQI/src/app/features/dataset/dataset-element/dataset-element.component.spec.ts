@@ -3,8 +3,8 @@ import { DatasetElementComponent } from './dataset-element.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
-import { datasetDto } from '../../../core/models/dataset-dto.model';
-const mockDataset: datasetDto = {
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
+const mockDataset: DatasetDto = {
   id: 1,
   name: 'Dataset Alpha',
   last_mod: new Date('2025-05-01'),

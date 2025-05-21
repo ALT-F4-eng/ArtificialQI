@@ -1,0 +1,5 @@
+.container {
+  display: flex;
+  justify-content: center; /* centra orizzontalmente */
+  /* align-items: center; se vuoi anche verticale */
+}

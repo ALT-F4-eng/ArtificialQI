@@ -1,7 +1,7 @@
 <mat-card class="llm-card">
   <mat-card-header>
     <mat-card-title>{{ llm.name }}</mat-card-title>
-    <mat-card-subtitle>Ultima modifica: {{ llm.last_mod | date: 'short' }}</mat-card-subtitle>
+    <mat-card-title class="subtitle">Ultima modifica: {{ llm.last_mod | date: 'short' }}</mat-card-title>
   </mat-card-header>
 
   <mat-divider></mat-divider>
@@ -46,6 +46,6 @@
   </mat-card-content>
 
   <mat-card-actions align="end">
-    <button mat-flat-button color="primary" (click)="onModifyRequest()">Modifica</button>
+    <button mat-raised-button (click)="onModifyRequest()">Modifica</button>
   </mat-card-actions>
 </mat-card>

@@ -1,0 +1,30 @@
+<p>dataset-content-page works!</p>
+<h2>
+  {{ dataset.name }}
+  <span *ngIf="showTamporaryLabel" class="temporary-label">Temporaneo</span>
+</h2>
+
+<app-search-bar (search) = "handleSearchQA($event)"></app-search-bar>
+<button mat-raised-button (click)="addQA()">
+<mat-icon>add</mat-icon> addQA <!-- OPPURE play_arrow -->
+</button>
+<button mat-raised-button (click)="saveDataset()">
+  <mat-icon>save</mat-icon> Salva le modifiche
+</button>
+
+<button mat-raised-button (click)="openLlmDialog()">
+<mat-icon>bug_report</mat-icon> Test Dataset <!-- OPPURE play_arrow -->
+</button>
+
+<app-dataset-page-view 
+[datasetPage] = "datasetPage"
+(onModify)="onChangeShowLabel()" 
+></app-dataset-page-view>
+
+<app-page-navigation
+  [totalItems]="totalItems"
+  [pageSize]="pageSize"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange($event)">
+</app-page-navigation>
+

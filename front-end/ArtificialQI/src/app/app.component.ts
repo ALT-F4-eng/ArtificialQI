@@ -10,4 +10,5 @@ import { LlmListPageComponent } from './features/LLM/llm-list-page/llm-list-page
 })
 export class AppComponent {
   title = 'ArtificialQI';
+  //mockDataset =  { name: 'Chaonima', lastModified: new Date('2025-05-01') };
 }

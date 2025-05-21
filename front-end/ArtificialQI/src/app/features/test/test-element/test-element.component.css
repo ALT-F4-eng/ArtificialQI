@@ -1,0 +1,28 @@
+mat-card-content {
+  color: white; /* colore del carattere */
+}
+
+.test-element {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* per adattarsi su schermi piccoli */
+}
+
+.info {
+  max-width: 80%;
+}
+
+.test-actions button {
+  margin-right: 10px;
+}
+
+.test-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

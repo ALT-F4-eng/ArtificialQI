@@ -9,4 +9,3 @@ export interface LlmDto {
   key_resp: string;
   kv_body: KeyValuePairDto[];
   kv_header: KeyValuePairDto[];
-}

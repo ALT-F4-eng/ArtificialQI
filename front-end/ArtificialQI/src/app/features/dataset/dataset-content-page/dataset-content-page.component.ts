@@ -29,6 +29,7 @@ import { PageNavigationComponent } from '../../../shared/components/page-navigat
     SearchBarComponent,
     DatasetPageViewComponent,
     PageNavigationComponent,
+    
   ],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
@@ -40,10 +41,11 @@ export class DatasetContentPageComponent {
   datasetPage!: DatasetPageDto;
   showTamporaryLabel = false;
   detectWokingCopy = false; // si fa una working copy solo se nel caso l'utente modifica da un dataset caricato
-  // per le cose della pagina
+  // poi tutte le modifiche vengono salvate all'interno del db su workingcopy finche l'utente non decide di salvare tale dataset
+  // inpute per pageNavigation della pagina
   totalItems = 0;
-  pageSize = 20;
-  currentPage = 1;
+  pageSize = 5;// dovrebbe essere 20
+  currentPage = 1;// di deafult
 
   constructor(private qaService: QAService, private route: ActivatedRoute) {} //private router: Router
   ngOnInit(): void {
@@ -55,25 +57,34 @@ export class DatasetContentPageComponent {
         this.showTamporaryLabel = true;
       } else if (mode === 'edit') {
         this.dataset = this.qaService.getDataset();
-        this.datasetPage = this.qaService.getDatasetPage();
+        this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
         this.detectWokingCopy = true;
-        this.totalItems = 1000; // da API o metadato chiedere al back-end
+        this.totalItems = 100; // da API o metadato chiedere al back-end
       }
     });
   }
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
   }
+
+  // bisognerebbe dire a l'utente di salvare le modifiche altrimenti si perderano i dati modificati,se viene mostrato l'etichetta temporary
   onPageChange(page: number) {
     this.currentPage = page;
     this.loadPage(page);
   }
   loadPage(page: number) {
+    /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
+    // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
+    console.log('pagina reinidirizzata', page);
+    //mock della chiamata, dovrebbe avere come paramentro page ma quasto solo faccendo una mock
+    this.datasetPage = this.qaService.getDatasetPage2mock(page);
     // Simulazione: sostituisci con chiamata HTTP reale
     /*
     this.apiService.getDatasetPage(page, this.pageSize).subscribe((data: DatasetPageDto) => {
       this.datasetPage = data;
     });*/
+
+
   }
 
   private dialog = inject(MatDialog);
@@ -102,6 +113,7 @@ export class DatasetContentPageComponent {
   }
   onChangeShowLabel() {
     //mostra etichetta e fa una copia nel working copy?
+    console.log('Hai modificato',this.detectWokingCopy);
     if (this.detectWokingCopy) {
       this.showTamporaryLabel = true;
     }
@@ -115,8 +127,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.openai.com',
         key_req: 'prompt',
         key_resp: 'choices[0].message.content',
-        kv_body: new Array,
-        kv_header: new Array,
+        kv_body: new Array(),
+        kv_header: new Array(),
       },
       {
         id: 2,
@@ -125,8 +137,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.anthropic.com',
         key_req: 'input',
         key_resp: 'completion',
-        kv_body: new Array,
-        kv_header: new Array,
+        kv_body: new Array(),
+        kv_header: new Array(),
       },
       {
         id: 3,
@@ -135,8 +147,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.mistral.ai',
         key_req: 'prompt',
         key_resp: 'output',
-        kv_body: new Array,
-        kv_header: new Array,
+        kv_body: new Array(),
+        kv_header: new Array(),
       },
       {
         id: 4,
@@ -145,8 +157,8 @@ export class DatasetContentPageComponent {
         url: 'https://generativelanguage.googleapis.com',
         key_req: 'contents',
         key_resp: 'candidates[0].content.parts[0].text',
-       kv_body: new Array,
-        kv_header: new Array,
+        kv_body: new Array(),
+        kv_header: new Array(),
       },
       {
         id: 5,
@@ -155,8 +167,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.meta.ai',
         key_req: 'prompt',
         key_resp: 'response',
-        kv_body: new Array,
-        kv_header: new Array,
+        kv_body: new Array(),
+        kv_header: new Array(),
       },
     ];
 

@@ -18,7 +18,7 @@
 
 <app-dataset-page-view 
 [datasetPage] = "datasetPage"
-(onModify)="onChangeShowLabel()" 
+(modifyEventShowLabel)="onChangeShowLabel()" 
 ></app-dataset-page-view>
 
 <app-page-navigation
@@ -27,4 +27,3 @@
   [currentPage]="currentPage"
   (pageChange)="onPageChange($event)">
 </app-page-navigation>
-

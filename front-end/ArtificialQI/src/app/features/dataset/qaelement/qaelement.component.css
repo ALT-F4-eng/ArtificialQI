@@ -27,9 +27,10 @@ mat-card-content {
   flex-wrap: wrap;
 }
 
-.white-line {
+mat-divider {
   border: none;
   height: 1px;
   background-color: white;
   margin: 8px 0;
 }
+

@@ -9,8 +9,8 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
   styleUrl: './page-navigation.component.css',
 })
 export class PageNavigationComponent  {
-  @Input() totalItems = 0;
-  @Input() pageSize = 10;
+  @Input() totalItems = 0;// deve ricevere dal componente padre questi input
+  @Input() pageSize = 5;
   @Input() currentPage = 1;
 
   @Output() pageChange = new EventEmitter<number>();

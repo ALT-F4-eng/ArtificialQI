@@ -1,0 +1,83 @@
+<app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+<form [formGroup]="llmForm" (ngSubmit)="onSubmit()" class="llm-form">
+  <mat-form-field class="full-width">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name" />
+    <mat-error *ngIf="llmForm.get('name')?.hasError('required') && llmForm.get('name')?.touched">
+    Il campo Nome è obbligatorio.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field  class="full-width">
+    <mat-label>URL</mat-label>
+    <input matInput formControlName="url" />
+    <mat-error *ngIf="llmForm.get('url')?.hasError('required') && llmForm.get('url')?.touched">
+    Il campo URL è obbligatorio.
+    </mat-error>
+    <mat-error *ngIf="llmForm.get('url')?.hasError('invalidUrl') && llmForm.get('url')?.touched">
+      Inserire un URL valido.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field  class="full-width">
+    <mat-label>Chiave domanda</mat-label>
+    <input matInput formControlName="key_req" />
+    <mat-error *ngIf="llmForm.get('key_req')?.hasError('required') && llmForm.get('key_req')?.touched">
+    Il campo Chiave domanda è obbligatorio.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field  class="full-width">
+    <mat-label>Chiave risposta</mat-label>
+    <input matInput formControlName="key_resp" />
+    <mat-error *ngIf="llmForm.get('key_resp')?.hasError('required') && llmForm.get('key_resp')?.touched">
+    Il campo Chiave risposta è obbligatorio.
+    </mat-error>
+  </mat-form-field>
+
+  <section class="section-block">
+    <h3>Header</h3>
+    <div formArrayName="kv_header" class="kv-array">
+      <div *ngFor="let group of kvHeader.controls; let i = index" [formGroupName]="i" class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Key</mat-label>
+          <input matInput formControlName="key" />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Value</mat-label>
+          <input matInput formControlName="value" />
+        </mat-form-field>
+      </div>
+      <button mat-raised-button type="button" (click)="addHeader()" class="add-btn"><mat-icon>add</mat-icon>Header</button>
+    </div>
+  </section>
+
+  <section class="section-block">
+    <h3>Body</h3>
+    <div formArrayName="kv_body" class="kv-array">
+      <div *ngFor="let group of kvBody.controls; let i = index" [formGroupName]="i" class="row">
+        <mat-form-field  class="half-width">
+          <mat-label>Key</mat-label>
+          <input matInput formControlName="key" />
+        </mat-form-field>
+
+        <mat-form-field  class="half-width">
+          <mat-label>Value</mat-label>
+          <input matInput formControlName="value" />
+        </mat-form-field>
+      </div>
+      <button mat-raised-button type="button" (click)="addBody()" class="add-btn"><mat-icon>add</mat-icon>body</button>
+    </div>
+  </section>
+
+  <div class="actions">
+    <button mat-raised-button type="submit">Salva</button>
+    <button mat-raised-button type="button" (click)="onCancel()">Annulla</button>
+  </div>
+</form>

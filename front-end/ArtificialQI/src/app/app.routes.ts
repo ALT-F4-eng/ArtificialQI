@@ -1,4 +1,8 @@
 import { Routes } from '@angular/router';
+
+import { LlmPageComponent } from './features/LLM/llm-page/llm-page.component'
+import { LlmListPageComponent } from './features/LLM/llm-list-page/llm-list-page.component';
+import { LlmFormComponent } from './features/LLM/llm-form/llm-form.component';
 import { StandardPageComponent } from './layout/standard-page/standard-page.component';
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
@@ -14,10 +18,13 @@ export const routes: Routes = [
     children: [
       { path: '', component: HomePageComponent },
       { path: 'testlist', component: TestListPageComponent },
-      { path: 'llm', component: MenuTestingComponent },
+      { path: 'llm', component: LlmListPageComponent },
       { path: 'dataset', component: DatasetListPageComponent },
       { path: 'datasetContentPage', component: DatasetContentPageComponent },
-      { path: 'test', component: MenuTestingComponent }
+      { path: 'test', component: MenuTestingComponent },
+      { path: 'llm/:id', component: LlmPageComponent },
+      { path: 'llm-form', component: LlmFormComponent },
+      { path: 'llm-form/:id', component: LlmFormComponent }
     ],
   },
 ];

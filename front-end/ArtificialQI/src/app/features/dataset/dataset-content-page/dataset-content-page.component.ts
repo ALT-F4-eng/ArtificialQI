@@ -115,8 +115,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.openai.com',
         key_req: 'prompt',
         key_resp: 'choices[0].message.content',
-        kv_body: new Set(),
-        kv_header: new Set(),
+        kv_body: new Array,
+        kv_header: new Array,
       },
       {
         id: 2,
@@ -125,8 +125,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.anthropic.com',
         key_req: 'input',
         key_resp: 'completion',
-        kv_body: new Set(),
-        kv_header: new Set(),
+        kv_body: new Array,
+        kv_header: new Array,
       },
       {
         id: 3,
@@ -135,8 +135,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.mistral.ai',
         key_req: 'prompt',
         key_resp: 'output',
-        kv_body: new Set(),
-        kv_header: new Set(),
+        kv_body: new Array,
+        kv_header: new Array,
       },
       {
         id: 4,
@@ -145,8 +145,8 @@ export class DatasetContentPageComponent {
         url: 'https://generativelanguage.googleapis.com',
         key_req: 'contents',
         key_resp: 'candidates[0].content.parts[0].text',
-        kv_body: new Set(),
-        kv_header: new Set(),
+       kv_body: new Array,
+        kv_header: new Array,
       },
       {
         id: 5,
@@ -155,8 +155,8 @@ export class DatasetContentPageComponent {
         url: 'https://api.meta.ai',
         key_req: 'prompt',
         key_resp: 'response',
-        kv_body: new Set(),
-        kv_header: new Set(),
+        kv_body: new Array,
+        kv_header: new Array,
       },
     ];
 

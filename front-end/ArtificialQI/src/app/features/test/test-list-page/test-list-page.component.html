@@ -1,0 +1,13 @@
+<app-search-bar (search)="handleSearch($event)"></app-search-bar>
+<app-test-list-view
+  [tests]="filteredTests"
+  (rename)="renameTest($event.index, $event.newName)"
+  (testDeleted)="onTestDeleteRequest($event)"
+  (testLoaded)="onTestLoaded($event)"
+></app-test-list-view>
+<app-confirm 
+  *ngIf="showConfirm"
+  [message]="confirmMessage"
+  (confirmed)="onTestDeleteConfirmed()"
+  (canceled)="onTestDeleteCanceled()"
+></app-confirm>

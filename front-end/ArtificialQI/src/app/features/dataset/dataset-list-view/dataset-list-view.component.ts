@@ -4,7 +4,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
-import { datasetDto } from '../../../core/models/dataset-dto.model';
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
 // dataset-list-view.component.ts
 export interface RenameEvent {
   index: number;
@@ -25,7 +25,7 @@ export interface RenameEvent {
   styleUrls: ['./dataset-list-view.component.css'],
 })
 export class DatasetListViewComponent {
-  @Input() datasets: datasetDto[] = [];
+  @Input() datasets: DatasetDto[] = [];
 
   @Output() rename = new EventEmitter<RenameEvent>();
   onRename(index: number, newName: string) {
@@ -38,14 +38,14 @@ export class DatasetListViewComponent {
     this.datasetCopied.emit(index);
   }
 
-  @Output() datasetDeleted = new EventEmitter<datasetDto>();
-  onDelete(dataset: datasetDto) {
+  @Output() datasetDeleted = new EventEmitter<DatasetDto>();
+  onDelete(dataset: DatasetDto) {
     console.log('Indice ricevuto per cancellazione list view:', dataset);
     this.datasetDeleted.emit(dataset);
   }
 
-  @Output() datasetLoaded = new EventEmitter<datasetDto>();
-  onDatasetLoaded(dataset: datasetDto) {
+  @Output() datasetLoaded = new EventEmitter<DatasetDto>();
+  onDatasetLoaded(dataset: DatasetDto) {
     this.datasetLoaded.emit(dataset);
   }
 }

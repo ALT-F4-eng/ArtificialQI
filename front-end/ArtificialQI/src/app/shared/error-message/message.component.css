@@ -1,0 +1,39 @@
+.message-box {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.message-box .icon {
+  margin-right: 0.75rem;
+}
+
+.message-box .text {
+  flex: 1;
+}
+
+.message-box .close-btn {
+  color: inherit;
+  margin-left: 0.5rem;
+}
+
+.message-box.success {
+  background-color: #4caf50;
+}
+
+.message-box.error {
+  background-color: #f44336;
+}
+
+.message-box.warning {
+  background-color: #ff9800;
+}
+
+.message-box.info {
+  background-color: #2196f3;
+}

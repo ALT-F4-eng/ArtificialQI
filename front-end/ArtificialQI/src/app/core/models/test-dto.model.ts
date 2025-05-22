@@ -1,3 +1,4 @@
+
 import { resultDto } from './result-dto.model';
 
 export interface TestDto {

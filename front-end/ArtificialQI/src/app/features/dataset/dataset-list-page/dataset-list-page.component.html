@@ -1,9 +1,8 @@
-<p>dataset-list-page works!</p>
 <app-file-upload></app-file-upload>
 <button mat-raised-button (click)="createDataset()">
   <mat-icon>add</mat-icon> Crea dataset
 </button>
-<app-search-bar (search)="handleSearch($event)"></app-search-bar>
+<app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
 <app-dataset-list-view
   [datasets]="filteredDatasets"
   (rename)="renameDataset($event.index, $event.newName)"

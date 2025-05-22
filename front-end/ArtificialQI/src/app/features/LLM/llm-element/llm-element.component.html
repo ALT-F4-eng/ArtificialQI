@@ -1,0 +1,14 @@
+<mat-card class="llm-element">
+  <mat-card-content>
+    <div class="header">
+      <div class="info">
+        <mat-card-title>{{ llm?.name }}</mat-card-title>
+        <p>Ultima modifica: {{ llm?.last_mod | date : "short" }}</p>
+      </div>
+      <div class="llm-actions">
+        <button mat-raised-button (click)="deleteLlm()">Elimina</button>
+        <button mat-raised-button (click)="loadLlm()">Carica</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -9,9 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class TestService {
     constructor(private http: HttpClient) {}
 
-    getTest(ID: number): Observable<TestDto> {
-        return this.http.get<TestDto>(`/test/${ID}`);
-    }
+
 
     saveTest(test: TestDto): Observable<TestDto> {
         return this.http.post<TestDto>('/test', test);
@@ -23,5 +21,18 @@ export class TestService {
 
     getAllResults(testID: number): Observable<any[]> {
         return this.http.get<any[]>(`/test/${testID}/results`);
+
+    getAllTests(): Observable<TestDto[]> {
+        return this.http.get<TestDto[]>('/testlist');
+
+    }
+    getTest(ID: number): Observable<TestDto> {
+        return this.http.get<TestDto>(`/testlist/${ID}`);
+    }
+    deleteTest(ID: number): Observable<void> {
+        return this.http.delete<void>(`/testlist/${ID}`);
+    }
+    renameTest(ID: number, newName: string): Observable<TestDto> {
+        return this.http.put<TestDto>(`/testlist/${ID}`, { name: newName });
     }
 }

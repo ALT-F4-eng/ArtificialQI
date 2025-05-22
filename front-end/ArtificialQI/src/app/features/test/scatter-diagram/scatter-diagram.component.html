@@ -1,1 +1,9 @@
-<p>scatter-diagram works!</p>
+<div class="scatter-container">
+  
+  <canvas baseChart
+          [data]="scatterChartData"
+          [options]="scatterChartOptions"
+          type="scatter">
+  </canvas>
+<button (click)="resetZoom()">Reset Zoom</button>
+</div>

@@ -1,0 +1,12 @@
+.summary-charts {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  width: 250px; /* più piccolo */
+  height: auto;
+}

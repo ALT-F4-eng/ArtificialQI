@@ -1,1 +1,20 @@
-<p>test-page-view works!</p>
+<div class="result-section">
+  <h3>Risultati</h3>
+  <div *ngFor="let result of results; let i = index" [attr.id]="'question-' + (i + 1)">
+    <!-- puoi sostituire con <app-result-list-view> se serve -->
+    <strong>Domanda {{ i + 1 }}:</strong> {{ result.question }}<br>
+    <strong>Risposta ottenuta:</strong> {{ result.given_answer }}<br>
+    <strong>Risposta attesa:</strong> {{ result.expected_answer }}<br>
+    <strong>Similarità:</strong> {{ result.similarity }}<br>
+    <strong>Correttezza:</strong><span [ngClass]="{ correct: result.correct, incorrect: !result.correct }">
+      {{ result.correct ? '✔️ Corretta' : '❌ Sbagliata' }}</span><br>
+    <hr>
+</div>
+
+<div class="scatter-section">
+  <h3>Diagramma di Dispersione</h3>
+  <app-scatter-diagram 
+    [elementValues]="elementValues" 
+    (pointClicked)="scrollToQuestion($event)">
+  </app-scatter-diagram>
+</div>

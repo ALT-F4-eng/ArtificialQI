@@ -21,10 +21,10 @@ export class TestService {
 
     getAllResults(testID: number): Observable<any[]> {
         return this.http.get<any[]>(`/test/${testID}/results`);
+    }
 
     getAllTests(): Observable<TestDto[]> {
         return this.http.get<TestDto[]>('/testlist');
-
     }
     getTest(ID: number): Observable<TestDto> {
         return this.http.get<TestDto>(`/testlist/${ID}`);

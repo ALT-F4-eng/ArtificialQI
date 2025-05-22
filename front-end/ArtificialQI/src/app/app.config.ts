@@ -15,9 +15,6 @@ import { MockLlmService } from './test/llm-test/llm.service.mock';
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-    { provide: TestService, useClass: MockTestService }
-  ]
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
               provideRouter(routes), 
               { provide: TestService, useClass: MockTestService } , 

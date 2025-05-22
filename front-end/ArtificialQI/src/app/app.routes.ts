@@ -7,6 +7,7 @@ import { StandardPageComponent } from './layout/standard-page/standard-page.comp
 import { HomePageComponent } from './features/home/home-page/home-page.component';
 import { MenuTestingComponent } from './menu-testing/menu-testing.component'
 import { DatasetListPageComponent } from './features/dataset/dataset-list-page/dataset-list-page.component';
+import { TestPageComponent } from './features/test/test-page/test-page.component';
 import { DatasetContentPageComponent } from './features/dataset/dataset-content-page/dataset-content-page.component';// per testing
 import { TestListPageComponent } from './features/test/test-list-page/test-list-page.component';
 
@@ -21,7 +22,7 @@ export const routes: Routes = [
       { path: 'llm', component: LlmListPageComponent },
       { path: 'dataset', component: DatasetListPageComponent },
       { path: 'datasetContentPage', component: DatasetContentPageComponent },
-      { path: 'test', component: MenuTestingComponent },
+      { path: 'test', component: TestPageComponent },
       { path: 'llm/:id', component: LlmPageComponent },
       { path: 'llm-form', component: LlmFormComponent },
       { path: 'llm-form/:id', component: LlmFormComponent }

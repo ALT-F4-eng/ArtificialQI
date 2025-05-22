@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 //Dto che serve
 import { DatasetDto } from '../models/dataset-dto.model';
@@ -62,7 +64,7 @@ export const MOCK_DATASETPAGEQA_2: DatasetPageDto = {
     },
     {
       id: 8,
-      question: "In che anno è iniziata la Seconda Guerra Mondiale?",
+      question: 'In che anno è iniziata la Seconda Guerra Mondiale?',
       answer: '1939',
     },
     {
@@ -84,7 +86,7 @@ export const MOCK_DATASETPAGEQA_2: DatasetPageDto = {
   providedIn: 'root',
 })
 export class QAService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
   private dataset: DatasetDto = { ...MOCK_DATASET };
   private datasetPage: DatasetPageDto = {
     ...MOCK_DATASETPAGEQA, //copia
@@ -119,23 +121,29 @@ export class QAService {
         question: newQuestion,
         answer: newAnswer,
       };
-      console.log('modificato con successo')// si potrebbe mandare una notifica di successo
+      console.log('modificato con successo'); // si potrebbe mandare una notifica di successo
     } else {
       console.warn(`QA con id ${id} non trovato`);
     }
   }
   deleteQA(id: number): void {
-  const index = this.datasetPage.qa_list.findIndex((qa) => qa.id === id);
-  if (index !== -1) {
-    this.datasetPage.qa_list.splice(index, 1);
-    console.log(`Elemento con ID ${id} eliminato con successo.`);
-  } else {
-    console.warn(`Elemento con ID ${id} non trovato.`);
+    const index = this.datasetPage.qa_list.findIndex((qa) => qa.id === id);
+    if (index !== -1) {
+      this.datasetPage.qa_list.splice(index, 1);
+      console.log(`Elemento con ID ${id} eliminato con successo.`);
+    } else {
+      console.warn(`Elemento con ID ${id} non trovato.`);
+    }
   }
-}
+  createDataset(dataset: DatasetDto): Observable<{ id: number }> {
+    return this.http.post<{ id: number }>('/api/dataset', dataset);
+  }
+/*
+  updateDataset(id: number, dataset: DatasetDto): Observable<void> {
+    return this.http.put<void>(`/api/dataset/${id}`, dataset);
+  }*/
 
   //altrimenti c'è possibilità che id vengono ripetuti
   //mock della funzionalità di generazione di id delle coppie di domande e risposte
   generateUniqueId(): void {}
-
 }

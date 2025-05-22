@@ -44,7 +44,9 @@ export class DatasetListPageComponent {
     this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
   }
   createDataset() {
-    this.router.navigate(['/datasetContentPage'], { queryParams: { mode: 'create' } });
+    this.router.navigate(['/datasetContentPage'], {
+      queryParams: { mode: 'create' },
+    });
   }
 
   handleSearchDataset(term: string) {
@@ -93,8 +95,8 @@ export class DatasetListPageComponent {
   // load
   onDatasetLoadRequest(dataset: DatasetDto) {
     this.showConfirmLoad = true;
-    this.datasetid = dataset.id;// datasetid o datasetselected  da capire nel futuro 
-    
+    this.datasetid = dataset.id; // datasetid o datasetselected  da capire nel futuro
+
     this.datasetSelected = dataset;
     console.log('Dataset caricato:', dataset);
   }
@@ -102,8 +104,11 @@ export class DatasetListPageComponent {
     if (this.datasetSelected !== undefined) {
       // funzionalità da testare dopo la creazione del datasetcontentpage
       // da cambiare
-      this.router.navigate(['/datasetContentPage'], { queryParams: { mode: 'edit' } });
-     /* this.router.navigate(['/datasetContentPage'], {
+      this.router.navigate(['/datasetContentPage', this.datasetid], {
+        queryParams: { mode: 'edit' },
+      });
+
+      /* this.router.navigate(['/datasetContentPage'], {
         queryParams: { name: this.datasetSelected.name },
       });*/
     }

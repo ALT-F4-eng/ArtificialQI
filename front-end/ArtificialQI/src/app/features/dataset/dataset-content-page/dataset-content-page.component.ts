@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 //Dto che serve
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
@@ -19,6 +20,7 @@ import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view
 import { QADialogComponent } from '../qadialog/qadialog.component';
 import { LLMselectionListComponent } from '../llmselection-list/llmselection-list.component';
 import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 @Component({
   selector: 'app-dataset-content-page',
@@ -29,7 +31,7 @@ import { PageNavigationComponent } from '../../../shared/components/page-navigat
     SearchBarComponent,
     DatasetPageViewComponent,
     PageNavigationComponent,
-    
+    DatasetNameDialogComponent,
   ],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
@@ -44,18 +46,30 @@ export class DatasetContentPageComponent {
   // poi tutte le modifiche vengono salvate all'interno del db su workingcopy finche l'utente non decide di salvare tale dataset
   // inpute per pageNavigation della pagina
   totalItems = 0;
-  pageSize = 5;// dovrebbe essere 20
-  currentPage = 1;// di deafult
-
-  constructor(private qaService: QAService, private route: ActivatedRoute) {} //private router: Router
+  pageSize = 5; // dovrebbe essere 20
+  currentPage = 1; // di deafult
+  mode: 'create' | 'edit' = 'create';
+  constructor(
+    private qaService: QAService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {} //private router: Router
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      const mode = params['mode'];
-      if (mode === 'create') {
+      this.mode = params['mode'];
+      if (this.mode === 'create') {
         this.dataset = emptyDataset;
         this.datasetPage = emptyDatasetPage;
         this.showTamporaryLabel = true;
-      } else if (mode === 'edit') {
+      } else if (this.mode === 'edit') {
+        // Carica dataset dall'id
+        /*
+        this.qaService.getDatasetById(this.dataset.id).subscribe(dataset => {
+          this.dataset = dataset;
+          this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
+          this.detectWokingCopy = true;
+        });*/
+
         this.dataset = this.qaService.getDataset();
         this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
         this.detectWokingCopy = true;
@@ -63,6 +77,7 @@ export class DatasetContentPageComponent {
       }
     });
   }
+
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
   }
@@ -83,8 +98,6 @@ export class DatasetContentPageComponent {
     this.apiService.getDatasetPage(page, this.pageSize).subscribe((data: DatasetPageDto) => {
       this.datasetPage = data;
     });*/
-
-
   }
 
   private dialog = inject(MatDialog);
@@ -107,13 +120,42 @@ export class DatasetContentPageComponent {
     // this.showTamporaryLabel = true;
     // bisgona gestire cosa fa quando si chiude il dialog
   }
+  //nel caso che sia create bisogna anche mostrare il dialogo per segnalare il nome e poi passare da create a edit
+  private dialogName = inject(MatDialog);
   saveDataset() {
+    if (this.mode === 'create') {
+      const dialogRef = this.dialogName.open(DatasetNameDialogComponent, {
+        data: { title: 'Nuovo Nome' },
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          console.log('Nuovo nome nel elemento:', result);
+          // dthis.renameSignal.emit(result); // Invia il nuovo nome al padre tramite l'evento
+          //this.qaService.createDataset(this.dataset).subscribe((response) => {
+          /*const newId = response.id; // <-- restituito dal back-end*/
+          /*const newId = 888;
+            // Passa alla modalità 'edit' con id nel path
+            this.router.navigate(['/datasetContentPage', newId], {
+              queryParams: { mode: 'edit' },
+            });
+            // Aggiorna lo stato locale
+            this.mode = 'edit';
+          });*/
+          //la logica è salvare tutto e reindirizzare l'utente  
+          this.router.navigate(['/datasetContentPage', 88], {
+            queryParams: { mode: 'edit' },
+          });
+        }
+      });
+    }
     this.showTamporaryLabel = false;
+    //detectworkingcopy per dire se deve creare una working copy
     this.detectWokingCopy = true; // nel momento in cui l'utente salva il dataset diventa un dataset caricato
   }
+
   onChangeShowLabel() {
     //mostra etichetta e fa una copia nel working copy?
-    console.log('Hai modificato',this.detectWokingCopy);
+    console.log('Hai modificato', this.detectWokingCopy);
     if (this.detectWokingCopy) {
       this.showTamporaryLabel = true;
     }

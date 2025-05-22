@@ -38,7 +38,7 @@ export class DatasetElementComponent implements OnInit {
   openRenameDialog() {
     if (!this.dataset) return; // Se non c'è un dataset, esci
     const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
-      data: { name: this.dataset.name },
+      data: { title:"Rinomina Dataset" , name: this.dataset.name },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

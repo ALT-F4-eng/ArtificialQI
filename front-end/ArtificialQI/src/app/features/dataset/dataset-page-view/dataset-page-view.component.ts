@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 //sottocomponenti
 import { QAListViewComponent } from '../qalist-view/qalist-view.component';
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
@@ -44,6 +45,8 @@ export class DatasetPageViewComponent {
       this.showConfirmDelete = false;
       this.modifyEventShowLabel.emit();
       console.log('qa eliminato :', this.idqa);
+      //un aggiornamento è necessario, nel caso se è presente altri elementi nella pagina successiva
+      this.datasetPage = this.qaService.updateDatasetPage(this.datasetPage!.page_n);
     }
   }
 

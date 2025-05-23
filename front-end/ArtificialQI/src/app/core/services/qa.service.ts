@@ -110,6 +110,10 @@ export class QAService {
   getDatasetPage2mock(pageindex: number): DatasetPageDto {
     return this.datasetPage2;
   }
+  
+  getDatasetPageFiltered(term:string): DatasetPageDto{
+    return this.datasetPage;
+  }
 
   // Metodo per rinominare un dataset
   modifyDatasetPage(id: number, newQuestion: string, newAnswer: string): void {
@@ -135,6 +139,11 @@ export class QAService {
       console.warn(`Elemento con ID ${id} non trovato.`);
     }
   }
+  // fa un aggiornamento
+  updateDatasetPage(pageIndex:number): DatasetPageDto {
+    return this.datasetPage
+  }
+
   createDataset(dataset: DatasetDto): Observable<{ id: number }> {
     return this.http.post<{ id: number }>('/api/dataset', dataset);
   }

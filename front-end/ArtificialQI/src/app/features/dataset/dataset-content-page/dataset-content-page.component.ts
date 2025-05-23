@@ -80,6 +80,7 @@ export class DatasetContentPageComponent {
 
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
+    this.datasetPage = this.qaService.getDatasetPageFiltered(term);
   }
 
   // bisognerebbe dire a l'utente di salvare le modifiche altrimenti si perderano i dati modificati,se viene mostrato l'etichetta temporary

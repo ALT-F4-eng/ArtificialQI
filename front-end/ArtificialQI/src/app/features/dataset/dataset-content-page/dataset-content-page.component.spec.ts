@@ -38,12 +38,25 @@ const MOCK_DATASETPAGEQA: DatasetPageDto = {
 const mockQAService = {
   getDataset: jest.fn().mockReturnValue(MOCK_DATASET),
   getDatasetPage: jest.fn().mockReturnValue(MOCK_DATASETPAGEQA),
-  getDatasetPage2mock: jest.fn().mockReturnValue(MOCK_DATASETPAGEQA),
+  getDatasetPage2mock: jest.fn().mockReturnValue({
+    page_n: 2,
+    qa_list: [
+      { id: 3, question: 'Domanda pagina 2', answer: 'Risposta pagina 2' },
+    ],
+  }),
   getDatasetPageFiltered: jest.fn().mockReturnValue(MOCK_DATASETPAGEQA),
   modifyDatasetPage: jest.fn(),
   deleteQA: jest.fn(),
   createDataset: jest.fn(),
   generateUniqueId: jest.fn(),
+  addQA: jest.fn(),
+  updateDatasetPage: jest.fn().mockReturnValue({
+    page_n: 1,
+    qa_list: [
+      { id: 1, question: 'Esistente', answer: 'Risposta' },
+      { id: 2, question: 'Nuova domanda', answer: 'Nuova risposta' },
+    ],
+  }),
 };
 
 const mockDialog = {
@@ -149,5 +162,92 @@ describe('DatasetContentPageComponent', () => {
     expect(component.datasetPage).toEqual(MOCK_DATASETPAGEQA); // verifica aggiornamento
   });
 
+  it('dovrebbe chiamare addQA e poi updateDatasetPage, aggiornando qaList in QAListViewComponent', () => {
+    const mockQA = { question: 'Nuova domanda', answer: 'Nuova risposta' };
 
+    // Spie sui metodi QAService
+    const addQASpy = jest.spyOn(mockQAService, 'addQA');
+    const updateDatasetSpy = jest
+      .spyOn(mockQAService, 'updateDatasetPage')
+      .mockReturnValue({
+        page_n: 1,
+        qa_list: [
+          { id: 1, question: 'Esistente', answer: 'Risposta' },
+          { id: 2, question: 'Nuova domanda', answer: 'Nuova risposta' },
+        ],
+      });
+
+    // Simula dialog che ritorna il nuovo QA
+    mockDialog.open = jest.fn().mockReturnValue({
+      afterClosed: () => of(mockQA),
+    });
+
+    component.addQA(); // chiamata della funzione
+    fixture.detectChanges(); // trigger change detection
+
+    // Verifica chiamate
+    expect(addQASpy).toHaveBeenCalledWith(mockQA.question, mockQA.answer);
+    expect(updateDatasetSpy).toHaveBeenCalledWith(1);
+
+    // Verifica aggiornamento in QAListViewComponent
+    const qaListViewDE = fixture.debugElement.query(
+      By.directive(QAListViewComponent)
+    );
+    const qaListViewInstance =
+      qaListViewDE.componentInstance as QAListViewComponent;
+
+    expect(qaListViewInstance.qaList).toEqual([
+      { id: 1, question: 'Esistente', answer: 'Risposta' },
+      { id: 2, question: 'Nuova domanda', answer: 'Nuova risposta' },
+    ]);
+  });
+
+  it('dovrebbe caricare la nuova pagina e aggiornare qaList in QAListViewComponent', () => {
+    const spy = jest.spyOn(mockQAService, 'getDatasetPage2mock');
+
+    // Simula il cambio pagina
+    component.loadPage(2);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(2); // Verifica che il servizio sia stato chiamato con il parametro corretto
+
+    const qaListViewDE = fixture.debugElement.query(
+      By.directive(QAListViewComponent)
+    );
+    const qaListViewInstance =
+      qaListViewDE.componentInstance as QAListViewComponent;
+
+    expect(qaListViewInstance.qaList).toEqual([
+      { id: 3, question: 'Domanda pagina 2', answer: 'Risposta pagina 2' },
+    ]);
+  });
+
+  it('deve restituire i risultati filtrati sotto forma di lista quando si effettua una ricerca', () => {
+    // Mock dati filtrati
+    const filteredData = {
+      page_n: 1,
+      qa_list: [{ id: 99, question: 'Italia è un paese?', answer: 'Sì' }],
+    };
+
+    // Mock il metodo del servizio
+    const qaService = TestBed.inject(QAService);
+    jest
+      .spyOn(qaService, 'getDatasetPageFiltered')
+      .mockReturnValue(filteredData);
+
+    // Esegui la ricerca
+    component.handleSearchQA('italia');
+    fixture.detectChanges();
+
+    // Verifica datasetPage aggiornato
+    expect(component.datasetPage).toEqual(filteredData);
+
+    // Verifica che QAListView riceva il nuovo qa_list
+    const qaListViewDE = fixture.debugElement.query(
+      By.directive(QAListViewComponent)
+    );
+    const qaListInstance = qaListViewDE.componentInstance;
+
+    expect(qaListInstance.qaList).toEqual(filteredData.qa_list);
+  });
 });

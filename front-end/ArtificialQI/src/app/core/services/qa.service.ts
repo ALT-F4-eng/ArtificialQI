@@ -143,6 +143,9 @@ export class QAService {
   updateDatasetPage(pageIndex:number): DatasetPageDto {
     return this.datasetPage
   }
+  addQA(question: string, answer: string){
+    //verrà salvata all'interno del db poi all'interno di dataset content page farà una updateDatasetPage
+  }
 
   createDataset(dataset: DatasetDto): Observable<{ id: number }> {
     return this.http.post<{ id: number }>('/api/dataset', dataset);

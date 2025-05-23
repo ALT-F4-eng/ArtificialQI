@@ -88,6 +88,7 @@ export class DatasetContentPageComponent {
     this.currentPage = page;
     this.loadPage(page);
   }
+  
   loadPage(page: number) {
     /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
     // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
@@ -102,6 +103,7 @@ export class DatasetContentPageComponent {
   }
 
   private dialog = inject(MatDialog);
+
   addQA() {
     const dialogRef = this.dialog.open(QADialogComponent, {
       width: '95vw', // 95% della larghezza della finestra
@@ -114,6 +116,10 @@ export class DatasetContentPageComponent {
         if (result) {
           this.onChangeShowLabel();
           console.log('Hai cliccato Salva con:', result);
+          //verra chiamata servizio di salvataggio 
+          this.qaService.addQA(result.question,result.answer);
+          // dovrei controllare se elementi sono < dell'elementi presenti allinterno del datasetPageDto ,se si allora si aggiorna altrimenti vuoldire che verra aggiunto in coda e non necessita un aggiornamento
+          this.datasetPage = this.qaService.updateDatasetPage(this.datasetPage.page_n)
         } else {
           console.log('Hai cliccato Annulla o chiuso il dialog');
         }

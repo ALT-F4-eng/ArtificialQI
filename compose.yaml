@@ -16,11 +16,13 @@ services:
     restart: unless-stopped
 
   flaskapi:
-    image: FlaskAPI:latest
+    image: flaskapi:latest
     container_name: ArtificialQIAPI
     build: ./back-end/
     environment:
       - DB_URL=postgresql://user:user@postgres:5432/artificialqi
+      - FLASK_APP=src.app
+      - FLASK_ENV=development
     networks:
       # - frontend
       - backend
@@ -33,7 +35,7 @@ services:
       - type: bind
         source: ./back-end/ArtificialQI
         target: /usr/src/ArtificialQI
-
+    
   angularclient:
     image: AngularClient:latest
     container_name: ArtificialQIClient

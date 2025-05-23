@@ -203,7 +203,7 @@ describe('DatasetListPageComponent (con Jest e angular)', () => {
     fireEvent.click(renameButtons[0]);
     // Verifica che il dialog sia stato aperto con il componente e i dati giusti
     expect(mockDialog.open).toHaveBeenCalledWith(DatasetNameDialogComponent, {
-      data: { name: 'Dataset Uno' }, // A seconda di come gestisci il dataset, puoi adattare questa parte
+      data: { name: 'Dataset Uno',"title": "Rinomina Dataset"}, // A seconda di come gestisci il dataset, puoi adattare questa parte
     });
   });
   it('dovrebbe impostare showConfirmLoad a true quando viene emesso datasetLoaded', async () => {

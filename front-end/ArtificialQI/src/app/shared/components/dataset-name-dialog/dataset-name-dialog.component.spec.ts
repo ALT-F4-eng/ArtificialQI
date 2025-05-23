@@ -19,7 +19,7 @@ describe('DatasetNameDialogComponent', () => {
       ],
       providers: [
       { provide: MatDialogRef, useValue: { close: jest.fn() } },
-      { provide: MAT_DIALOG_DATA, useValue: { name: 'Prova' } },
+      { provide: MAT_DIALOG_DATA, useValue: { title: 'Rinomina Dataset', name: 'Prova' } },
     ],
     });
 
@@ -42,7 +42,7 @@ describe('DatasetNameDialogComponent', () => {
     ],
     });
 
-    const inputField = screen.getByPlaceholderText('Nuovo nome');
+    const inputField = screen.getByPlaceholderText('Inserici un nome');
     expect(inputField).toBeInTheDocument();
   });
 
@@ -61,7 +61,7 @@ describe('DatasetNameDialogComponent', () => {
     ],
     });
 
-    const inputField = screen.getByPlaceholderText('Nuovo nome');
+    const inputField = screen.getByPlaceholderText('Inserici un nome');
 
     // Simula l'inserimento di caratteri UTF-8
     fireEvent.input(inputField, {
@@ -107,7 +107,7 @@ describe('DatasetNameDialogComponent', () => {
       ],
     });
 
-    const input = screen.getByPlaceholderText('Nuovo nome');
+    const input = screen.getByPlaceholderText('Inserici un nome');
     fireEvent.input(input, { target: { value: 'Nuovo Nome UTF-8' } });
 
     const salvaButton = screen.getByText('Salva');

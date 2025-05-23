@@ -25,13 +25,13 @@ describe('SearchBarComponent', () => {
 
   it('dovrebbe visualizzare il campo di inserimento dei dati della ricerca', async () => {
     await setup();
-    const input = screen.getByPlaceholderText(/digita qualcosa/i);
+    const input = screen.getByPlaceholderText(/Search/i);
     expect(input).toBeInTheDocument();
   });
 
   it("dovrebbe permettere l'inserimento di caratteri UTF-8 nella barra di ricerca", async () => {
     await setup();
-    const input = screen.getByPlaceholderText(/digita qualcosa/i);
+    const input = screen.getByPlaceholderText(/Search/i);
 
     await fireEvent.input(input, {
       target: { value: 'Test UTF-8 æøå ✓ こんにちは草尼玛' },
@@ -48,7 +48,7 @@ describe('SearchBarComponent', () => {
   it("dovrebbe visualizzare l'icona della cancella quando il campo non è vuoto", async () => {
     await setup();
 
-    const input = screen.getByPlaceholderText(/digita/i);
+    const input = screen.getByPlaceholderText(/Search/i);
     fireEvent.input(input, { target: { value: 'test' } });
 
     const icon = screen.getByText('close'); // mat-icon content
@@ -58,7 +58,7 @@ describe('SearchBarComponent', () => {
   it('dovrebbe chiamare la funzione di ricerca quando viene premuto Invio', async () => {
     const searchSpy = await setup();
 
-    const input = screen.getByPlaceholderText(/digita qualcosa/i);
+    const input = screen.getByPlaceholderText(/Search/i);
     await fireEvent.input(input, { target: { value: 'Cerca UTF-8' } });
     await fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
 

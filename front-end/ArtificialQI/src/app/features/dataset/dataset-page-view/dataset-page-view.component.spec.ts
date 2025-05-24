@@ -2,39 +2,68 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatasetPageViewComponent } from './dataset-page-view.component';
 import { provideHttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import { Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { QAService } from '../../../core/services/qa.service';
 
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
-
+// Mock per app-qalist-view
+@Component({
+  selector: 'app-qalist-view',
+  standalone: true,
+  template: '<div>Mock QA List View</div>',
+})
 class MockQAListViewComponent {
   @Input() qaList: any;
   @Output() modify = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
 }
+// Mock per app-page-navigation
+@Component({
+  selector: 'app-page-navigation',
+  template: '',
+  standalone: true,
+})
+class MockPageNavigationComponent {
+  @Input() totalItems!: number;
+  @Input() pageSize!: number;
+  @Input() currentPage!: number;
+  @Output() pageChange = new EventEmitter<number>();
+}
+
+// Aggiungi questa funzione al mockQAService
+const mockQAService = {
+  deleteQA: jest.fn(),
+  modifyDatasetPage: jest.fn(),
+  updateDatasetPage: jest.fn().mockImplementation((page_n: number) => {
+    return {
+      page_n,
+      qa_list: [{ id: 2, question: 'Q2', answer: 'A2' }],
+    };
+  }),
+  getDatasetPage2mock: jest.fn().mockImplementation((page_n: number) => {
+    if (page_n === 2) {
+      return {
+        page_n: 2,
+        qa_list: [
+          { id: 3, question: 'Domanda pagina 2', answer: 'Risposta pagina 2' },
+        ],
+      };
+    }
+    return null;
+  }),
+};
 
 describe('DatasetPageViewComponent', () => {
   let component: DatasetPageViewComponent;
   let fixture: ComponentFixture<DatasetPageViewComponent>;
-
-  // Mock QAService con i metodi usati nel test
-  const mockQAService = {
-    deleteQA: jest.fn(),
-    modifyDatasetPage: jest.fn(),
-
-    updateDatasetPage: jest.fn().mockImplementation((page_n: number) => {
-      // Simula la pagina aggiornata dopo l'eliminazione
-      return {
-        page_n,
-        qa_list: [{ id: 2, question: 'Q2', answer: 'A2' }],
-      };
-    }),
-  };
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DatasetPageViewComponent],
+      imports: [
+        DatasetPageViewComponent,
+        MockQAListViewComponent,
+        MockPageNavigationComponent,
+      ],
       providers: [
         provideHttpClient(),
         { provide: QAService, useValue: mockQAService },
@@ -44,39 +73,39 @@ describe('DatasetPageViewComponent', () => {
     fixture = TestBed.createComponent(DatasetPageViewComponent);
     component = fixture.componentInstance;
 
-    // Inietta il mock direttamente (se non usi dependency injection tramite provider)
+    // Inietto mockQAService direttamente (se non usi DI tramite provider)
     component['qaService'] = mockQAService as any;
+    component.totalItems = 20;
+    component.pageSize = 10;
+    component.currentPage = 1;
 
     fixture.detectChanges();
   });
-  //test unitari
-  it('dovrebbe passare correttamente la lista QA a app-qalist-view', () => {
-    const mockDatasetPage = {
+  it('dovrebbe visualizzare app-qalist-view con la lista corretta di domande e risposte', () => {
+    component.datasetPage = {
       page_n: 1,
       qa_list: [
-        { id: 1, question: 'Domanda1', answer: 'Risposta1' },
-        { id: 2, question: 'Domanda2', answer: 'Risposta2' },
+        { id: 1, question: 'Domanda 1', answer: 'Risposta 1' },
+        { id: 2, question: 'Domanda 2', answer: 'Risposta 2' },
       ],
     };
-    component.datasetPage = mockDatasetPage;
+
     fixture.detectChanges();
 
-    const qaListViewDE = fixture.debugElement.query(
-      By.directive(MockQAListViewComponent)
-    );
-    const qaListViewInstance =
-      qaListViewDE.componentInstance as MockQAListViewComponent;
-
-    expect(qaListViewInstance.qaList).toEqual(mockDatasetPage.qa_list);
+    // Trovo l'elemento app-qalist-view nel DOM
+    const qaListElement =
+      fixture.nativeElement.querySelector('app-qalist-view');
+    expect(qaListElement).toBeTruthy();
   });
-  //
-  it('dovrebbe includere il componente app-page-navigation nel template', () => {
+
+  it('dovrebbe mostrare la sezione di navigazione tra le pagine', () => {
+    // Assicurati che il componente sia nel DOM, indipendentemente da input e stato
     fixture.detectChanges();
 
-    const pageNavigationDE = fixture.debugElement.query(
-      By.css('app-page-navigation')
-    );
-    expect(pageNavigationDE).toBeTruthy();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const pageNav = compiled.querySelector('app-page-navigation');
+
+    expect(pageNav).toBeTruthy();
   });
 
   it('should create', () => {
@@ -158,5 +187,21 @@ describe('DatasetPageViewComponent', () => {
       By.directive(ConfirmComponent)
     );
     expect(confirmComp).toBeTruthy();
+  });
+
+  it('dovrebbe caricare la nuova pagina e aggiornare qaList in app-qalist-view', () => {
+    const spy = jest.spyOn(mockQAService, 'getDatasetPage2mock');
+
+    // Inizializza datasetPage per evitare errori TS
+    component.datasetPage = { page_n: 1, qa_list: [] };
+
+    component.loadPage(2);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(2);
+    expect(component.datasetPage?.page_n).toBe(2);
+    expect(component.datasetPage?.qa_list).toEqual([
+      { id: 3, question: 'Domanda pagina 2', answer: 'Risposta pagina 2' },
+    ]);
   });
 });

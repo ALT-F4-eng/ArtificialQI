@@ -276,25 +276,6 @@ it('dovrebbe visualizzare la barra di ricerca', () => {
     ]);
   });
 
-  it('dovrebbe caricare la nuova pagina e aggiornare qaList in QAListViewComponent', () => {
-    const spy = jest.spyOn(mockQAService, 'getDatasetPage2mock');
-
-    // Simula il cambio pagina
-    component.loadPage(2);
-    fixture.detectChanges();
-
-    expect(spy).toHaveBeenCalledWith(2); // Verifica che il servizio sia stato chiamato con il parametro corretto
-
-    const qaListViewDE = fixture.debugElement.query(
-      By.directive(QAListViewComponent)
-    );
-    const qaListViewInstance =
-      qaListViewDE.componentInstance as QAListViewComponent;
-
-    expect(qaListViewInstance.qaList).toEqual([
-      { id: 3, question: 'Domanda pagina 2', answer: 'Risposta pagina 2' },
-    ]);
-  });
 
   it('deve restituire i risultati filtrati sotto forma di lista quando si effettua una ricerca', () => {
     // Mock dati filtrati

@@ -19,7 +19,6 @@ import { SearchBarComponent } from '../../../shared/components/search-bar/search
 import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view.component';
 import { QADialogComponent } from '../qadialog/qadialog.component';
 import { LLMselectionListComponent } from '../llmselection-list/llmselection-list.component';
-import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 @Component({
@@ -30,8 +29,7 @@ import { DatasetNameDialogComponent } from '../../../shared/components/dataset-n
     MatButtonModule,
     SearchBarComponent,
     DatasetPageViewComponent,
-    PageNavigationComponent,
-  ],
+    ],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
 })
@@ -44,9 +42,7 @@ export class DatasetContentPageComponent {
   detectWokingCopy = false; // si fa una working copy solo se nel caso l'utente modifica da un dataset caricato
   // poi tutte le modifiche vengono salvate all'interno del db su workingcopy finche l'utente non decide di salvare tale dataset
   // inpute per pageNavigation della pagina
-  totalItems = 0;
-  pageSize = 5; // dovrebbe essere 20
-  currentPage = 1; // di deafult
+
   mode: 'create' | 'edit' = 'create';
   constructor(
     private qaService: QAService,
@@ -70,35 +66,14 @@ export class DatasetContentPageComponent {
         });*/
 
         this.dataset = this.qaService.getDataset();
-        this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
-        this.detectWokingCopy = true;
-        this.totalItems = 100; // da API o metadato chiedere al back-end
-      }
+        this.datasetPage = this.qaService.getDatasetPage(1);
+        this.detectWokingCopy = true;      }
     });
   }
 
   handleSearchQA(term: string) {
     const normalized = term.toLowerCase();
     this.datasetPage = this.qaService.getDatasetPageFiltered(term);
-  }
-
-  // bisognerebbe dire a l'utente di salvare le modifiche altrimenti si perderano i dati modificati,se viene mostrato l'etichetta temporary
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadPage(page);
-  }
-
-  loadPage(page: number) {
-    /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
-    // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
-    console.log('pagina reinidirizzata', page);
-    //mock della chiamata, dovrebbe avere come paramentro page ma quasto solo faccendo una mock
-    this.datasetPage = this.qaService.getDatasetPage2mock(page);
-    // Simulazione: sostituisci con chiamata HTTP reale
-    /*
-    this.apiService.getDatasetPage(page, this.pageSize).subscribe((data: DatasetPageDto) => {
-      this.datasetPage = data;
-    });*/
   }
 
   private dialog = inject(MatDialog);

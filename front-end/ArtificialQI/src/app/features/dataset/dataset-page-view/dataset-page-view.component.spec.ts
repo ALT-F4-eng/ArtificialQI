@@ -2,10 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DatasetPageViewComponent } from './dataset-page-view.component';
 import { provideHttpClient } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
+import { Input, Output, EventEmitter } from '@angular/core';
 
 import { QAService } from '../../../core/services/qa.service';
 
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
+
+class MockQAListViewComponent {
+  @Input() qaList: any;
+  @Output() modify = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<any>();
+}
+
 describe('DatasetPageViewComponent', () => {
   let component: DatasetPageViewComponent;
   let fixture: ComponentFixture<DatasetPageViewComponent>;
@@ -41,11 +49,40 @@ describe('DatasetPageViewComponent', () => {
 
     fixture.detectChanges();
   });
+  //test unitari
+  it('dovrebbe passare correttamente la lista QA a app-qalist-view', () => {
+    const mockDatasetPage = {
+      page_n: 1,
+      qa_list: [
+        { id: 1, question: 'Domanda1', answer: 'Risposta1' },
+        { id: 2, question: 'Domanda2', answer: 'Risposta2' },
+      ],
+    };
+    component.datasetPage = mockDatasetPage;
+    fixture.detectChanges();
+
+    const qaListViewDE = fixture.debugElement.query(
+      By.directive(MockQAListViewComponent)
+    );
+    const qaListViewInstance =
+      qaListViewDE.componentInstance as MockQAListViewComponent;
+
+    expect(qaListViewInstance.qaList).toEqual(mockDatasetPage.qa_list);
+  });
+  //
+  it('dovrebbe includere il componente app-page-navigation nel template', () => {
+    fixture.detectChanges();
+
+    const pageNavigationDE = fixture.debugElement.query(
+      By.css('app-page-navigation')
+    );
+    expect(pageNavigationDE).toBeTruthy();
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
+  // test di integrazione
   it('dovrebbe eliminare il QA selezionato e aggiornare datasetPage', () => {
     component.datasetPage = {
       page_n: 1,
@@ -108,8 +145,7 @@ describe('DatasetPageViewComponent', () => {
     expect(spyEmit).toHaveBeenCalled();
   });
 
-
-   it('dovrebbe mostrare ConfirmComponent alla richiesta di eliminazione di una QA', () => {
+  it('dovrebbe mostrare ConfirmComponent alla richiesta di eliminazione di una QA', () => {
     // Simula evento di richiesta di eliminazione (esempio: id 1)
     component.onQADeleteRequest(1);
     fixture.detectChanges();
@@ -123,6 +159,4 @@ describe('DatasetPageViewComponent', () => {
     );
     expect(confirmComp).toBeTruthy();
   });
-  
-
 });

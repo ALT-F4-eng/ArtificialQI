@@ -12,6 +12,7 @@ import { QAListViewComponent } from '../qalist-view/qalist-view.component';
 import { QAService } from '../../../core/services/qa.service';
 
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
+import { DatasetDto } from '../../../core/models/dataset-dto.model';
 
 const mockActivatedRoute = {
   snapshot: {
@@ -25,7 +26,17 @@ const mockActivatedRoute = {
 };
 
 // Mock data
-const MOCK_DATASET = { id: 1, name: 'Test Dataset' };
+const MOCK_DATASET: DatasetDto = {
+  id: 1,
+  name: 'Test Dataset',
+  last_mod: new Date(),
+  creation: new Date(),
+  origin_id: 0,
+  tmp: true, 
+  max_page: 5,
+  element_n: 20,
+};
+
 const MOCK_DATASETPAGEQA: DatasetPageDto = {
   page_n: 1,
   qa_list: [
@@ -49,6 +60,7 @@ const mockQAService = {
   deleteQA: jest.fn(),
   createDataset: jest.fn(),
   generateUniqueId: jest.fn(),
+  saveDataset:jest.fn(),
   addQA: jest.fn(),
   updateDatasetPage: jest.fn().mockReturnValue({
     page_n: 1,
@@ -68,6 +80,7 @@ const mockDialog = {
 describe('DatasetContentPageComponent', () => {
   let component: DatasetContentPageComponent;
   let fixture: ComponentFixture<DatasetContentPageComponent>;
+  let nativeEl: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -82,7 +95,7 @@ describe('DatasetContentPageComponent', () => {
 
     fixture = TestBed.createComponent(DatasetContentPageComponent);
     component = fixture.componentInstance;
-
+    nativeEl = fixture.nativeElement;
     // Imposta dati iniziali validi
     component.dataset = MOCK_DATASET as any;
     component.datasetPage = MOCK_DATASETPAGEQA as any;
@@ -90,10 +103,71 @@ describe('DatasetContentPageComponent', () => {
     fixture.detectChanges();
   });
 
+  it('dovrebbe visualizzare il nome del dataset', () => {
+  component.dataset = MOCK_DATASET;
+  fixture.detectChanges();
+  const compiled = fixture.nativeElement as HTMLElement;
+  expect(compiled.textContent).toContain(component.dataset.name);
+});
+  it('dovrebbe visualizzare l\'etichetta "Temporaneo" se il dataset è tmp', () => {
+    component.dataset = { ...MOCK_DATASET, tmp: true };
+    component.showTamporaryLabel = true;
+    fixture.detectChanges();
+    expect(nativeEl.textContent).toContain('Temporaneo');
+  });
+
+it('dovrebbe mostrare il pulsante "Esegui Test"', () => {
+  fixture.detectChanges();
+    expect(nativeEl.textContent).toContain('Test Dataset');
+});
+
+it('dovrebbe disabilitare il pulsante di test se il dataset è vuoto', () => {
+    component.datasetPage = { page_n: 1, qa_list: [] };
+    fixture.detectChanges();
+    const buttons = nativeEl.querySelectorAll('button');
+    const testButton = Array.from(buttons).find(btn =>
+      btn.textContent?.includes('Test Dataset')
+    );
+    expect(testButton?.hasAttribute('disabled') || testButton?.getAttribute('disabled') !== null).toBe(true);
+  });
+
+it('dovrebbe visualizzare il pulsante "Salva"', () => {
+    fixture.detectChanges();
+    expect(nativeEl.textContent).toContain('Salva le modifiche');
+  });
+
+it('dovrebbe chiamare la funzione di salvataggio quando si clicca "Salva"', () => {
+    const spy = jest.spyOn(component, 'saveDataset');
+    fixture.detectChanges();
+
+    const buttons = nativeEl.querySelectorAll('button');
+    const saveButton = Array.from(buttons).find(btn =>
+      btn.textContent?.includes('Salva le modifiche')
+    );
+    saveButton?.click();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+it('dovrebbe visualizzare la barra di ricerca', () => {
+    fixture.detectChanges();
+    const searchBar = nativeEl.querySelector('app-search-bar');
+    expect(searchBar).toBeTruthy();
+  });
+ it('dovrebbe visualizzare il pulsante per l\'inserimento QA', () => {
+    fixture.detectChanges();
+    const addButton = Array.from(nativeEl.querySelectorAll('button')).find(b =>
+      b.textContent?.includes('addQA')
+    );
+    expect(addButton).toBeTruthy();
+  });
+
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  // test di intergrazione
   it('dovrebbe aprire il dialog LLMselectionListComponent con i dati corretti', () => {
     component.openLlmDialog();
 

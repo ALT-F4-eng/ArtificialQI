@@ -1,6 +1,6 @@
 <p>dataset-content-page works!</p>
 <h2>
-  {{ dataset?.name }}
+  {{ dataset.name }}
   <span *ngIf="showTamporaryLabel" class="temporary-label">Temporaneo</span>
 </h2>
 
@@ -12,7 +12,7 @@
   <mat-icon>save</mat-icon> Salva le modifiche
 </button>
 
-<button mat-raised-button (click)="openLlmDialog()">
+<button mat-raised-button class="visible-disabled" [disabled]="isDatasetEmpty()" (click)="openLlmDialog()">
 <mat-icon>bug_report</mat-icon> Test Dataset <!-- OPPURE play_arrow -->
 </button>
 

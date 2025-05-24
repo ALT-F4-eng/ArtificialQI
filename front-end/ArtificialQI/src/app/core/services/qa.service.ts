@@ -130,6 +130,13 @@ export class QAService {
       console.warn(`QA con id ${id} non trovato`);
     }
   }
+  saveDataset():void{
+    this.saveDatasetPage();
+  }
+  saveDatasetPage():void{
+
+  }
+
   deleteQA(id: number): void {
     const index = this.datasetPage.qa_list.findIndex((qa) => qa.id === id);
     if (index !== -1) {

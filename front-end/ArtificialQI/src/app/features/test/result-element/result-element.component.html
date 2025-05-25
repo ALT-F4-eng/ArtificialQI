@@ -1,7 +1,7 @@
 <div class="result-element">
-  <p><strong>Domanda:</strong> {{ result.question }}</p>
-  <p><strong>Risposta fornita:</strong> {{ result.given_answer }}</p>
-  <p><strong>Risposta attesa:</strong> {{ result.expected_answer }}</p>
+  <p><strong>Domanda:</strong> {{ result.qa.question }}</p>
+  <p><strong>Risposta fornita:</strong> {{ result.llm_answer }}</p>
+  <p><strong>Risposta attesa:</strong> {{ result.qa.answer }}</p>
   <p><strong>Similarità:</strong> {{ result.similarity | number:'1.2-2' }}</p>
   <p>
     <strong>Correttezza:</strong>

@@ -22,7 +22,7 @@ export const routes: Routes = [
       { path: 'llm', component: LlmListPageComponent },
       { path: 'dataset', component: DatasetListPageComponent },
       { path: 'datasetContentPage', component: DatasetContentPageComponent },
-      { path: 'test', component: TestPageComponent },
+      { path: 'test/:id', component: TestPageComponent },
       { path: 'llm/:id', component: LlmPageComponent },
       { path: 'llm-form', component: LlmFormComponent },
       { path: 'llm-form/:id', component: LlmFormComponent }

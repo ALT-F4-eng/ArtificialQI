@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CakeDiagramComponent } from '../cake-diagram/cake-diagram.component';
 import { BarDiagramComponent } from '../bar-diagram/bar-diagram.component';
-import { resultDto } from '../../../core/models/result-dto.model';
+import { TestResultDto } from '../../../core/models/testresult-dto.model';
 
 @Component({
   selector: 'app-test-index',
@@ -14,7 +14,7 @@ import { resultDto } from '../../../core/models/result-dto.model';
 export class TestIndexComponent {
   @Input() comparedCorrectnessValue?: number;
   @Input() comparedDistribution?: number[];
-  @Input() results: resultDto[] = [];
+  @Input() results: TestResultDto[] = [];
 
   get correctnessValue(): number {
   if (!this.results?.length) return 0;

@@ -36,16 +36,28 @@ describe('TestListViewComponent', () => {
   it('should display test items when tests are present', () => {
     component.tests = [
   {
-    ID: 1,
-    name: 'Test 1',
-    lastModified: new Date(),
-    Dataset: 'Dataset A'
+    id: 1,
+    name: 'Test Alpha',
+    llm_name: 'LLM1',
+    tmp: true,
+    max_page: 10,
+    avg_similarity: 0.85,
+    exec_date: new Date('2025-05-01'),
+    std_dev_similarity: 0.05,
+    correct_percentage: 90,
+    distribution: [1, 2, 3, 4, 5]
   },
   {
-    ID: 2,
-    name: 'Test 2',
-    lastModified: new Date(),
-    Dataset: 'Dataset B'
+    id: 2,
+    name: 'Test Beta',
+    llm_name: 'LLM2',
+    tmp: false,
+    max_page: 12,
+    avg_similarity: 0.78,
+    exec_date: new Date('2025-06-10'),
+    std_dev_similarity: 0.08,
+    correct_percentage: 85,
+    distribution: [2, 3, 4, 5, 6]
   }
 ];
 

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { resultDto } from '../../../core/models/result-dto.model';
+import { TestResultDto } from '../../../core/models/testresult-dto.model';
 
 @Component({
   selector: 'app-result-element',
@@ -10,5 +10,5 @@ import { resultDto } from '../../../core/models/result-dto.model';
   styleUrls: ['./result-element.component.css']
 })
 export class ResultElementComponent {
-  @Input() result!: resultDto;
+  @Input() result!: TestResultDto;
 }

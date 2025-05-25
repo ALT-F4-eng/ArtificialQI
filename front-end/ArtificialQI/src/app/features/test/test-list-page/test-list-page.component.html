@@ -3,11 +3,19 @@
   [tests]="filteredTests"
   (rename)="renameTest($event.index, $event.newName)"
   (testDeleted)="onTestDeleteRequest($event)"
-  (testLoaded)="onTestLoaded($event)"
+  (testLoaded)="onTestLoadRequest($event)"
 ></app-test-list-view>
+
 <app-confirm 
-  *ngIf="showConfirm"
-  [message]="confirmMessage"
+  *ngIf="showDeleteConfirm"
+  [message]="showDeleteMessage"
   (confirmed)="onTestDeleteConfirmed()"
   (canceled)="onTestDeleteCanceled()"
+></app-confirm>
+
+<app-confirm 
+  *ngIf="showLoadConfirm"
+  [message]="showLoadMessage"
+  (confirmed)="onTestLoadConfirmed()"
+  (canceled)="onTestLoadCanceled()"
 ></app-confirm>

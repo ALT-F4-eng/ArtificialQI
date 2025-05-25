@@ -1,15 +1,18 @@
 <div class="result-section">
   <h3>Risultati</h3>
-  <div *ngFor="let result of testPage.result_list; let i = index" [attr.id]="'question-' + (i + 1)">
-    <!-- puoi sostituire con <app-result-list-view> se serve -->
-    <strong>Domanda {{ i + 1 }}:</strong> {{ result.qa.question }}<br>
-    <strong>Risposta ottenuta:</strong> {{ result.llm_answer }}<br>
-    <strong>Risposta attesa:</strong> {{ result.qa.answer }}<br>
-    <strong>Similarità:</strong> {{ result.similarity }}<br>
-    <strong>Correttezza:</strong><span [ngClass]="{ correct: result.correct, incorrect: !result.correct }">
-      {{ result.correct ? '✔️ Corretta' : '❌ Sbagliata' }}</span><br>
-    <hr>
-  </div>
+  <div *ngFor="let result of pagedResults; let i = index" [attr.id]="'question-' + ((currentPage - 1) * pageSize + i + 1)">
+  <strong>Domanda {{ (currentPage - 1) * pageSize + i + 1 }}:</strong> {{ result.qa.question }}<br>
+  <strong>Risposta ottenuta:</strong> {{ result.llm_answer }}<br>
+  <strong>Risposta attesa:</strong> {{ result.qa.answer }}<br>
+  <strong>Similarità:</strong> {{ result.similarity }}<br>
+  <strong>Correttezza:</strong>
+  <span [ngClass]="{ correct: result.correct, incorrect: !result.correct }">
+    {{ result.correct ? '✔️ Corretta' : '❌ Sbagliata' }}
+  </span>
+  <hr>
+</div>
+
+
 
   <app-page-navigation
   [totalItems]="totalItems"

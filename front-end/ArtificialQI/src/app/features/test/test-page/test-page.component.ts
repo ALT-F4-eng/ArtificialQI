@@ -10,7 +10,7 @@ import { TestNameDialogComponent } from '../test-name-dialog/test-name-dialog.co
 import { TestPageViewComponent } from '../test-page-view/test-page-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
-
+import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
 
 
 @Component({
@@ -29,7 +29,7 @@ import { TestPageDto } from '../../../core/models/testpage-dto.model';
 export class TestPageComponent implements OnInit {
   @Input() test?: TestDto;
 
-  MOCK_TEST_PAGE: TestPageDto[] = [];
+  testPage: TestPageDto = MOCK_TEST_PAGE;
   results: TestResultDto[] = [];
   errorMessage: string | null = null;
 

@@ -5,131 +5,136 @@ from core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_functi
 from uuid import UUID, uuid4
 from typing import Optional
 from common.exceptions import *
-from typing import IO
 from core.page import Page
 
 
 class QaService(QaUseCase):
+
+    QA_PER_PAGE: int = 25
     
     def __init__(self, qa_repo:QuestionAnswerPairRepository , dataset_repo:DatasetRepository):
         self.qa_repo:QuestionAnswerPairRepository = qa_repo
         self.dataset_repo:DatasetRepository = dataset_repo
 
     
-    def create_qa(self, question: str, answer: str, dataset_id:UUID) -> QuestionAnswerPair:
+    def create_qa(self, question:str, answer:str, dataset:UUID) -> QuestionAnswerPair:
         """
         Crea e salva una nuova qa.
 
         Args:
-            dataset_id (UUID): ID del dataset.
-            question (srt): domanda.
-            answer (str): risposta.
+            dataset_id (UUID): Id del dataset.
+            question (srt): Domanda.
+            answer (str): Risposta.
 
         Returns:
-            QuestionAnswerPair.
+            QuestionAnswerPair: Coppia domanda-risposta creata.
 
         Raises:
             PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
-        # Creazione di una nuova qa
-        questionAnswerPair : QuestionAnswerPair = qa_pair_factory_function(dataset_id, question, answer, uuid4())
+        questionAnswerPair : QuestionAnswerPair = qa_pair_factory_function(
+            dataset=dataset, question=question, 
+            answer=answer, id=uuid4()
+        )
 
-        # Salvataggio della qa su db
         result: Optional[QuestionAnswerPair] = self.qa_repo.create_qa(questionAnswerPair)
 
         if result is None:
-            raise PersistenceException("Errore durante la creazione della qa.")
+            raise PersistenceException("Errore durante la creazione della coppia domanda-risposta.")
         
         return result
 
-    def get_qa_page(self, p: int, dataset_id: UUID, q: str) -> Page:
+    def get_qa_page(self, p:int, dataset:UUID, q:str="") -> Page[QuestionAnswerPair]:
         """
         Recupera un una pagina specificata di un dataset.
 
         Args:
-            dataset_id (UUID): ID del dataset.
-            p (int): numero della pagina.
-            q (str): stringa per filtrare le qa.
+            dataset_id (UUID): Id del dataset.
+            p (int): Numero della pagina del dataset che si vuole ottenere.
+            q (str): Stringa per filtrare le coppie domanda-risposta.
 
         Returns:
-            Page: contiene il numero della pagina e una lista di qa
+            Page: Contiene il numero della pagina e la lista di coppie domanda-risposta che vi appartengono.
 
         Raises:
-            
+            PageNonExistentException: Se non esiste la pagina richiesta per il dataset.
         """
 
-        questionAnswerPair_set: Optional[set[QuestionAnswerPair]] = self.qa_repo.get_qa_set(dataset_id, p, 25, q)
+        qa_set: Optional[set[QuestionAnswerPair]] = self.qa_repo.get_qa_set(dataset, p, self.QA_PER_PAGE, q)
 
-        if questionAnswerPair_set is None:
-            raise QaNonExistentException(f"Non esiste nessuna qa.")
+        if qa_set is None:
+            raise PageNonExistentException(p)
         
-        return Page(p,questionAnswerPair_set)
+        return Page[QuestionAnswerPair](p, qa_set)
     
     def get_qa_by_id(self, id:UUID) -> QuestionAnswerPair:
         """
-        Recupera una qa dato il suo identificativo.
+        Recupera una coppia domanda-risposta dato il suo identificativo.
 
         Args:
-            id (UUID): ID della qa.
+            id (UUID): Id della coppia domanda-risposta.
 
         Returns:
-            QuestionAnswerPair: QA corrispondente.
+            QuestionAnswerPair: Coppia domanda-risposta corrispondente.
 
         Raises:
-            QaNonExistentException: Se la qa non esiste.
+            QaNonExistentException: Se la coppia domanda-risposta richiesta non esiste.
         """
 
         questionAnswerPair: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(id)
 
         if questionAnswerPair is None:
-            raise DatasetNonExistentException(f"Non esiste la qa con identificativo {id}.")
+            raise DatasetNonExistentException(id)
         
         return questionAnswerPair
     
-    def update_qa(self, dataset_id: UUID, question: str, answer: str, id:UUID) -> QuestionAnswerPair:
+    def update_qa(self, qa:QuestionAnswerPair) -> QuestionAnswerPair:
         """
-        Aggiorna una qa salvata.
+        Aggiorna la coppia domanda-risposta data la sua nuova forma aggiornata.
 
+        Args:
+            qa (QuestionAnswerPair): Coppia domanda-risposta aggiornata.
+
+        Returns:
+            QuestionAnswerPair: Versione aggiornata della coppia domanda-risposta.
+
+        Raises:
+            QaNonExistentException: Se la coppia domanda-risposta da aggiornare non esiste.
+            PersistenceException: Se avviene un errori di persistenza durante l'aggiornamento della coppia domanda-risposta.
         """
 
-        # Ottiene la qa da aggiornare e controlla che l'operazione sia andata a buon fine
-        qa_to_update: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(id)
+        qa_current_version: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(qa.id)
 
-        if qa_to_update is None:
-            raise QaNonExistentException(f"Non esiste una qa con id {id}.")
+        if qa_current_version is None:
+            raise QaNonExistentException(qa.id)
 
-        # Costruisce una nuova qa che rappresenta la qa aggiornata
-        updated_qa: QuestionAnswerPair = qa_pair_factory_function(dataset_id,question,answer,id)
-
-        # Aggiorna la qa e controlla che l'operazione sia andata a buon fine
-        res: Optional[QuestionAnswerPair] = self.qa_repo.update_qa(updated_qa)
+        res: Optional[QuestionAnswerPair] = self.qa_repo.update_qa(qa_current_version)
 
         if res is None:
-            raise PersistenceException("Errore di persistenza durante l'aggiornamento della qa.")
+            raise PersistenceException("Errore di persistenza durante l'aggiornamento della coppia domanda-risposta.")
         
         return res
     
     def delete_qa(self, id:UUID) -> UUID:
         """
-        Elimina una qa.
+        Elimina una domanda-risposta.
 
         Args:
-            id (UUID): Identificativo della qa da eliminare.
+            id (UUID): Id della coppia domanda-risposta da eliminare.
 
         Returns:
-            UUID: ID della qa eliminato.
+            UUID: Id della coppia domanda-risposta eliminata.
 
         Raises:
-            QaNonExistentException: Se la qa non esiste.
-            PersistenceException: Se si verifica un errore durante l'eliminazione dei dati associati.
+            QaNonExistentException: Se la coppia domanda-risposta non esiste.
+            PersistenceException: Se si verifica un errore durante l'eliminazione della coppia domanda-risposta.
         """
 
-        # Controllo che la qa da eliminare esista
         questionAnswerPair: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(id)
 
         if questionAnswerPair is None:
-            raise QaNonExistentException(f"La qa con ID {id} non esiste.")
+            raise QaNonExistentException(id)
 
         # Elimina la qa dal repo
         res_qa_elim: Optional[UUID] = self.qa_repo.delete_qa(id)

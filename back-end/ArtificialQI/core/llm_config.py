@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from datetime import date
 from uuid import UUID
 from core.url import Url
 from core.key_value_list import KeyValueList

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import IO
 from uuid import UUID
 
 from core.llm import Llm
@@ -8,7 +7,7 @@ from core.llm import Llm
 class LlmUseCase(ABC):
 
     @abstractmethod
-    def create_create(self, llm: Llm) -> Llm:
+    def create_llm(self, llm: Llm) -> Llm:
         raise NotImplementedError
 
     @abstractmethod

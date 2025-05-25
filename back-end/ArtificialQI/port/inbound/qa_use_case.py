@@ -8,11 +8,11 @@ from core.question_answer_pair import QuestionAnswerPair
 class QaUseCase(ABC):
 
     @abstractmethod
-    def create_qa(self, question:str, answer:str) -> QuestionAnswerPair:
+    def create_qa(self, question:str, answer:str, dataset:UUID) -> QuestionAnswerPair:
         raise NotImplementedError
     
     @abstractmethod
-    def get_qa_page(self, p:int, id_dataset:UUID, q:str = "") -> Page:
+    def get_qa_page(self, p:int, dataset:UUID, q:str = "") -> Page[QuestionAnswerPair]:
         raise NotImplementedError
     
     @abstractmethod

@@ -11,11 +11,28 @@ class Llm:
     last_mod: date
 
 def llm_factory_function(id: UUID, name:str, config:Config, last_mod: date) -> Llm:
+    """
+    Crea un'istanza della classe Llm a partire dalle informazioni ricevute.
 
-    if id is None:
+    Args:
+        id (UUID): Id del llm da creare.
+        name (str): Nome dell'llm.
+        config (Config): Configurazione per l'interazione con llm.
+        last_mod (date): Data dell'ultima modifica.
+
+    Returns:
+        Llm: Istanza della classe Llm.
+
+    Raises:
+        ValueError: 
+            Se 'name' è vuoto o composto da soli spazi.
+            Se 'last_mod' è una data futura.
+    """
+
+    if not name.strip():
         raise ValueError
 
-    if not config:
+    if last_mod > date.today():
         raise ValueError
 
     return Llm(

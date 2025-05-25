@@ -36,15 +36,15 @@ class DatasetService(DatasetUseCase):
         Genera un nome valido per una copia di dataset, aggiungendo un suffisso unico.
 
         Args:
-            - name (str): Nome del dataset originale.
+            name (str): Nome del dataset originale.
 
         Returns:
             str: Nuovo nome con suffisso '-copy-<UUID>'.
 
         Raises:
-            - ValueError: Se il nome è none o composto solo da spazi.
+            ValueError: Se il nome è none o composto solo da spazi.
         """
-        if name is None or not name.strip():
+        if not name.strip():
             raise ValueError
 
         return f"{name}-copy-{uuid4()}"
@@ -54,46 +54,47 @@ class DatasetService(DatasetUseCase):
         Crea una copia di un dataset esistente, compresi i suoi elementi.
 
         Args:
-            - id (UUID): Identificativo del dataset da copiare.
+            id (UUID): Identificativo del dataset da copiare.
 
         Returns:
             Dataset: Copia del dataset appena creata.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset non esiste.
-            - InvalidDatasetOperationException: Se il dataset non è salvato.
-            - PersistenceException: Se si verifica un errore durante il salvataggio della copia o la duplicazione del contenuto.
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset non è salvato.
+            PersistenceException: Se si verifica un errore durante il salvataggio della copia o la duplicazione del contenuto.
         """
 
-        # Controlla che il dataset da copiare esiste
         dataset: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset is None:
-            raise DatasetNonExistentException(f"Il dataset con ID {id} non esiste.")
+            raise DatasetNonExistentException(id)
 
-        # Controllo che il dataset da copiare sia salvato ovvero non sia una working copy o temporaneo
         if not dataset.is_saved():
             raise InvalidDatasetOperationException(
                 "Non è possibile creare una copia di un dataset non salvato."
             )
 
-        # Copia i metadati del dataset
-        copy: Dataset = DatasetFactory.saved(
-            id=uuid4(),
-            dim=dataset.dim,
-            name=DatasetService.generate_name(dataset.name),
-            first_save_date=date.today(),
-            last_save_date=date.today(),
-        )
+        try:
+            copy: Dataset = DatasetFactory.saved(
+                id=uuid4(),
+                dim=dataset.dim,
+                name=DatasetService.generate_name(str(dataset.name)),
+                first_save_date=date.today(),
+                last_save_date=date.today(),
+            )
+        except ValueError as ve:
+            raise ve
+
 
         result: Optional[Dataset] = self._dataset_repo.create_dataset(copy)
+
 
         if result is None:
             raise PersistenceException(
                 "Errore durante il salvataggio del nuovo dataset."
             )
 
-        # Se il dataset da copiare non è vuoto copia il suo contenuto
         if copy.dim > 0:
 
             qa_copy_operation: bool = self._qa_repo.copy_all_from_dataset(id, copy.id)
@@ -113,13 +114,11 @@ class DatasetService(DatasetUseCase):
             Dataset: Dataset temporaneo creato.
 
         Raises:
-            - PersistenceException: Se si verifica un errore durante il salvataggio.
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
-        # Creazione di un nuovo dataset temporaneo
         dataset: Dataset = DatasetFactory.tmp(id=uuid4(), dim=0)
 
-        # Salvataggio del dataset temporaneo e controllo dell'esito dell'operazione
         result: Optional[Dataset] = self._dataset_repo.create_dataset(dataset)
 
         if result is None:
@@ -132,23 +131,21 @@ class DatasetService(DatasetUseCase):
         Elimina un dataset, il suo contenuto, i test associati e i relativi risultati.
 
         Args:
-            - id (UUID): Identificativo del dataset da eliminare.
+            id (UUID): Identificativo del dataset da eliminare.
 
         Returns:
             UUID: ID del dataset eliminato.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset non esiste.
-            - PersistenceException: Se si verifica un errore durante l'eliminazione dei dati associati.
+            DatasetNonExistentException: Se il dataset non esiste.
+            PersistenceException: Se si verifica un errore durante l'eliminazione dei dati associati.
         """
 
-        # Controllo che il dataset da eliminare esista
         dataset: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset is None:
-            raise DatasetNonExistentException(f"Il dataset con ID {id} non esiste.")
+            raise DatasetNonExistentException(id)
 
-        # Ottiene tutti i test associati al dataset e controlla l'esito dell'operaziione
         related_tests: Optional[list[Test]] = self._test_repo.get_tests_from_dataset(
             dataset.id
         )
@@ -158,7 +155,6 @@ class DatasetService(DatasetUseCase):
                 f"Errore durante l'ottenimento dei test associati al dataset con ID {id}."
             )
 
-        # Per ogni test associato elimina il test ed il suo contenuto
         for test in related_tests:
 
             if not self._result_repo.delete_all_from_test(test.id):
@@ -171,7 +167,6 @@ class DatasetService(DatasetUseCase):
                     f"Errore durante l'eliminazione del del test {test.id}."
                 )
 
-        # Elimina il contenuto del dataset
         res_qa_elim: Optional[UUID] = self._qa_repo.delete_all_from_dataset(dataset.id)
 
         if res_qa_elim is None:
@@ -179,7 +174,6 @@ class DatasetService(DatasetUseCase):
                 f"Errore durante l'eliminazione del contenuto del dataset {id}."
             )
 
-        # Elimina i metadati associati al dataset
         res_dataset_elim: Optional[UUID] = self._dataset_repo.delete_dataset(dataset.id)
 
         if res_dataset_elim is None:
@@ -194,30 +188,28 @@ class DatasetService(DatasetUseCase):
         Aggiorna il nome di un dataset salvato.
 
         Args:
-            - name (str): Nuovo nome del dataset.
-            - id (UUID): Identificativo del dataset da aggiornare.
+            name (str): Nuovo nome del dataset.
+            id (UUID): Identificativo del dataset da aggiornare.
 
         Returns:
             Dataset: Dataset aggiornato.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset non esiste.
-            - InvalidDatasetOperationException: Se il dataset è temporaneo o non salvato.
-            - PersistenceException: Se si verifica un errore durante l'aggiornamento.
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset è temporaneo o non salvato.
+            PersistenceException: Se si verifica un errore durante l'aggiornamento.
         """
 
-        # Ottiene il dataset da aggiornare e controlla che l'operazione sia andata a buon fine
         dataset_to_update: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset_to_update is None:
-            raise DatasetNonExistentException(f"Non esiste un dataset con id {id}.")
+            raise DatasetNonExistentException(id)
 
         if not dataset_to_update.is_saved():
             raise InvalidDatasetOperationException(
                 "Non è possibile rinominare un dataset temporaneo."
             )
 
-        # Costruisce un nuovo dataset che rappresenta il dataset aggiornato
         updated_dataset: Dataset = DatasetFactory.saved(
             id=id,
             dim=dataset_to_update.dim,
@@ -226,7 +218,6 @@ class DatasetService(DatasetUseCase):
             last_save_date=date.today(),
         )
 
-        # Aggiorna il dataset e controlla che l'operazione sia andata a buon fine
         res: Optional[Dataset] = self._dataset_repo.update_dataset(updated_dataset)
 
         if res is None:
@@ -241,16 +232,15 @@ class DatasetService(DatasetUseCase):
         Recupera tutti i dataset salvati, opzionalmente filtrati per nome.
 
         Args:
-            - q (str): Filtro opzionale per il nome del dataset.
+            q (str): Filtro opzionale per il nome del dataset.
 
         Returns:
             list[Dataset]: Elenco dei dataset trovati.
 
         Raises:
-            - PersistenceException: Se si verifica un errore durante l'accesso ai dati.
+            PersistenceException: Se si verifica un errore durante l'accesso ai dati.
         """
 
-        # Ottiene i dataset e controlla che l'operazione sia andata a buon fine
         datasets: Optional[list[Dataset]] = self._dataset_repo.get_all_datasets(q)
 
         if datasets is None:
@@ -265,51 +255,44 @@ class DatasetService(DatasetUseCase):
         Recupera un dataset dato il suo identificativo.
 
         Args:
-            - id (UUID): ID del dataset.
+            id (UUID): ID del dataset.
 
         Returns:
             Dataset: Dataset corrispondente.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset non esiste.
+            DatasetNonExistentException: Se il dataset non esiste.
         """
 
-        # Ottenimento dataset identificato dall'id e controllo della sua esistenza
-        dataset: Dataset = self._dataset_repo.get_dataset_by_id(id)
+        dataset: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset is None:
-            raise DatasetNonExistentException(
-                f"Non esiste nessun dataset identificato dall'id {id}."
-            )
+            raise DatasetNonExistentException(id)
 
         return dataset
 
-    def save_tmp(self, id: UUID, name: str) -> Dataset:
+    def save_tmp(self, id:UUID, name: str) -> Dataset:
         """
         Salva un dataset temporaneo come dataset definitivo, assegnando un nome.
 
         Args:
-            - id (UUID): ID del dataset temporaneo.
-            - name (str): Nome da assegnare al dataset.
+            id (UUID): ID del dataset temporaneo.
+            name (str): Nome da assegnare al dataset.
 
         Returns:
             Dataset: Dataset salvato.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset non esiste.
-            - InvalidDatasetOperationException: Se il dataset non è temporaneo.
-            - PersistenceException: Se si verifica un errore durante il salvataggio.
+            DatasetNonExistentException: Se il dataset non esiste.
+            InvalidDatasetOperationException: Se il dataset non è temporaneo.
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
-        # Ottenimento del dataset e controllo della sua esistenza
-        dataset_to_save: Dataset = self._dataset_repo.get_dataset_by_id(id)
+        dataset_to_save: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset_to_save is None:
-            raise DatasetNonExistentException(
-                "Il dataset temporaneo da salvare non esiste."
-            )
+            raise DatasetNonExistentException(id)
 
-        # Controllo che il dataset da salvare sia temporaneo
         if not dataset_to_save.is_tmp():
             raise InvalidDatasetOperationException(
                 "Il dataset da salvare deve essere temporaneo."
@@ -323,7 +306,6 @@ class DatasetService(DatasetUseCase):
             last_save_date=date.today(),
         )
 
-        # Aggiornamento dataset da temporaneo a salvato con controllo del risultato dell'operazione
         res: Optional[Dataset] = self._dataset_repo.update_dataset(saved_dataset)
 
         if res is None:
@@ -341,50 +323,45 @@ class DatasetService(DatasetUseCase):
         Salva una working copy, sovrascrivendo il dataset salvato da cui deriva.
 
         Args:
-            - id (UUID): ID della working copy.
+            id (UUID): ID della working copy.
 
         Returns:
             Dataset: Dataset salvato.
 
         Raises:
-            - DatasetNonExistentException: Se la working copy non esiste.
-            - InvalidDatasetOperationException: Se il dataset non è una working copy.
-            - PersistenceException: Se si verifica un errore durante il salvataggio.
+            DatasetNonExistentException: Se la working copy non esiste.
+            InvalidDatasetOperationException: Se il dataset non è una working copy.
+            PersistenceException: Se si verifica un errore durante il salvataggio.
         """
 
-        # Controllo che la working copy esista e che sia effettivamente una working copy
         dataset_to_save: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(id)
 
         if dataset_to_save is None:
-            raise DatasetNonExistentException("Il dataset da salvare non esiste.")
+            raise DatasetNonExistentException(id)
 
         if not dataset_to_save.is_working_copy():
             raise InvalidDatasetOperationException(
                 "Il dataset da salvare deve essere una copia di lavoro di un dataset salvato."
             )
 
-        # Ottiene l'origine della working copy
         origin_to_update: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(
             dataset_to_save.origin
         )
 
-        # Eliminazione del dataset di origine gestendo le eventuali eccezioni
+        if origin_to_update is None:
+            raise DatasetNonExistentException(id)
+
         try:
             self.delete_dataset(origin_to_update.id)
-        except DatasetNonExistentException:
-            raise DatasetNonExistentException(
-                "L'origine del dataset da salvare non è corretta."
-            )
-        except PersistenceException:
-            raise PersistenceException(
-                "Errore di persistenza durante il salvataggio del dataset."
-            )
+        except DatasetNonExistentException as ex:
+            raise ex
+        except PersistenceException as ex:
+            raise ex
 
-        # Aggiornamento della working copy a dataset salvato e controllo del risultato dell'operazione
         updated_dataset: Dataset = DatasetFactory.saved(
             id=dataset_to_save.id,
             dim=dataset_to_save.dim,
-            origin=origin_to_update.name,
+            name=origin_to_update.name,
             first_save_date=origin_to_update.first_save_date,
             last_save_date=date.today(),
         )
@@ -403,31 +380,27 @@ class DatasetService(DatasetUseCase):
         Crea una working copy da un dataset salvato esistente.
 
         Args:
-            - origin (UUID): ID del dataset salvato da cui derivare la working copy.
+            origin (UUID): ID del dataset salvato da cui derivare la working copy.
 
         Returns:
             Dataset: Working copy creata.
 
         Raises:
-            - DatasetNonExistentException: Se il dataset di origine non esiste.
-            - InvalidDatasetOperationException: Se il dataset di origine non è salvato.
-            - PersistenceException: Se si verifica un errore durante la creazione o la duplicazione dei contenuti.
+            DatasetNonExistentException: Se il dataset di origine non esiste.
+            InvalidDatasetOperationException: Se il dataset di origine non è salvato.
+            PersistenceException: Se si verifica un errore durante la creazione o la duplicazione dei contenuti.
         """
 
-        # Controllo che il dataset per cui creare una working copy esista e sia un dataset salvato
         origin_dataset: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(origin)
 
         if origin_dataset is None:
-            raise DatasetNonExistentException(
-                f"Non esiste un dataset salvato con id {origin}"
-            )
+            raise DatasetNonExistentException(origin)
 
         if not origin_dataset.is_saved():
             raise InvalidDatasetOperationException(
                 "Il dataset di origine deve essere un dataset salvato."
             )
 
-        # Creazione working copy
         working_copy: Dataset = DatasetFactory.working_copy(
             id=uuid4(), origin=origin_dataset.id, dim=origin_dataset.dim
         )
@@ -439,9 +412,8 @@ class DatasetService(DatasetUseCase):
                 "Errore di persistenza durante la creazione del dataset."
             )
 
-        # Copiatura degli elementi contenuti nel dataset salvato originario
         res_copy_content: bool = self._qa_repo.copy_all_from_dataset(
-            origin_dataset.src, working_copy.id
+            origin_dataset.id, working_copy.id
         )
 
         if not res_copy_content:

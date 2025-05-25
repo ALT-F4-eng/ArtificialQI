@@ -6,14 +6,18 @@ from uuid import UUID
 class Dataset:
     id: UUID
     dim: int
-    name: str
-    first_save_date: date
-    last_save_date: date
+    name: str|None
+    first_save_date: date|None
+    last_save_date: date|None
     tmp: bool
-    origin: UUID
+    origin: UUID|None
 
-    def __eq__(self, dataset: "Dataset") -> bool:
+    def __eq__(self, dataset: object) -> bool:
         "Controllo di uguaglianza sugli id"
+
+        if not isinstance(dataset, Dataset):
+            return False
+        
         return self.id == dataset.id
     
     def is_tmp(self) -> bool:

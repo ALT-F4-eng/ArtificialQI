@@ -2,7 +2,8 @@ from typing import Optional
 from uuid import UUID
 
 from common.exceptions import PersistenceException, TestNonExistentException, InvalidTestOperationException
-from core.test import Test, TestFactory
+from core.test import Test
+from core.test_factory import TestFactory
 from port.inbound.test_use_case import TestUseCase
 from port.outbound.dataset_repository import DatasetRepository
 from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepository
@@ -29,11 +30,24 @@ class DatasetService(TestUseCase):
         pass
 
     def delete_test(self, id: UUID) -> UUID:
+        """
+        Elimina un test e i relativi risultati.
+
+        Args:
+            id (UUID): Id del test da eliminare.
+
+        Returns:
+            UUID: Id del test eliminato.
+
+        Raises:
+            TestNonExistentException: Se il test non esiste.
+            PersistenceException: Se si verifica un errore durante l'eliminazione dei risultati o del test.
+        """
 
         test_to_del: Optional[Test] = self._test_repo.get_test_by_id(id)
 
         if test_to_del is None:
-            raise TestNonExistentException(f"Non esiste nessun test con id {id}.")
+            raise TestNonExistentException(id)
 
         res_to_del: bool = self._result_repo.delete_all_from_test(id)
 
@@ -50,11 +64,25 @@ class DatasetService(TestUseCase):
         return result
 
     def update_test(self, id: UUID, name: str) -> Test:
+        """
+        Aggiorna il nome di un test esistente.
 
+        Args:
+            id (UUID): Id del test da aggiornare.
+            name (str): Nuovo nome del test.
+
+        Returns:
+            Test: Test aggiornato.
+
+        Raises:
+            TestNonExistentException: Se il test non esiste.
+            InvalidTestOperationException: Se il test non è stato ancora salvato.
+            PersistenceException: Se si verifica un errore durante l'aggiornamento.
+        """
         test_to_update: Optional[Test] = self._test_repo.get_test_by_id(id)
 
         if test_to_update is None:
-            raise TestNonExistentException(f"Non esiste nessun test con id {id}.")
+            raise TestNonExistentException(id)
 
         if test_to_update.is_tmp():
             raise InvalidTestOperationException(
@@ -78,11 +106,26 @@ class DatasetService(TestUseCase):
         return res
 
     def save(self, id: UUID, name: str) -> Test:
+        """
+        Salva un test temporaneo assegnandogli un nome definitivo.
 
+        Args:
+            id (UUID): Id del test da salvare.
+            name (str): Nome da assegnare al test.
+
+        Returns:
+            Test: Test salvato.
+
+        Raises:
+            TestNonExistentException: Se il test non esiste.
+            InvalidTestOperationException: Se il test è già stato salvato.
+            PersistenceException: Se si verifica un errore durante l'aggiornamento.
+        """
+         
         test_to_save: Optional[Test] = self._test_repo.get_test_by_id(id)
 
         if test_to_save is None:
-            raise TestNonExistentException(f"Non esiste nessun test con id {id}.")
+            raise TestNonExistentException(id)
 
         if not test_to_save.is_tmp():
             raise InvalidTestOperationException("Il test è già salvato.")
@@ -104,6 +147,18 @@ class DatasetService(TestUseCase):
         return res
 
     def get_all_tests(self, q: str = "") -> list[Test]:
+        """
+        Restituisce la lista di tutti i test, opzionalmente filtrata da una query.
+
+        Args:
+            q (str, opzionale): Query di ricerca per filtrare i test. Default "".
+
+        Returns:
+            list[Test]: Lista dei test trovati.
+
+        Raises:
+            PersistenceException: Se si verifica un errore durante il recupero.
+        """
 
         tests: Optional[list[Test]] = self._test_repo.get_all_tests(q)
 
@@ -113,10 +168,22 @@ class DatasetService(TestUseCase):
         return tests
 
     def get_test_by_id(self, id: UUID) -> Test:
+        """
+        Restituisce un test dato il suo Id.
 
+        Args:
+            id (UUID): Id del test da recuperare.
+
+        Returns:
+            Test: Test corrispondente all'Id fornito.
+
+        Raises:
+            TestNonExistentException: Se il test non esiste.
+        """
+        
         test: Optional[Test] = self._test_repo.get_test_by_id(id)
 
         if test is None:
-            raise TestNonExistentException(f"Non esiste nessun test con id {id}.")
+            raise TestNonExistentException(id)
 
         return test

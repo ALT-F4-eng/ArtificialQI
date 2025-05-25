@@ -19,7 +19,7 @@ class TestUseCase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def save(self, id: UUID) -> Test:
+    def save(self, id: UUID, name: str) -> Test:
         raise NotImplementedError
 
     @abstractmethod

@@ -24,5 +24,5 @@ class LlmRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all_llms(self) -> list[Llm]:
+    def get_all_llms(self) -> Optional[list[Llm]]:
         raise NotImplementedError

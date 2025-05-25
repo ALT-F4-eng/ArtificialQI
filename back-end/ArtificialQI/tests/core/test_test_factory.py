@@ -1,4 +1,0 @@
-
-
-class _TestTestFactory:
-    pass

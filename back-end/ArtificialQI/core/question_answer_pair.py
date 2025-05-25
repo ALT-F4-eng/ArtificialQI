@@ -10,32 +10,32 @@ class QuestionAnswerPair:
     question: str
     answer: str
 
-def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID) -> QuestionAnswerPair:
+    def __hash__(self)->int:
+        return hash(self.id)
+
+def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID=uuid4()) -> QuestionAnswerPair:
     """
     Crea un'istanza della classe QuestionAnswerPair a partire dalle informazioni fornite.
 
+    Preconditions:
+ 
+
     Args:
-        - dataset (UUID): Identificativo del dataset a cui appartiene la coppia domanda-risposta.
-        - question (str): Testo della domanda.
-        - answer (str): Testo della risposta attesa.
-        - id (UUID, opzionale): Identificativo della coppia domanda-risposta. Se non specificato, viene generato automaticamente.
+        dataset (UUID): Identificativo del dataset a cui appartiene la coppia domanda-risposta.
+        question (str): Testo della domanda.
+        answer (str): Testo della risposta attesa.
+        id (UUID, opzionale): Identificativo della coppia domanda-risposta. Se non specificato, viene generato automaticamente.
 
     Returns:
         QuestionAnswerPair: Oggetto che rappresenta una coppia domanda-risposta da associare a un dataset.
 
     Raises:
-        - ValueError:
-            - Se 'dataset' è none.
-            - Se 'question' e 'answer' sono entrambe vuote o composte solo da spazi.
-            - Se 'id' pè none.
+        ValueError:
+            Se 'question' e 'answer' sono entrambe vuote o composte solo da spazi.
+            Se 'id' è none.
     """
-    if id is None:
-        raise ValueError
 
     if not (question.strip() or answer.strip()):
-        raise ValueError
-
-    if not dataset:
         raise ValueError
 
     return QuestionAnswerPair(

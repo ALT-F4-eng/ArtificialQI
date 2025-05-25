@@ -39,11 +39,8 @@ export class TestListViewComponent {
   }
 
   @Output() testDeleted = new EventEmitter<number>();
-  onDelete(index: number) {
-  const testToDelete = this.tests[index];
-  if (testToDelete) {
-    this.testDeleted.emit(testToDelete.ID); 
-  }
+  onDelete(id: number) {
+  this.testDeleted.emit(id); 
 }
 
   @Output() testLoaded = new EventEmitter<TestDto>();

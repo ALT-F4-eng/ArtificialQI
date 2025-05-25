@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { resultDto } from '../../../core/models/result-dto.model';
+import { TestResultDto } from '../../../core/models/testresult-dto.model';
 import { ResultElementComponent } from '../result-element/result-element.component';
 
 @Component({
@@ -11,5 +11,5 @@ import { ResultElementComponent } from '../result-element/result-element.compone
   styleUrls: ['./result-list-view.component.css']
 })
 export class ResultListViewComponent {
-  @Input() results: resultDto[] = [];
+  @Input() results: TestResultDto[] = [];
 }

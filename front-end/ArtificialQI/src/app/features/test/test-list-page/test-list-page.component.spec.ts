@@ -20,8 +20,30 @@ describe('TestListPageComponent (Jest)', () => {
   let fixture: ComponentFixture<TestListPageComponent>;
 
   const sampleTests: TestDto[] = [
-    { ID: 1, name: 'Test Alpha', lastModified: new Date(), Dataset: '' },
-    { ID: 2, name: 'Test Beta', lastModified: new Date(), Dataset: '' },
+    {
+    id: 1,
+    name: 'Test Alpha',
+    llm_name: 'LLM1',
+    tmp: true,
+    max_page: 10,
+    avg_similarity: 0.85,
+    exec_date: new Date('2025-05-01'),
+    std_dev_similarity: 0.05,
+    correct_percentage: 90,
+    distribution: [1, 2, 3, 4, 5]
+  },
+  {
+    id: 2,
+    name: 'Test Beta',
+    llm_name: 'LLM2',
+    tmp: false,
+    max_page: 12,
+    avg_similarity: 0.78,
+    exec_date: new Date('2025-06-10'),
+    std_dev_similarity: 0.08,
+    correct_percentage: 85,
+    distribution: [2, 3, 4, 5, 6]
+  },
   ];
 
   beforeEach(async () => {
@@ -67,10 +89,12 @@ describe('TestListPageComponent (Jest)', () => {
 
   expect(component.filteredTests).toEqual([
     {
-      ID: 1,
+      id: 1,
       name: 'Test Alpha',
-      lastModified: sampleTests[0].lastModified,
+      exec_date: sampleTests[0].exec_date,
       Dataset: '',
+      LLM: '1',
+      temp: true,
     }
   ]);
 });
@@ -96,41 +120,51 @@ describe('TestListPageComponent (Jest)', () => {
     component.testDeleted(0);
 
     expect(mockTestService.deleteTest).toHaveBeenCalledWith(1);
-    expect(component.mockTests.find(t => t.ID === 1)).toBeUndefined();
-    expect(component.filteredTests.find(t => t.ID === 1)).toBeUndefined();
+    expect(component.mockTests.find(t => t.id === 1)).toBeUndefined();
+    expect(component.filteredTests.find(t => t.id === 1)).toBeUndefined();
   });
 
   it('should delete a test via confirmation', () => {
     component.mockTests = [...sampleTests];
     component.filteredTests = [...sampleTests];
-    component.deletingId = 2;
-    component.showConfirm = true;
+    component.deletingid = 2;
+    component.showDeleteConfirm = true;
     mockTestService.deleteTest.mockReturnValue(of({}));
 
     component.onTestDeleteConfirmed();
 
     expect(mockTestService.deleteTest).toHaveBeenCalledWith(2);
-    expect(component.mockTests.find(t => t.ID === 2)).toBeUndefined();
-    expect(component.filteredTests.find(t => t.ID === 2)).toBeUndefined();
-    expect(component.showConfirm).toBe(false);
-    expect(component.deletingId).toBeUndefined();
+    expect(component.mockTests.find(t => t.id === 2)).toBeUndefined();
+    expect(component.filteredTests.find(t => t.id === 2)).toBeUndefined();
+    expect(component.showDeleteConfirm).toBe(false);
+    expect(component.deletingid).toBeUndefined();
   });
 
   it('should cancel delete confirmation', () => {
-    component.showConfirm = true;
-    component.deletingId = 99;
-    component.confirmMessage = 'some message';
+    component.showDeleteConfirm = true;
+    component.deletingid = 99;
+    component.showDeleteMessage = 'some message';
 
     component.onTestDeleteCanceled();
 
-    expect(component.showConfirm).toBe(false);
-    expect(component.deletingId).toBeUndefined();
-    expect(component.confirmMessage).toBe('');
+    expect(component.showDeleteConfirm).toBe(false);
+    expect(component.deletingid).toBeUndefined();
+    expect(component.showDeleteMessage).toBe('');
   });
 
   it('should navigate on test load', () => {
-    const test = { ID: 1, name: 'Test Alpha', lastModified: new Date(), Dataset: '' };
-    component.onTestLoaded(test);
+    const test = {
+    id: 1,
+    name: 'Test Alpha',
+    llm_name: 'LLM1',
+    tmp: true,
+    max_page: 10,
+    avg_similarity: 0.85,
+    exec_date: new Date('2025-05-01'),
+    std_dev_similarity: 0.05,
+    correct_percentage: 90,
+    distribution: [1, 2, 3, 4, 5]
+  };
 
     expect(mockRouter.navigate).toHaveBeenCalledWith(['/test'], { state: { test } });
   });

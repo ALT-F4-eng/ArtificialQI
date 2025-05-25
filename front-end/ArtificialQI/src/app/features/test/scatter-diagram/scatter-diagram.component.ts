@@ -63,8 +63,8 @@ export class ScatterDiagramComponent {
             mode: 'xy'
           },
           limits: {
-            x: { min: 'original', max: 'original' },
-            y: { min: 'original', max: 'original' }
+            x: { min: 0, max: 'original' },
+            y: { min: 0, max: 1 }
           }
         }
       },
@@ -72,13 +72,13 @@ export class ScatterDiagramComponent {
         x: {
           title: { display: true, text: 'Risultato n°' },
           ticks: { stepSize: 1 },
-          min: 0.5,
-          max: this.elementValues.length + 0.5
+          min: 0,
+          max: this.elementValues.length + 1
         },
         y: {
           title: { display: true, text: 'Similarità' },
-          min: -0.05,
-          max: 1.05
+          min: 0,
+          max: 1.03
         }
       },
       onClick: (event: ChartEvent, elements: any[]) => {
@@ -89,9 +89,5 @@ export class ScatterDiagramComponent {
         }
       }
     };
-  }
-
-  resetZoom(): void {
-    this.chart?.chart?.resetZoom();
   }
 }

@@ -4,8 +4,8 @@
     [test]="item"
     (rename)="onRename(i, $event)"
     (copyClicked)="onCopy(i)"
-    (delete)="onDelete(i)"
-    (testLoaded)="onTestLoaded($event)"
+    (testDelete)="onDelete($event)"
+    (testLoad)="onTestLoaded($event)"
     role="listitem"
   ></app-test-element>
   <!-- Messaggio quando non ci sono test -->

@@ -10,7 +10,7 @@ import { DatasetListPageComponent } from './features/dataset/dataset-list-page/d
 import { TestPageComponent } from './features/test/test-page/test-page.component';
 import { DatasetContentPageComponent } from './features/dataset/dataset-content-page/dataset-content-page.component';// per testing
 import { TestListPageComponent } from './features/test/test-list-page/test-list-page.component';
-
+import { TestComparisonPageComponent } from './features/test/test-comparison-page/test-comparison-page.component';
 
 export const routes: Routes = [
   {
@@ -26,7 +26,8 @@ export const routes: Routes = [
       { path: 'test/:id', component: TestPageComponent },
       { path: 'llm/:id', component: LlmPageComponent },
       { path: 'llm-form', component: LlmFormComponent },
-      { path: 'llm-form/:id', component: LlmFormComponent }
+      { path: 'llm-form/:id', component: LlmFormComponent },
+      { path: 'testComparisonPage', component: TestComparisonPageComponent }
     ],
   },
 ];

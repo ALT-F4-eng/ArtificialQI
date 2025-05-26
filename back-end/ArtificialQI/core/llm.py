@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 from uuid import UUID
-from core.llm_config import Config
+from core.config import Config
 
 @dataclass
 class Llm:

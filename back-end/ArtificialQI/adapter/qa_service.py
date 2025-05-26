@@ -9,8 +9,6 @@ from core.page import Page
 
 
 class QaService(QaUseCase):
-
-    QA_PER_PAGE: int = 25
     
     def __init__(self, qa_repo:QuestionAnswerPairRepository , dataset_repo:DatasetRepository):
         self.qa_repo:QuestionAnswerPairRepository = qa_repo
@@ -61,7 +59,7 @@ class QaService(QaUseCase):
             PageNonExistentException: Se non esiste la pagina richiesta per il dataset.
         """
 
-        qa_set: Optional[set[QuestionAnswerPair]] = self.qa_repo.get_qa_set(dataset, p, self.QA_PER_PAGE, q)
+        qa_set: Optional[set[QuestionAnswerPair]] = self.qa_repo.get_qa_set(dataset, p, Page.ELEMENT_PER_PAGE, q)
 
         if qa_set is None:
             raise PageNonExistentException(p)

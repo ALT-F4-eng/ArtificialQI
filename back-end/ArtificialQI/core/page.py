@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import ClassVar
 from typing import Generic, TypeVar
 
 T = TypeVar("T")
@@ -6,6 +7,9 @@ T = TypeVar("T")
 
 @dataclass
 class Page(Generic[T]):
+
+    ELEMENT_PER_PAGE: ClassVar[int] = 25
+
     page_n: int
     content: set[T]
 

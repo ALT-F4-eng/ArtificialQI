@@ -10,7 +10,7 @@ CREATE TABLE LLM (
     url VARCHAR(512) NOT NULL,
     chiave_richiesta VARCHAR(255) NOT NULL,
     chiave_risposta VARCHAR(255) NOT NULL,
-    data_registrazione TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    data_registrazione TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (chiave_richiesta) REFERENCES CoppiaChiaveValore(chiave),
     FOREIGN KEY (chiave_risposta)  REFERENCES CoppiaChiaveValore(chiave)
 );

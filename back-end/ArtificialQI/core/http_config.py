@@ -1,11 +1,11 @@
-from core.config import Config
+from core.comunication_config import ComunicationConfig
 from uuid import UUID
 from common.exceptions import *
 from dataclasses import dataclass
 from core.key_value_list import KeyValueList
 
 @dataclass
-class HttpConfig(Config):
+class HttpConfig(ComunicationConfig):
 
     id: UUID
     url: str

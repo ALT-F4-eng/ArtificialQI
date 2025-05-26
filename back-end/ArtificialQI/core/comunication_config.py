@@ -1,5 +1,5 @@
 from abc import ABC
 
-class Config(ABC):
+class ComunicationConfig(ABC):
     pass
     

@@ -1,1 +1,11 @@
 <p>test-comparison-page works!</p>
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<app-comparison-index
+  [test_Origin]="testOrigin_TestComparison"
+  [test_Compared]="testCompared_TestComparison"
+  [resultsOrigin_ComparisonIndex]="resultsOrigin_TestComparison"
+  [resultsCompared_ComparisonIndex]="resultsCompared_TestComparison"
+></app-comparison-index>

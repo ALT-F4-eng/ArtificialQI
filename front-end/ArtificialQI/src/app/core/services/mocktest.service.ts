@@ -3,6 +3,8 @@ import { TestDto } from '../../core/models/test-dto.model';
 import { TestResultDto } from '../models/testresult-dto.model';
 import { TestPageDto } from '../models/testpage-dto.model';
 import { M } from '@angular/material/icon-module.d-COXCrhrh';
+import { Injectable } from '@angular/core';
+
 export const MOCK_TEST: TestDto[] = [
   {
     id: 1,
@@ -14,7 +16,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-05-01'),
     std_dev_similarity: 0.05,
     correct_percentage: 90,
-    distribution: [1, 2, 3, 4, 5]
+    distribution: [1, 2, 3, 4, 5],
   },
   {
     id: 2,
@@ -26,7 +28,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-06-10'),
     std_dev_similarity: 0.08,
     correct_percentage: 85,
-    distribution: [2, 3, 4, 5, 6]
+    distribution: [2, 3, 4, 5, 6],
   },
   {
     id: 3,
@@ -38,7 +40,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-07-15'),
     std_dev_similarity: 0.03,
     correct_percentage: 95,
-    distribution: [3, 4, 5, 6, 7]
+    distribution: [3, 4, 5, 6, 7],
   },
   {
     id: 4,
@@ -50,7 +52,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-08-20'),
     std_dev_similarity: 0.07,
     correct_percentage: 88,
-    distribution: [4, 5, 6, 7, 8]
+    distribution: [4, 5, 6, 7, 8],
   },
   {
     id: 5,
@@ -62,7 +64,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-09-25'),
     std_dev_similarity: 0.09,
     correct_percentage: 80,
-    distribution: [5, 6, 7, 8, 9]
+    distribution: [5, 6, 7, 8, 9],
   },
   {
     id: 6,
@@ -74,7 +76,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-10-30'),
     std_dev_similarity: 0.04,
     correct_percentage: 92,
-    distribution: [6, 7, 8, 9, 10]
+    distribution: [6, 7, 8, 9, 10],
   },
   {
     id: 7,
@@ -86,7 +88,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-11-05'),
     std_dev_similarity: 0.06,
     correct_percentage: 87,
-    distribution: [7, 8, 9, 10, 11]
+    distribution: [7, 8, 9, 10, 11],
   },
   {
     id: 8,
@@ -98,7 +100,7 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-12-12'),
     std_dev_similarity: 0.1,
     correct_percentage: 82,
-    distribution: [8, 9, 10, 11, 12]
+    distribution: [8, 9, 10, 11, 12],
   },
   {
     id: 9,
@@ -110,39 +112,361 @@ export const MOCK_TEST: TestDto[] = [
     exec_date: new Date('2025-12-12'),
     std_dev_similarity: 0.02,
     correct_percentage: 97,
-    distribution: [9, 10, 11, 12, 13]
-  }
+    distribution: [9, 10, 11, 12, 13],
+  },
 ];
 
 export const MOCK_RESULT: TestResultDto[] = [
-  { qa: { id: 1, question: 'What is the capital of France?', answer: 'Paris' }, llm_answer: 'Paris', similarity: 0.99, correct: true },
-  { qa: { id: 2, question: 'What is the capital of Germany?', answer: 'Berlin' }, llm_answer: 'Berlin', similarity: 0.75, correct: true },
-  { qa: { id: 3, question: 'What is the capital of Spain?', answer: 'Barcelona' }, llm_answer: 'Madrid', similarity: 0.22, correct: false },
-  { qa: { id: 4, question: 'What is the capital of Italy?', answer: 'Rome' }, llm_answer: 'Rome', similarity: 0.88, correct: true },
-  { qa: { id: 5, question: 'What is the capital of Portugal?', answer: 'Lisbon' }, llm_answer: 'Lisbon', similarity: 0.53, correct: true },
-  { qa: { id: 6, question: 'What is the capital of Netherlands?', answer: 'Amsterdam' }, llm_answer: 'Amsterdam', similarity: 0.12, correct: true },
-  { qa: { id: 7, question: 'What is the capital of Belgium?', answer: 'Brussels' }, llm_answer: 'Brussels', similarity: 0.67, correct: true },
-  { qa: { id: 8, question: 'What is the capital of Switzerland?', answer: 'Bern' }, llm_answer: 'Bern', similarity: 0.41, correct: true },
-  { qa: { id: 9, question: 'What is the capital of Austria?', answer: 'Vienna' }, llm_answer: 'Vienna', similarity: 0.95, correct: true },
-  { qa: { id: 10, question: 'What is the capital of Sweden?', answer: 'Stockholm' }, llm_answer: 'Stockholm', similarity: 0.08, correct: true },
-  { qa: { id: 11, question: 'What is the capital of Norway?', answer: 'Oslo' }, llm_answer: 'Oslo', similarity: 0.60, correct: true },
-  { qa: { id: 12, question: 'What is the capital of Denmark?', answer: 'Copenhagen' }, llm_answer: 'Copenhagen', similarity: 0.34, correct: true },
-  { qa: { id: 13, question: 'What is the capital of Finland?', answer: 'Helsinki' }, llm_answer: 'Helsinki', similarity: 0.80, correct: true },
-  { qa: { id: 14, question: 'What is the capital of Iceland?', answer: 'Reykjavik' }, llm_answer: 'Reykjavik', similarity: 0.17, correct: true },
-  { qa: { id: 15, question: 'What is the capital of Ireland?', answer: 'Dublin' }, llm_answer: 'Dublin', similarity: 0.49, correct: true },
-  { qa: { id: 16, question: 'What is the capital of Greece?', answer: 'Athens' }, llm_answer: 'Athens', similarity: 0.27, correct: true },
-  { qa: { id: 17, question: 'What is the capital of Hungary?', answer: 'Budapest' }, llm_answer: 'Budapest', similarity: 0.70, correct: true },
-  { qa: { id: 18, question: 'What is the capital of Poland?', answer: 'Warsaw' }, llm_answer: 'Warsaw', similarity: 0.03, correct: true }
+  {
+    qa: { id: 1, question: 'What is the capital of France?', answer: 'Paris' },
+    llm_answer: 'Paris',
+    similarity: 0.99,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 2,
+      question: 'What is the capital of Germany?',
+      answer: 'Berlin',
+    },
+    llm_answer: 'Berlin',
+    similarity: 0.75,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 3,
+      question: 'What is the capital of Spain?',
+      answer: 'Barcelona',
+    },
+    llm_answer: 'Madrid',
+    similarity: 0.22,
+    correct: false,
+  },
+  {
+    qa: { id: 4, question: 'What is the capital of Italy?', answer: 'Rome' },
+    llm_answer: 'Rome',
+    similarity: 0.88,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 5,
+      question: 'What is the capital of Portugal?',
+      answer: 'Lisbon',
+    },
+    llm_answer: 'Lisbon',
+    similarity: 0.53,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 6,
+      question: 'What is the capital of Netherlands?',
+      answer: 'Amsterdam',
+    },
+    llm_answer: 'Amsterdam',
+    similarity: 0.12,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 7,
+      question: 'What is the capital of Belgium?',
+      answer: 'Brussels',
+    },
+    llm_answer: 'Brussels',
+    similarity: 0.67,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 8,
+      question: 'What is the capital of Switzerland?',
+      answer: 'Bern',
+    },
+    llm_answer: 'Bern',
+    similarity: 0.41,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 9,
+      question: 'What is the capital of Austria?',
+      answer: 'Vienna',
+    },
+    llm_answer: 'Vienna',
+    similarity: 0.95,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 10,
+      question: 'What is the capital of Sweden?',
+      answer: 'Stockholm',
+    },
+    llm_answer: 'Stockholm',
+    similarity: 0.08,
+    correct: true,
+  },
+  {
+    qa: { id: 11, question: 'What is the capital of Norway?', answer: 'Oslo' },
+    llm_answer: 'Oslo',
+    similarity: 0.6,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 12,
+      question: 'What is the capital of Denmark?',
+      answer: 'Copenhagen',
+    },
+    llm_answer: 'Copenhagen',
+    similarity: 0.34,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 13,
+      question: 'What is the capital of Finland?',
+      answer: 'Helsinki',
+    },
+    llm_answer: 'Helsinki',
+    similarity: 0.8,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 14,
+      question: 'What is the capital of Iceland?',
+      answer: 'Reykjavik',
+    },
+    llm_answer: 'Reykjavik',
+    similarity: 0.17,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 15,
+      question: 'What is the capital of Ireland?',
+      answer: 'Dublin',
+    },
+    llm_answer: 'Dublin',
+    similarity: 0.49,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 16,
+      question: 'What is the capital of Greece?',
+      answer: 'Athens',
+    },
+    llm_answer: 'Athens',
+    similarity: 0.27,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 17,
+      question: 'What is the capital of Hungary?',
+      answer: 'Budapest',
+    },
+    llm_answer: 'Budapest',
+    similarity: 0.7,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 18,
+      question: 'What is the capital of Poland?',
+      answer: 'Warsaw',
+    },
+    llm_answer: 'Warsaw',
+    similarity: 0.03,
+    correct: true,
+  },
+];
+
+export const MOCK_RESULT_COMPARE: TestResultDto[] = [
+  {
+    qa: { id: 1, question: 'What is the capital of France?', answer: 'Paris' },
+    llm_answer: 'Paris',
+    similarity: 0.99,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 2,
+      question: 'What is the capital of Germany?',
+      answer: 'Berlin',
+    },
+    llm_answer: 'Munich',
+    similarity: 0.45,
+    correct: false,
+  }, //l'unica differenza
+  {
+    qa: {
+      id: 3,
+      question: 'What is the capital of Spain?',
+      answer: 'Barcelona',
+    },
+    llm_answer: 'Madrid',
+    similarity: 0.22,
+    correct: false,
+  },
+  {
+    qa: { id: 4, question: 'What is the capital of Italy?', answer: 'Rome' },
+    llm_answer: 'Rome',
+    similarity: 0.88,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 5,
+      question: 'What is the capital of Portugal?',
+      answer: 'Lisbon',
+    },
+    llm_answer: 'Lisbon',
+    similarity: 0.53,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 6,
+      question: 'What is the capital of Netherlands?',
+      answer: 'Amsterdam',
+    },
+    llm_answer: 'Amsterdam',
+    similarity: 0.12,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 7,
+      question: 'What is the capital of Belgium?',
+      answer: 'Brussels',
+    },
+    llm_answer: 'Brussels',
+    similarity: 0.67,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 8,
+      question: 'What is the capital of Switzerland?',
+      answer: 'Bern',
+    },
+    llm_answer: 'Bern',
+    similarity: 0.41,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 9,
+      question: 'What is the capital of Austria?',
+      answer: 'Vienna',
+    },
+    llm_answer: 'Vienna',
+    similarity: 0.95,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 10,
+      question: 'What is the capital of Sweden?',
+      answer: 'Stockholm',
+    },
+    llm_answer: 'Stockholm',
+    similarity: 0.08,
+    correct: true,
+  },
+  {
+    qa: { id: 11, question: 'What is the capital of Norway?', answer: 'Oslo' },
+    llm_answer: 'Oslo',
+    similarity: 0.6,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 12,
+      question: 'What is the capital of Denmark?',
+      answer: 'Copenhagen',
+    },
+    llm_answer: 'Copenhagen',
+    similarity: 0.34,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 13,
+      question: 'What is the capital of Finland?',
+      answer: 'Helsinki',
+    },
+    llm_answer: 'Helsinki',
+    similarity: 0.8,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 14,
+      question: 'What is the capital of Iceland?',
+      answer: 'Reykjavik',
+    },
+    llm_answer: 'Reykjavik',
+    similarity: 0.17,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 15,
+      question: 'What is the capital of Ireland?',
+      answer: 'Dublin',
+    },
+    llm_answer: 'Dublin',
+    similarity: 0.49,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 16,
+      question: 'What is the capital of Greece?',
+      answer: 'Athens',
+    },
+    llm_answer: 'Athens',
+    similarity: 0.27,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 17,
+      question: 'What is the capital of Hungary?',
+      answer: 'Budapest',
+    },
+    llm_answer: 'Budapest',
+    similarity: 0.7,
+    correct: true,
+  },
+  {
+    qa: {
+      id: 18,
+      question: 'What is the capital of Poland?',
+      answer: 'Warsaw',
+    },
+    llm_answer: 'Warsaw',
+    similarity: 0.03,
+    correct: true,
+  },
 ];
 
 export const MOCK_TEST_PAGE: TestPageDto = {
   page_n: 4,
   result_list: MOCK_RESULT,
-}
+};
 
-
-
+@Injectable({ providedIn: 'root' })
 export class MockTestService {
+  //cachedTestCaricato: any;
+
   getAllTests() {
     return of(MOCK_TEST);
   }
@@ -183,6 +507,9 @@ export class MockTestService {
 
   getAllResults(testid: number) {
     return of(MOCK_RESULT);
+  }
+  getAllResultsCompare(testid: number) {
+    return of(MOCK_RESULT_COMPARE);
   }
 
   compareTest(test1: TestDto, test2: TestDto) {

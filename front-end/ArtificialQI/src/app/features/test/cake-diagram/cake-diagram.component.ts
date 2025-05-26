@@ -12,7 +12,7 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 })
 export class CakeDiagramComponent {
   @Input() correctnessValue: number = 0;
-  @Input() comparedCorrectnessValue?: number;
+  //@Input() comparedCorrectnessValue?: number;
 
   // Chart.js richiede valori da 0 a 100 (percentuale)
   get doughnutData(): ChartConfiguration<'doughnut'>['data'] {

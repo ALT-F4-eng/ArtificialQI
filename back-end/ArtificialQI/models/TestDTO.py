@@ -4,8 +4,8 @@ from datetime import date
 
 class TestDTO(BaseModel):
     id: UUID
-    name: str
-    llm_name: str
+    name: str | None
+    llm_name: str 
     exec_date: date
     tmp: bool
     max_page: int

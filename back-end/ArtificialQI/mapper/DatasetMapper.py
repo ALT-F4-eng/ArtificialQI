@@ -3,6 +3,8 @@ from datetime import date
 from core.dataset import Dataset
 from models.DatasetDTO import DatasetDTO
 from models.DatasetListDTO import DatasetListDTO
+from math import ceil
+from core.page import Page
 
 
 
@@ -25,7 +27,7 @@ def dataset_to_datasetdto(domain: Dataset) -> DatasetDTO:
         first_save=domain.first_save_date,
         origin_id=domain.origin,
         tmp=domain.tmp,
-        max_page=-(-domain.dim//25), #25 sarebbe il umero di elementi per pagina, se ne facciamo meno o di + basta cambiarlo
+        max_page=ceil(domain.dim / Page.ELEMENT_PER_PAGE),
         element_n=domain.dim  
     )
 

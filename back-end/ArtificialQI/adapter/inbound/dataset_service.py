@@ -214,7 +214,7 @@ class DatasetService(DatasetUseCase):
             id=id,
             dim=dataset_to_update.dim,
             name=name,
-            first_save_date=dataset_to_update.first_save_date,
+            first_save_date=dataset_to_update.first_save_date, # type: ignore
             last_save_date=date.today(),
         )
 
@@ -345,7 +345,7 @@ class DatasetService(DatasetUseCase):
             )
 
         origin_to_update: Optional[Dataset] = self._dataset_repo.get_dataset_by_id(
-            dataset_to_save.origin
+            dataset_to_save.origin # type: ignore
         )
 
         if origin_to_update is None:
@@ -361,8 +361,8 @@ class DatasetService(DatasetUseCase):
         updated_dataset: Dataset = DatasetFactory.saved(
             id=dataset_to_save.id,
             dim=dataset_to_save.dim,
-            name=origin_to_update.name,
-            first_save_date=origin_to_update.first_save_date,
+            name=origin_to_update.name, # type: ignore
+            first_save_date=origin_to_update.first_save_date, # type: ignore
             last_save_date=date.today(),
         )
 

@@ -134,7 +134,6 @@ class QaService(QaUseCase):
         if questionAnswerPair is None:
             raise QaNonExistentException(id)
 
-        # Elimina la qa dal repo
         res_qa_elim: Optional[UUID] = self.qa_repo.delete_qa(id)
 
         if res_qa_elim is None:

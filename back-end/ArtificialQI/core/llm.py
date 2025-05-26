@@ -1,16 +1,16 @@
 from dataclasses import dataclass
 from datetime import date
 from uuid import UUID
-from core.config import Config
+from core.comunication_config import ComunicationConfig
 
 @dataclass
 class Llm:
     id: UUID
     name: str
-    config: Config
+    config: ComunicationConfig
     last_mod: date
 
-def llm_factory_function(id: UUID, name:str, config:Config, last_mod: date) -> Llm:
+def llm_factory_function(id: UUID, name:str, config:ComunicationConfig, last_mod: date) -> Llm:
     """
     Crea un'istanza della classe Llm a partire dalle informazioni ricevute.
 

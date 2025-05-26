@@ -27,7 +27,7 @@ import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
   styleUrls: ['./test-page.component.css']
 })
 export class TestPageComponent implements OnInit {
-  @Input() test?: TestDto;
+  test?: TestDto;
 
   testPage: TestPageDto = MOCK_TEST_PAGE;
   results: TestResultDto[] = [];

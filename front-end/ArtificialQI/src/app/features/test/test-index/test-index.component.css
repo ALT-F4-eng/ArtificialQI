@@ -4,9 +4,14 @@
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  overflow: hidden; /* per evitare scroll orizzontale */
 }
 
+
 .chart-container {
-  width: 250px; /* più piccolo */
+  flex: 1 1 800px; /* larghezza base 800px */
+  width: 100%;          /* occupa tutto lo spazio disponibile nel flex item */
+  max-width: 900px;     /* ma non più di 250px */
   height: auto;
+  box-sizing: border-box; /* per sicurezza */
 }

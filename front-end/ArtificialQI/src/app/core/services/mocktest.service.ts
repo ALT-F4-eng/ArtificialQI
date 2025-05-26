@@ -2,11 +2,11 @@ import { of } from 'rxjs';
 import { TestDto } from '../../core/models/test-dto.model';
 import { TestResultDto } from '../models/testresult-dto.model';
 import { TestPageDto } from '../models/testpage-dto.model';
-import { M } from '@angular/material/icon-module.d-COXCrhrh';
 export const MOCK_TEST: TestDto[] = [
   {
     id: 1,
     name: 'Test Alpha',
+    dataset_id: 1,
     llm_name: 'LLM1',
     tmp: true,
     max_page: 10,
@@ -19,6 +19,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 2,
     name: 'Test Beta',
+    dataset_id: 2,
     llm_name: 'LLM2',
     tmp: false,
     max_page: 12,
@@ -31,6 +32,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 3,
     name: 'Test Gamma',
+    dataset_id: 3,
     llm_name: 'LLM3',
     tmp: false,
     max_page: 8,
@@ -43,6 +45,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 4,
     name: 'Test Delta',
+    dataset_id: 1,
     llm_name: 'LLM4',
     tmp: false,
     max_page: 15,
@@ -55,6 +58,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 5,
     name: 'Test Epsilon',
+    dataset_id: 2,
     llm_name: 'LLM5',
     tmp: false,
     max_page: 9,
@@ -67,6 +71,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 6,
     name: 'Test Zeta',
+    dataset_id: 3,
     llm_name: 'LLM6',
     tmp: false,
     max_page: 11,
@@ -79,6 +84,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 7,
     name: 'Test Eta',
+    dataset_id: 1,
     llm_name: 'LLM7',
     tmp: false,
     max_page: 13,
@@ -91,6 +97,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 8,
     name: 'Test Theta',
+    dataset_id: 2,
     llm_name: 'LLM8',
     tmp: false,
     max_page: 14,
@@ -103,6 +110,7 @@ export const MOCK_TEST: TestDto[] = [
   {
     id: 9,
     name: 'Test Theta2',
+    dataset_id: 3,
     llm_name: 'LLM9',
     tmp: false,
     max_page: 16,

@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+
+<mat-dialog-content>
+  <mat-nav-list>
+    <mat-list-item
+      *ngFor="let model of testList"
+      (click)="select(model)"
+    >
+      <div matLine class="test-header">
+        <span class="test-name">{{ model.name }}</span>
+        <small class="test-date">{{ model.exec_date | date : "short" }}</small>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-dialog-content>

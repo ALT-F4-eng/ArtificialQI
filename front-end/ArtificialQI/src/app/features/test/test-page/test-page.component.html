@@ -1,7 +1,11 @@
 <div class="test-page">
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-  </div>
+  <app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="showMessage = false">
+</app-message-box>
+
 
   <h2 *ngIf="test">{{ test.name }}</h2>
 

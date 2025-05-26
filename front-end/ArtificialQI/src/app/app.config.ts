@@ -21,3 +21,4 @@ export const appConfig: ApplicationConfig = {
               { provide: LlmService, useClass: MockLlmService },
       provideNzI18n(en_US), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient()]
 };
+

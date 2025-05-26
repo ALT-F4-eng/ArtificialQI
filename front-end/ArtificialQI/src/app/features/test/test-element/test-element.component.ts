@@ -44,17 +44,17 @@ export class TestElementComponent {
       }
     });
   }
-  @Output() delete = new EventEmitter<number>();
+  @Output() testDelete = new EventEmitter<number>();
   deletetest() {
     if (this.test) {
-      this.delete.emit(this.test.ID); // Invia l'ID del test al padre
+      this.testDelete.emit(this.test.id); // Invia l'id del test al padre
       console.log('Test cancellato:', this.test.name);
     }
   }
-  @Output() testLoaded = new EventEmitter<TestDto>();
+  @Output() testLoad = new EventEmitter<TestDto>();
   loadtest() {
     if (this.test) {
-      this.testLoaded.emit(this.test);
+      this.testLoad.emit(this.test);
       console.log('Test caricato:', this.test.name);
     }
   }

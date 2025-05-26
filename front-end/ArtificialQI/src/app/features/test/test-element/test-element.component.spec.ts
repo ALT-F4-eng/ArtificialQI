@@ -10,10 +10,16 @@ describe('TestElementComponent', () => {
   let fixture: ComponentFixture<TestElementComponent>;
 
   const testMock: TestDto = {
-    ID: 123,
-    name: 'Test Demo',
-    lastModified: new Date('2024-01-01T12:00:00Z'),
-    Dataset: 'Dataset X'
+    id: 1,
+    name: 'Test Alpha',
+    llm_name: 'LLM1',
+    tmp: true,
+    max_page: 10,
+    avg_similarity: 0.85,
+    exec_date: new Date('2025-05-01'),
+    std_dev_similarity: 0.05,
+    correct_percentage: 90,
+    distribution: [1, 2, 3, 4, 5]
   };
 
   beforeEach(async () => {
@@ -40,7 +46,7 @@ describe('TestElementComponent', () => {
     expect(nameEl.nativeElement.textContent).toContain('Test Demo');
   });
 
-  it('should display the test ID', () => {
+  it('should display the test id', () => {
     const idEl = fixture.debugElement.query(By.css('.test-id'));
     expect(idEl.nativeElement.textContent).toContain('#123');
   });

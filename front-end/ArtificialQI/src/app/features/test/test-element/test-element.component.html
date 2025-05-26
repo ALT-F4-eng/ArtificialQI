@@ -4,9 +4,9 @@
       <div class="info">
         <mat-card-title class="test-title">
           <span class="test-name">{{ test?.name }}</span>
-          <span class="test-id"> #{{ test?.ID }}</span>
+          <span class="test-id"> #{{ test?.id }}</span>
         </mat-card-title>
-        <p>Ultima modifica: {{ test?.lastModified | date: "short" }}</p>
+        <p>Data di esecuzione: {{ test?.exec_date | date: "short" }}</p>
       </div>
       <div class="test-actions">
         <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>

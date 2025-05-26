@@ -1,4 +1,4 @@
-<div class="message-box" [ngClass]="type">
+<div class="message-box" *ngIf="message" [ngClass]="type">
   <mat-icon class="icon">{{ getIcon(type) }}</mat-icon>
   <span class="text">{{ message }}</span>
   <button mat-icon-button class="close-btn" (click)="onClose()">

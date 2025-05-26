@@ -22,6 +22,7 @@ describe('TestListPageComponent (Jest)', () => {
   const sampleTests: TestDto[] = [
     {
     id: 1,
+    dataset_id: 88,
     name: 'Test Alpha',
     llm_name: 'LLM1',
     tmp: true,
@@ -34,6 +35,7 @@ describe('TestListPageComponent (Jest)', () => {
   },
   {
     id: 2,
+    dataset_id: 89,
     name: 'Test Beta',
     llm_name: 'LLM2',
     tmp: false,
@@ -117,8 +119,6 @@ describe('TestListPageComponent (Jest)', () => {
     component.filteredTests = [...sampleTests];
     mockTestService.deleteTest.mockReturnValue(of({}));
 
-    component.testDeleted(0);
-
     expect(mockTestService.deleteTest).toHaveBeenCalledWith(1);
     expect(component.mockTests.find(t => t.id === 1)).toBeUndefined();
     expect(component.filteredTests.find(t => t.id === 1)).toBeUndefined();
@@ -155,6 +155,7 @@ describe('TestListPageComponent (Jest)', () => {
   it('should navigate on test load', () => {
     const test = {
     id: 1,
+    dataset_id: 88,
     name: 'Test Alpha',
     llm_name: 'LLM1',
     tmp: true,

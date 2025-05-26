@@ -8,7 +8,7 @@ import { MatCardTitle } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { TestDto } from '../../../core/models/test-dto.model';
-import { TestNameDialogComponent } from '../../../shared/components/test-name-dialog/test-name-dialog.component';
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 
 @Component({
@@ -31,15 +31,15 @@ export class TestElementComponent {
   }
   @Output() rename = new EventEmitter<string>(); // Emette il nuovo nome al padre
   private dialog = inject(MatDialog);
-  openRenameDialog() {
-    if (!this.test) return; // Se non c'è un test, esci
-    const dialogRef = this.dialog.open(TestNameDialogComponent, {
-      data: { name: this.test.name },
+ openRenameDialog() {
+    if (!this.test) return; // Se non c'è un dataset, esci
+    const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
+      data: { title:"Rinomina Test" , name: this.test.name },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Nuovo nome del elemento:', result);
+        console.log('Nuovo nome nel elemento:', result);
         this.rename.emit(result); // Invia il nuovo nome al padre tramite l'evento
       }
     });

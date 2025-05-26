@@ -6,10 +6,12 @@ import { TestResultDto } from '../../../core/models/testresult-dto.model';
 import { TestService } from '../../../core/services/test.service';
 import { TestIndexComponent } from '../test-index/test-index.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TestNameDialogComponent } from '../test-name-dialog/test-name-dialog.component';
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { TestPageViewComponent } from '../test-page-view/test-page-view.component';
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
 import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
+import { TestselectionListComponent } from '../testselection-list/testselection-list.component';
+import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 
 @Component({
   selector: 'app-test-page',
@@ -20,12 +22,17 @@ import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
     TestIndexComponent,
     MatDialogModule,
     TestPageViewComponent,
+    MessageBoxComponent,
   ],
   templateUrl: './test-page.component.html',
   styleUrls: ['./test-page.component.css'],
 })
 export class TestPageComponent implements OnInit {
   test?: TestDto;
+  resultMessage = '';
+  showMessage = false;
+  messageType: 'success' | 'error' = 'success';
+
 
   testPage: TestPageDto = MOCK_TEST_PAGE;
   results: TestResultDto[] = [];
@@ -67,26 +74,64 @@ export class TestPageComponent implements OnInit {
   }
 
   saveTest() {
-    const dialogRef = this.dialog.open(TestNameDialogComponent);
+  if (!this.test) return;
 
-    dialogRef.afterClosed().subscribe((newName: string | null) => {
-      if (newName && this.test) {
-        this.test.name = newName;
-        this.testService.saveTest(this.test).subscribe({
-          next: () => {
-            alert('Test salvato');
-            this.test!.tmp = false;
-          },
-          error: () => {
-            this.errorMessage = 'Errore nel salvataggio del test.';
-          },
-        });
-      }
-    });
-  }
+  const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
+    data: {
+      title: 'Salva il test con un nome',
+      name: this.test.name || ''
+    }
+  });
+
+  dialogRef.afterClosed().subscribe((newName: string | null) => {
+    if (newName && this.test) {
+      this.test.name = newName;
+      this.testService.saveTest(this.test).subscribe({
+        next: () => {
+          this.resultMessage = 'Test salvato con successo!';
+          this.messageType = 'success';
+          this.showMessage = true;
+        },
+        error: () => {
+          this.resultMessage = 'Errore nel salvataggio del test.';
+          this.messageType = 'error';
+          this.showMessage = true;
+        }
+      });
+    }
+  });
+}
+
 
   compareTest() {
-    // Da implementare con TestSelectionComparison
-    alert('Funzione di confronto da implementare');
-  }
+  if (!this.test) return;
+
+  this.testService.getAllTests().subscribe({
+    next: (testList) => {
+      const filteredTests = testList.filter(t =>
+        t.id !== this.test!.id && t.dataset_id === this.test!.dataset_id
+      );
+
+      const dialogRef = this.dialog.open(TestselectionListComponent, {
+        data: {
+          list: filteredTests,
+          title: 'Seleziona un test dello stesso dataset'
+        },
+        width: '600px'
+      });
+
+      dialogRef.afterClosed().subscribe((selectedTest: TestDto | undefined) => {
+        if (selectedTest) {
+          alert(`Hai selezionato: ${selectedTest.name}`);
+          // Qui puoi implementare la logica di confronto
+        }
+      });
+    },
+    error: () => {
+      this.errorMessage = 'Errore nel caricamento della lista dei test.';
+    }
+  });
+}
+
+
 }

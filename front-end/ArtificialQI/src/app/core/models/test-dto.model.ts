@@ -1,6 +1,7 @@
 export interface TestDto {
   id: number;
   name: string;
+  dataset_id: number;
   llm_name: string;
   tmp: boolean;
   max_page: number;

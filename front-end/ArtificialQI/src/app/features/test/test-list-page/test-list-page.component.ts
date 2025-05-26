@@ -9,6 +9,7 @@ import { TestDto } from '../../../core/models/test-dto.model';
 import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
+import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 
 @Component({
   selector: 'app-test-list-page',
@@ -21,7 +22,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     RouterModule,
     ConfirmComponent,
-    CommonModule
+    CommonModule,
+    MessageBoxComponent
   ],
   templateUrl: './test-list-page.component.html',
   styleUrl: './test-list-page.component.css'
@@ -30,7 +32,9 @@ export class TestListPageComponent {
   deletingid?: number;
   mockTests: TestDto[] = [];
   filteredTests: TestDto[] = [];
-
+  showMessage = true;
+  resultMessage = '';
+  messageType: 'success' | 'error' = 'error';
 
   constructor(private testService: TestService, private router: Router) {}
 
@@ -51,35 +55,29 @@ export class TestListPageComponent {
   }
 
   renameTest(index: number, newName: string) {
-    const test = this.filteredTests[index];
-    console.log(`Tentativo di rinominare test con id=${test.id} in "${newName}"`);
+  const test = this.filteredTests[index];
+  console.log(`Tentativo di rinominare test con id=${test.id} in "${newName}"`);
 
-    this.testService.renameTest(test.id, newName).subscribe({
-      next: () => {
-        test.name = newName;
-        console.log(`Test con id=${test.id} rinominato con successo`);
-      },
-      error: (err) => {
-        console.error(`Errore durante la rinomina del test id=${test.id}:`, err);
-      }
-    });
-  }
+  this.testService.renameTest(test.id, newName).subscribe({
+    next: () => {
+      test.name = newName;
+      console.log(`Test con id=${test.id} rinominato con successo`);
 
-  testDeleted(index: number) {
-    const testToDelete = this.filteredTests[index];
-    console.log('Tentativo di eliminare test:', testToDelete);
+      // ✅ Mostra messaggio di successo
+      this.resultMessage = 'Test rinominato con successo!';
+      this.messageType = 'success';
+      this.showMessage = true;
+    },
+    error: (err) => {
+      console.error(`Errore durante la rinomina del test id=${test.id}:`, err);
 
-    this.testService.deleteTest(testToDelete.id).subscribe({
-      next: () => {
-        this.mockTests = this.mockTests.filter(t => t.id !== testToDelete.id);
-        this.filteredTests = this.filteredTests.filter(t => t.id !== testToDelete.id);
-        console.log(`Test con id=${testToDelete.id} eliminato con successo`);
-      },
-      error: (err) => {
-        console.error(`Errore durante l'eliminazione del test id=${testToDelete.id}:`, err);
-      }
-    });
-  }
+      // ❌ Mostra messaggio di errore
+      this.resultMessage = 'Errore durante la rinomina del test.';
+      this.messageType = 'error';
+      this.showMessage = true;
+    }
+  });
+}
 
   loadingTestId?: number;
   showLoadConfirm = false;
@@ -125,28 +123,45 @@ export class TestListPageComponent {
   }
 
   onTestDeleteConfirmed() {
-    if (this.deletingid !== undefined) {
-      console.log('Conferma di eliminazione ricevuta per id:', this.deletingid);
+  if (this.deletingid !== undefined) {
+    console.log('Conferma di eliminazione ricevuta per id:', this.deletingid);
 
-      this.testService.deleteTest(this.deletingid).subscribe({
-        next: () => {
-          this.mockTests = this.mockTests.filter(t => t.id !== this.deletingid);
-          this.filteredTests = this.filteredTests.filter(t => t.id !== this.deletingid);
-          this.showDeleteConfirm = false;
-          console.log(`Test con id ${this.deletingid} eliminato (da conferma)`);
-          this.deletingid = undefined;
-        },
-        error: (err) => {
-          console.error(`Errore durante l'eliminazione da conferma id=${this.deletingid}:`, err);
-        }
-      });
-    }
+    this.testService.deleteTest(this.deletingid).subscribe({
+      next: () => {
+        this.mockTests = this.mockTests.filter(t => t.id !== this.deletingid);
+        this.filteredTests = this.filteredTests.filter(t => t.id !== this.deletingid);
+        
+        this.resultMessage = 'Test eliminato con successo!';
+        this.messageType = 'success';
+        this.showMessage = true;
+
+        this.showDeleteConfirm = false;
+        this.deletingid = undefined;
+        console.log('Messaggio da mostrare:', this.resultMessage);
+      },
+      error: (err) => {
+        console.error(`Errore durante l'eliminazione da conferma id=${this.deletingid}:`, err);
+        this.resultMessage = 'Errore durante l\'eliminazione del test.';
+        this.messageType = 'error';
+        this.showMessage = true;
+        this.showDeleteConfirm = false;
+        this.deletingid = undefined;
+      }
+    });
   }
+}
+
 
   onTestDeleteCanceled() {
     console.log('Eliminazione test annullata');
     this.showDeleteConfirm = false;
     this.deletingid = undefined;
     this.showDeleteMessage = '';
+  }
+
+  onCloseMessage() {
+    this.showMessage = false;
+    this.resultMessage = '';
+    this.messageType = 'error';
   }
 }

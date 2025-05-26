@@ -39,7 +39,7 @@ export class TestElementComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        console.log('Nuovo nome nel elemento:', result);
+        console.log('Nuovo nome del elemento:', result);
         this.rename.emit(result); // Invia il nuovo nome al padre tramite l'evento
       }
     });

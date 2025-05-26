@@ -136,7 +136,7 @@ export const MOCK_RESULT: TestResultDto[] = [
 ];
 
 export const MOCK_TEST_PAGE: TestPageDto = {
-  page_n: 2,
+  page_n: 4,
   result_list: MOCK_RESULT,
 }
 

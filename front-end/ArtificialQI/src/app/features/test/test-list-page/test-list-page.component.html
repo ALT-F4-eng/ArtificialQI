@@ -1,4 +1,12 @@
+
 <app-search-bar (search)="handleSearch($event)"></app-search-bar>
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
 <app-test-list-view
   [tests]="filteredTests"
   (rename)="renameTest($event.index, $event.newName)"

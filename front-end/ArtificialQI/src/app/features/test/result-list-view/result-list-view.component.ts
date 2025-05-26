@@ -12,4 +12,5 @@ import { ResultElementComponent } from '../result-element/result-element.compone
 })
 export class ResultListViewComponent {
   @Input() results: TestResultDto[] = [];
+  @Input() startIndex = 0;
 }

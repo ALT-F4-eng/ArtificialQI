@@ -11,4 +11,6 @@ import { TestResultDto } from '../../../core/models/testresult-dto.model';
 })
 export class ResultElementComponent {
   @Input() result!: TestResultDto;
+  @Input() elementId?: string;
+
 }

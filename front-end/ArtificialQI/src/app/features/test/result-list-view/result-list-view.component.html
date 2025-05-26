@@ -1,6 +1,5 @@
-<div class="result-list">
-  <app-result-element
-    *ngFor="let result of results"
-    [result]="result">
-  </app-result-element>
-</div>
+<app-result-element
+  *ngFor="let result of results; let i = index"
+  [result]="result"
+  [elementId]="'question-' + (startIndex + i + 1)">
+</app-result-element>

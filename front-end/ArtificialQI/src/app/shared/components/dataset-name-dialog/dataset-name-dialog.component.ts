@@ -30,8 +30,12 @@ import { FormsModule } from '@angular/forms';
 })
 export class DatasetNameDialogComponent {
   private dialogRef = inject(MatDialogRef<DatasetNameDialogComponent>);
-  private data = inject(MAT_DIALOG_DATA) as { name: string };
-
+  private data = inject(MAT_DIALOG_DATA) as { 
+    title:string,
+    name: string
+   };
+  
+  title: string = this.data.title;
   name: string = this.data.name;
 
   confirm() {

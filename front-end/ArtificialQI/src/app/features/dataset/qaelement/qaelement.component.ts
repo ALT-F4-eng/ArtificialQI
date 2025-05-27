@@ -6,13 +6,15 @@ import { QADto } from '../../../core/models/qa-dto.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 import { QADialogComponent } from '../qadialog/qadialog.component';
 
 @Component({
   selector: 'app-qaelement',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, NgIf],
+  imports: [MatCardModule, MatButtonModule, NgIf, MatDividerModule],
   templateUrl: './qaelement.component.html',
   styleUrl: './qaelement.component.css',
 })

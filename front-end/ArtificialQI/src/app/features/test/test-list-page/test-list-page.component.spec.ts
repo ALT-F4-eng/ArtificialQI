@@ -23,6 +23,7 @@ describe('TestListPageComponent (Jest)', () => {
   const sampleTests: TestDto[] = [
     {
       id: 1,
+      dataset_id: 88,
       name: 'Test Alpha',
       llm_name: 'LLM1',
       tmp: true,
@@ -31,10 +32,11 @@ describe('TestListPageComponent (Jest)', () => {
       exec_date: new Date('2025-05-01'),
       std_dev_similarity: 0.05,
       correct_percentage: 90,
-      distribution: [1, 2, 3, 4, 5],
+      distribution: [1, 2, 3, 4, 5]
     },
     {
       id: 2,
+      dataset_id: 89,
       name: 'Test Beta',
       llm_name: 'LLM2',
       tmp: false,
@@ -43,7 +45,7 @@ describe('TestListPageComponent (Jest)', () => {
       exec_date: new Date('2025-06-10'),
       std_dev_similarity: 0.08,
       correct_percentage: 85,
-      distribution: [2, 3, 4, 5, 6],
+      distribution: [2, 3, 4, 5, 6]
     },
   ];
 
@@ -105,7 +107,7 @@ describe('TestListPageComponent (Jest)', () => {
   });
 
   it('should set load confirm modal when requesting test load', () => {
-    const test = sampleTests[1];
+    const test = sampleTests[0];
     component.onTestLoadRequest(test);
 
     expect(component.loadingTestId).toBe(test.id);

@@ -1,0 +1,24 @@
+
+.test-item {
+  cursor: pointer;
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.test-date {
+  color: gray;
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.test-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+

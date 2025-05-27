@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ScatterDiagramComponent } from '../scatter-diagram/scatter-diagram.component';
 import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
+import { ResultListViewComponent } from '../result-list-view/result-list-view.component';
+
 
 @Component({
   selector: 'app-test-page-view',
   standalone: true,
-  imports: [CommonModule, ScatterDiagramComponent, PageNavigationComponent],
+  imports: [CommonModule, ScatterDiagramComponent, PageNavigationComponent, ResultListViewComponent,],
   templateUrl: './test-page-view.component.html',
   styleUrls: ['./test-page-view.component.css']
 })

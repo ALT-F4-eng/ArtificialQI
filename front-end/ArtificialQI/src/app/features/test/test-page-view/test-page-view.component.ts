@@ -35,7 +35,7 @@ export class TestPageViewComponent implements OnChanges {
       y: r.similarity
     }));
   }
-
+  // a mio parere non funziona cosi
   loadPage(page: number) {
     if (!this.testPage?.result_list) return;
     const startIndex = (page - 1) * this.pageSize;

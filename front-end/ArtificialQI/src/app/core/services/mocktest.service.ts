@@ -309,7 +309,7 @@ export const MOCK_RESULT_COMPARE: TestResultDto[] = [
     llm_answer: 'Munich',
     similarity: 0.45,
     correct: false,
-  }, //l'unica differenza
+  }, //<-----------------l'unica differenza
   {
     qa: {
       id: 3,
@@ -468,6 +468,11 @@ export const MOCK_TEST_PAGE: TestPageDto = {
   page_n: 4,
   result_list: MOCK_RESULT,
 };
+
+export const MOCK_TEST_PAGE_COMPARE:TestPageDto={
+  page_n:4,
+  result_list:MOCK_RESULT_COMPARE,
+}
 
 
 export class MockTestService {

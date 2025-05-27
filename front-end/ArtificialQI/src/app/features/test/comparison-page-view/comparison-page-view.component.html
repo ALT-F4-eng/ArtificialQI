@@ -1,1 +1,23 @@
 <p>comparison-page-view works!</p>
+
+<div class="result-section">
+  <h3>Risultati</h3>
+
+  <app-comparison-list-view
+  [resultsOrigin_ComparisonList]="pagedResultsOrigin_testPageOrigin_ComparisonPageView"
+  [resultsCompared_ComparisonList]="pagedResultsCompared_testPageOrigin_ComparisonPageView"
+  [startIndex]="(currentPage - 1) * pageSize"
+  >
+  </app-comparison-list-view>
+  <app-page-navigation
+    [totalItems]="totalItems"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)"
+  >
+  </app-page-navigation>
+
+  <div class="scatter-section">
+    <h3>Diagramma di Dispersione</h3>
+  </div>
+</div>

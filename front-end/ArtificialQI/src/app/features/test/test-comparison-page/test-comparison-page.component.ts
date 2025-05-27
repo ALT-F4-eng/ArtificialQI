@@ -1,15 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TestService } from '../../../core/services/test.service';
 import { TestDto } from '../../../core/models/test-dto.model';
 import { TestResultDto } from '../../../core/models/testresult-dto.model';
-import { TestService } from '../../../core/services/test.service';
-
+import { TestPageDto } from '../../../core/models/testpage-dto.model';
+import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
+import { MOCK_TEST_PAGE_COMPARE } from '../../../core/services/mocktest.service';
 import { ComparisonIndexComponent } from '../comparison-index/comparison-index.component';
-
+import { ComparisonPageViewComponent } from '../comparison-page-view/comparison-page-view.component';
 @Component({
   selector: 'app-test-comparison-page',
   standalone: true,
-  imports: [CommonModule, ComparisonIndexComponent],
+  imports: [
+    CommonModule,
+    ComparisonIndexComponent,
+    ComparisonPageViewComponent,
+  ],
   templateUrl: './test-comparison-page.component.html',
   styleUrl: './test-comparison-page.component.css',
 })
@@ -17,6 +23,9 @@ export class TestComparisonPageComponent implements OnInit {
   //due test che mi servono verrà passata dal test page
   testOrigin_TestComparison!: TestDto;
   testCompared_TestComparison!: TestDto;
+
+  testPageOrigin_TestComparison: TestPageDto = MOCK_TEST_PAGE;
+  testPageCompare_TestComparison: TestPageDto = MOCK_TEST_PAGE_COMPARE;
 
   resultsOrigin_TestComparison: TestResultDto[] = [];
   resultsCompared_TestComparison: TestResultDto[] = [];

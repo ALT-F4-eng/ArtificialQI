@@ -4,8 +4,13 @@
 </div>
 
 <app-comparison-index
+  class="summary-section"
   [test_Origin]="testOrigin_TestComparison"
   [test_Compared]="testCompared_TestComparison"
   [resultsOrigin_ComparisonIndex]="resultsOrigin_TestComparison"
   [resultsCompared_ComparisonIndex]="resultsCompared_TestComparison"
 ></app-comparison-index>
+<app-comparison-page-view
+  [testPageOrigin_ComparisonPageView]="testPageOrigin_TestComparison"
+  [testPageCompared_ComparisonPageView]="testPageCompare_TestComparison"
+></app-comparison-page-view>

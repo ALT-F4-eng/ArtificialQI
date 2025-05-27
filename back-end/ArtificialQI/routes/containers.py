@@ -1,5 +1,5 @@
 from dependency_injector import containers, providers
-from adapter.dataset_service import DatasetService
+from adapter.inbound.dataset_service import DatasetService
 from port.outbound.dataset_repository import DatasetRepository
 from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepository
 from port.outbound.test_repository import TestRepository

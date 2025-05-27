@@ -37,5 +37,5 @@ export class TestService {
   }
   renameTest(ID: number, newName: string): Observable<TestDto> {
     return this.http.put<TestDto>(`/testlist/${ID}`, { name: newName });
-  }
+  }//aggiorna tutti campi dati 
 }

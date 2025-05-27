@@ -16,20 +16,24 @@ export class DatasetService {
     return this.http.get<DatasetDto[]>('/dataset');
   }
   // aggiorno la lista ottenuta dal getAllDatasets() e poi faccio il funzione sottostante
-  renameDataset(dataset: DatasetDto): Observable<any> {
-    return this.http.post<any>('/dataset', dataset);
+  renameDataset(datasetId: number, newName: string): Observable<DatasetDto> {
+    const payload = { name: newName };
+    return this.http.patch<DatasetDto>(`/dataset/${datasetId}`, payload);//aggiorna i campi dati parzialmente
   }
+
   // aggiorno la lista ottenuta dal getAllDatasets() e poi faccio il funzione sottostante
-  cloneDataset(dataset: DatasetDto): Observable<any> {
-    return this.http.post<any>('/dataset', dataset);
+  cloneDataset(datasetId: number): Observable<DatasetDto> {
+    return this.http.post<DatasetDto>(`/dataset/${datasetId}/clone`, {});
   }
+
   // cancello il dataset dalla lista ottenuta dal getAllDatasets()  e poi chiamo il funzione sottostante
-  deleteDataset(dataset: DatasetDto): Observable<any> {
-    return this.http.post<any>('/dataset', dataset);
+  deleteDataset(datasetId: number): Observable<void> {
+    return this.http.delete<void>(`/dataset/${datasetId}`);
   }
+
   //carico dataset scelto mandato il suo id al db
-  loadDataset(id: number): Observable<DatasetDto> {
-    return this.http.get<DatasetDto>(`/dataset/${id}`);
+  loadDataset(datasetId: number): Observable<DatasetDto> {
+    return this.http.get<DatasetDto>(`/dataset/${datasetId}`);
   }
 
   //aggiorno la lista attuale ottenuta dal getAllDatasets() e poi salvo nel db i suoi dati
@@ -61,21 +65,14 @@ export class DatasetService {
 
   updateDatasetFromWorkingCopyThenDeleteWorkingCopy() {}
 
-  modifyDatasetQA(dataset: DatasetDto, qa: QADto): Observable<any> {
-    const payload = {
-      dataset: dataset,
-      qa: qa,
-    };
-    return this.http.post<any>('/dataset', payload);
-  }
+ modifyDatasetQA(datasetId: number, qa: QADto): Observable<QADto> {
+  return this.http.patch<QADto>(`/dataset/${datasetId}/qa/${qa.id}`, qa);
+}
 
-  deleteDatasetQA(dataset: DatasetDto, qa: QADto): Observable<any> {
-    const payload = {
-      dataset: dataset,
-      qa: qa,
-    };
-    return this.http.post<any>('/dataset', payload);
-  }
+  deleteDatasetQA(datasetId: number, qaId: number): Observable<void> {
+  return this.http.delete<void>(`/dataset/${datasetId}/qa/${qaId}`);
+}
+
   //addQA da chiedere a Francesco per precisazione
   addQA() {}
 
@@ -101,4 +98,11 @@ export class DatasetService {
     };
     return this.http.post<any>('/test', payload);
   }
+  
+  removeDatasetFromCache(id: number): void {
+
+  }
+  
 }
+
+

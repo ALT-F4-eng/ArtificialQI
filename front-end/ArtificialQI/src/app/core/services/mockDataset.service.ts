@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DatasetDto } from '../models/dataset-dto.model';
-
+import { of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs';
 
 export const MOCK_DATASETS: DatasetDto[] = [
   {
@@ -155,16 +157,18 @@ export const MOCK_DATASETS: DatasetDto[] = [
   },
 ];
 
-@Injectable({//Angular, registra automaticamente questo servizio come singleton disponibile in tutta l'applicazione.
+@Injectable({
+  //Angular, registra automaticamente questo servizio come singleton disponibile in tutta l'applicazione.
   providedIn: 'root',
 })
 export class MockDatasetService {
   constructor() {}
   private datasets: DatasetDto[] = [...MOCK_DATASETS]; // Crea una copia mutabile del mock
 
-  getDataset(): DatasetDto[] {
-    return this.datasets;
+  getAllDatasets(): Observable<DatasetDto[]> {
+    return of(this.datasets);
   }
+
   // Metodo per rinominare un dataset
   renameDataset(index: number, newName: string): void {
     if (this.datasets[index]) {
@@ -174,36 +178,37 @@ export class MockDatasetService {
     }
   }
 
-  copyDataset(index: number): void {
+  cloneDataset(index: number): Observable<DatasetDto> {
     const original = this.datasets[index];
-    if (original) {
-      const baseName = `${original.name} (copia)`;
-      let newName = baseName;
-      let counter = 1;
-
-      // Finché esiste un dataset con quel nome, aggiungi un numero crescente
-      while (
-        this.datasets.some((datasetElement) => datasetElement.name === newName)
-      ) {
-        newName = `${baseName} ${counter}`;
-        counter++;
-      }
-
-      const copiedDataset: DatasetDto = {
-        id: this.generateUniqueId(), // o altro sistema per generare ID univoci
-        name: newName,
-        last_mod: new Date(),
-        creation: new Date(),
-        origin_id: original.id,
-        tmp: true, // oppure false, a seconda della logica
-        max_page: original.max_page,
-        element_n: original.element_n,
-      };
-
-      this.datasets = [...this.datasets, copiedDataset];
-      console.log('Dataset copiato:', newName);
+    if (!original) {
+      return throwError(() => new Error('Dataset non trovato'));
     }
+
+    // Copia e crea il nuovo dataset (come prima)
+    const baseName = `${original.name} (copia)`;
+    let newName = baseName;
+    let counter = 1;
+    while (this.datasets.some((ds) => ds.name === newName)) {
+      newName = `${baseName} ${counter}`;
+      counter++;
+    }
+
+    const copiedDataset: DatasetDto = {
+      id: this.generateUniqueId(),
+      name: newName,
+      last_mod: new Date(),
+      creation: new Date(),
+      origin_id: original.id,
+      tmp: true,
+      max_page: original.max_page,
+      element_n: original.element_n,
+    };
+
+    this.datasets = [...this.datasets, copiedDataset];
+
+    return of(copiedDataset); // ritorna Observable che emette il nuovo dataset
   }
+
   //altrimenti c'è possibilità che id vengono ripetuti
   generateUniqueId(): number {
     const existingIds = new Set(this.datasets.map((d) => d.id));
@@ -212,26 +217,37 @@ export class MockDatasetService {
     while (existingIds.has(newId)) {
       newId++;
     }
-    console.log('id generato:', newId)
+    console.log('id generato:', newId);
     return newId;
   }
 
-  deleteDataset(id: number): void {
+// mock del back-end
+  deleteDataset(id: number): Observable<void> {
     console.log('ID ricevuto per cancellazione:', id);
 
-    // Trova l'indice del dataset con l'id specificato
     const index = this.datasets.findIndex((dataset) => dataset.id === id);
-
     if (index !== -1) {
       console.log('Dataset da rimuovere:', this.datasets[index]);
-      this.datasets.splice(index, 1); // Rimuove l'elemento
-      this.datasets = [...this.datasets]; // Forza aggiornamento (immutabilità)
+      this.datasets.splice(index, 1);
+      this.datasets = [...this.datasets];
     } else {
       console.warn('Nessun dataset trovato con id:', id);
     }
 
     console.log('Stato attuale:', this.datasets);
+    return of(void 0);
   }
+  
+  // servirebbe per aggiornare la lista front-end
+  removeDatasetFromCache(id: number): void {
+    const index = this.datasets.findIndex((d) => d.id === id);
+    if (index !== -1) {
+      this.datasets.splice(index, 1);
+      this.datasets = [...this.datasets]; // forza cambio per immutabilità
+    }
+    console.log('dataset cancellato', id, this.datasets);
+  }
+
   // da implementare
   loadDataset() {}
 }

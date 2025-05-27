@@ -126,7 +126,7 @@ export const MOCK_RESULT: TestResultDto[] = [
   {
     qa: { id: 1, question: 'What is the capital of France?', answer: 'Paris' },
     llm_answer: 'Paris',
-    similarity: 0.99,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -136,7 +136,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Berlin',
     },
     llm_answer: 'Berlin',
-    similarity: 0.75,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -152,7 +152,7 @@ export const MOCK_RESULT: TestResultDto[] = [
   {
     qa: { id: 4, question: 'What is the capital of Italy?', answer: 'Rome' },
     llm_answer: 'Rome',
-    similarity: 0.88,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -162,7 +162,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Lisbon',
     },
     llm_answer: 'Lisbon',
-    similarity: 0.53,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -172,7 +172,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Amsterdam',
     },
     llm_answer: 'Amsterdam',
-    similarity: 0.12,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -182,7 +182,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Brussels',
     },
     llm_answer: 'Brussels',
-    similarity: 0.67,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -192,7 +192,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Bern',
     },
     llm_answer: 'Bern',
-    similarity: 0.41,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -202,7 +202,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Vienna',
     },
     llm_answer: 'Vienna',
-    similarity: 0.95,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -212,13 +212,13 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Stockholm',
     },
     llm_answer: 'Stockholm',
-    similarity: 0.08,
+    similarity: 1.0,
     correct: true,
   },
   {
     qa: { id: 11, question: 'What is the capital of Norway?', answer: 'Oslo' },
     llm_answer: 'Oslo',
-    similarity: 0.6,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -228,7 +228,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Copenhagen',
     },
     llm_answer: 'Copenhagen',
-    similarity: 0.34,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -238,7 +238,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Helsinki',
     },
     llm_answer: 'Helsinki',
-    similarity: 0.8,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -248,7 +248,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Reykjavik',
     },
     llm_answer: 'Reykjavik',
-    similarity: 0.17,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -258,7 +258,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Dublin',
     },
     llm_answer: 'Dublin',
-    similarity: 0.49,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -268,7 +268,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Athens',
     },
     llm_answer: 'Athens',
-    similarity: 0.27,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -278,7 +278,7 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Budapest',
     },
     llm_answer: 'Budapest',
-    similarity: 0.7,
+    similarity: 1.0,
     correct: true,
   },
   {
@@ -288,179 +288,120 @@ export const MOCK_RESULT: TestResultDto[] = [
       answer: 'Warsaw',
     },
     llm_answer: 'Warsaw',
-    similarity: 0.03,
+    similarity: 1.0,
     correct: true,
   },
 ];
 
+
 export const MOCK_RESULT_COMPARE: TestResultDto[] = [
   {
     qa: { id: 1, question: 'What is the capital of France?', answer: 'Paris' },
-    llm_answer: 'Paris',
-    similarity: 0.99,
+    llm_answer: 'Lyon',
+    similarity: 0.62,
+    correct: false,
+  },
+  {
+    qa: { id: 2, question: 'What is the capital of Germany?', answer: 'Berlin' },
+    llm_answer: 'Berlin',
+    similarity: 1.0,
     correct: true,
   },
   {
-    qa: {
-      id: 2,
-      question: 'What is the capital of Germany?',
-      answer: 'Berlin',
-    },
-    llm_answer: 'Munich',
-    similarity: 0.45,
-    correct: false,
-  }, //<-----------------l'unica differenza
-  {
-    qa: {
-      id: 3,
-      question: 'What is the capital of Spain?',
-      answer: 'Barcelona',
-    },
-    llm_answer: 'Madrid',
-    similarity: 0.22,
+    qa: { id: 3, question: 'What is the capital of Spain?', answer: 'Barcelona' },
+    llm_answer: 'Seville',
+    similarity: 0.33,
     correct: false,
   },
   {
     qa: { id: 4, question: 'What is the capital of Italy?', answer: 'Rome' },
-    llm_answer: 'Rome',
-    similarity: 0.88,
-    correct: true,
+    llm_answer: 'Naples',
+    similarity: 0.52,
+    correct: false,
   },
   {
-    qa: {
-      id: 5,
-      question: 'What is the capital of Portugal?',
-      answer: 'Lisbon',
-    },
+    qa: { id: 5, question: 'What is the capital of Portugal?', answer: 'Lisbon' },
     llm_answer: 'Lisbon',
-    similarity: 0.53,
+    similarity: 1.0,
     correct: true,
   },
   {
-    qa: {
-      id: 6,
-      question: 'What is the capital of Netherlands?',
-      answer: 'Amsterdam',
-    },
-    llm_answer: 'Amsterdam',
+    qa: { id: 6, question: 'What is the capital of Netherlands?', answer: 'Amsterdam' },
+    llm_answer: 'Rotterdam',
+    similarity: 0.25,
+    correct: false,
+  },
+  {
+    qa: { id: 7, question: 'What is the capital of Belgium?', answer: 'Brussels' },
+    llm_answer: 'Bruges',
+    similarity: 0.29,
+    correct: false,
+  },
+  {
+    qa: { id: 8, question: 'What is the capital of Switzerland?', answer: 'Bern' },
+    llm_answer: 'Zurich',
+    similarity: 0.37,
+    correct: false,
+  },
+  {
+    qa: { id: 9, question: 'What is the capital of Austria?', answer: 'Vienna' },
+    llm_answer: 'Salzburg',
+    similarity: 0.46,
+    correct: false,
+  },
+  {
+    qa: { id: 10, question: 'What is the capital of Sweden?', answer: 'Stockholm' },
+    llm_answer: 'Gothenburg',
     similarity: 0.12,
-    correct: true,
-  },
-  {
-    qa: {
-      id: 7,
-      question: 'What is the capital of Belgium?',
-      answer: 'Brussels',
-    },
-    llm_answer: 'Brussels',
-    similarity: 0.67,
-    correct: true,
-  },
-  {
-    qa: {
-      id: 8,
-      question: 'What is the capital of Switzerland?',
-      answer: 'Bern',
-    },
-    llm_answer: 'Bern',
-    similarity: 0.41,
-    correct: true,
-  },
-  {
-    qa: {
-      id: 9,
-      question: 'What is the capital of Austria?',
-      answer: 'Vienna',
-    },
-    llm_answer: 'Vienna',
-    similarity: 0.95,
-    correct: true,
-  },
-  {
-    qa: {
-      id: 10,
-      question: 'What is the capital of Sweden?',
-      answer: 'Stockholm',
-    },
-    llm_answer: 'Stockholm',
-    similarity: 0.08,
-    correct: true,
+    correct: false,
   },
   {
     qa: { id: 11, question: 'What is the capital of Norway?', answer: 'Oslo' },
     llm_answer: 'Oslo',
-    similarity: 0.6,
+    similarity: 1.0,
     correct: true,
   },
   {
-    qa: {
-      id: 12,
-      question: 'What is the capital of Denmark?',
-      answer: 'Copenhagen',
-    },
-    llm_answer: 'Copenhagen',
-    similarity: 0.34,
-    correct: true,
+    qa: { id: 12, question: 'What is the capital of Denmark?', answer: 'Copenhagen' },
+    llm_answer: 'Aarhus',
+    similarity: 0.3,
+    correct: false,
   },
   {
-    qa: {
-      id: 13,
-      question: 'What is the capital of Finland?',
-      answer: 'Helsinki',
-    },
-    llm_answer: 'Helsinki',
-    similarity: 0.8,
-    correct: true,
+    qa: { id: 13, question: 'What is the capital of Finland?', answer: 'Helsinki' },
+    llm_answer: 'Espoo',
+    similarity: 0.39,
+    correct: false,
   },
   {
-    qa: {
-      id: 14,
-      question: 'What is the capital of Iceland?',
-      answer: 'Reykjavik',
-    },
+    qa: { id: 14, question: 'What is the capital of Iceland?', answer: 'Reykjavik' },
     llm_answer: 'Reykjavik',
-    similarity: 0.17,
+    similarity: 1.0,
     correct: true,
   },
   {
-    qa: {
-      id: 15,
-      question: 'What is the capital of Ireland?',
-      answer: 'Dublin',
-    },
-    llm_answer: 'Dublin',
-    similarity: 0.49,
-    correct: true,
+    qa: { id: 15, question: 'What is the capital of Ireland?', answer: 'Dublin' },
+    llm_answer: 'Cork',
+    similarity: 0.21,
+    correct: false,
   },
   {
-    qa: {
-      id: 16,
-      question: 'What is the capital of Greece?',
-      answer: 'Athens',
-    },
-    llm_answer: 'Athens',
-    similarity: 0.27,
-    correct: true,
+    qa: { id: 16, question: 'What is the capital of Greece?', answer: 'Athens' },
+    llm_answer: 'Thessaloniki',
+    similarity: 0.48,
+    correct: false,
   },
   {
-    qa: {
-      id: 17,
-      question: 'What is the capital of Hungary?',
-      answer: 'Budapest',
-    },
+    qa: { id: 17, question: 'What is the capital of Hungary?', answer: 'Budapest' },
     llm_answer: 'Budapest',
-    similarity: 0.7,
+    similarity: 1.0,
     correct: true,
   },
   {
-    qa: {
-      id: 18,
-      question: 'What is the capital of Poland?',
-      answer: 'Warsaw',
-    },
-    llm_answer: 'Warsaw',
-    similarity: 0.03,
-    correct: true,
+    qa: { id: 18, question: 'What is the capital of Poland?', answer: 'Warsaw' },
+    llm_answer: 'Krakow',
+    similarity: 0.18,
+    correct: false,
   },
 ];
 

@@ -8,16 +8,21 @@ import {
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
 import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
 import { ComparisonListViewComponent } from '../comparison-list-view/comparison-list-view.component';
-
+import { ScatterDiagramComponent } from '../scatter-diagram/scatter-diagram.component';
 @Component({
   selector: 'app-comparison-page-view',
-  imports: [PageNavigationComponent,ComparisonListViewComponent],
+  standalone: true,
+  imports: [
+    PageNavigationComponent,
+    ComparisonListViewComponent,
+    ScatterDiagramComponent,
+  ],
   templateUrl: './comparison-page-view.component.html',
   styleUrl: './comparison-page-view.component.css',
 })
 export class ComparisonPageViewComponent implements OnChanges {
-  @Input() testPageOrigin_ComparisonPageView?: TestPageDto;
-  @Input() testPageCompared_ComparisonPageView?: TestPageDto;
+  @Input() testPageOrigin_ComparisonPageView!: TestPageDto;
+  @Input() testPageCompared_ComparisonPageView!: TestPageDto;
 
   pagedResultsOrigin_testPageOrigin_ComparisonPageView: TestPageDto['result_list'] =
     [];
@@ -47,6 +52,13 @@ export class ComparisonPageViewComponent implements OnChanges {
   ngOnInit(): void {
     this.loadPage(this.currentPage);
   }*/
+  getElementValues(testpage: TestPageDto) {
+    if (!testpage) return [];
+    return testpage.result_list.map((r, index) => ({
+      x: index + 1,
+      y: r.similarity,
+    }));
+  }
 
   loadPage(page: number) {
     if (

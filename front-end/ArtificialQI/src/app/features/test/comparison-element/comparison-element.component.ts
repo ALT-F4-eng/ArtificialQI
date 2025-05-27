@@ -1,11 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TestResultDto } from '../../../core/models/testresult-dto.model';
 
 @Component({
   selector: 'app-comparison-element',
-  imports: [],
+  standalone:true,
+  imports: [CommonModule],
   templateUrl: './comparison-element.component.html',
-  styleUrl: './comparison-element.component.css'
+  styleUrl: './comparison-element.component.css',
 })
 export class ComparisonElementComponent {
-
+  @Input() resultOrigin!: TestResultDto;
+  @Input() resultCompared!: TestResultDto;
+  @Input() elementId?: string;
 }

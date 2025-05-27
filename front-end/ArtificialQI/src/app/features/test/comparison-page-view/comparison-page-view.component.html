@@ -19,5 +19,11 @@
 
   <div class="scatter-section">
     <h3>Diagramma di Dispersione</h3>
+    <app-scatter-diagram
+      [elementValuesOrigin]="getElementValues(testPageOrigin_ComparisonPageView)"
+      [elementValuesCompare]="getElementValues(testPageCompared_ComparisonPageView)"
+      (pointClicked)="scrollToQuestion($event)"
+    >
+    </app-scatter-diagram>
   </div>
 </div>

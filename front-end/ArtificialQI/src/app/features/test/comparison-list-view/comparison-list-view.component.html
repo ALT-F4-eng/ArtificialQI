@@ -1,1 +1,7 @@
 <p>comparison-list-view works!</p>
+<app-comparison-element
+  *ngFor="let resultOrigin of resultsOrigin_ComparisonList; let i = index"
+  [resultOrigin]="resultOrigin"
+  [resultCompared]="resultsCompared_ComparisonList[i]"
+  [elementId]="'question-' + (startIndex + i + 1)">
+</app-comparison-element>

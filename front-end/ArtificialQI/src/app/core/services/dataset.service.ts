@@ -1,237 +1,104 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { QADto } from '../models/qa-dto.model';
 import { DatasetDto } from '../models/dataset-dto.model';
+import { LlmDto } from '../models/llm-dto.model';
 
-
-export const MOCK_DATASETS: DatasetDto[] = [
-  {
-    id: 1,
-    name: 'Dataset Alpha',
-    last_mod: new Date('2025-05-01'),
-    creation: new Date('2025-04-01'),
-    origin_id: 0,
-    tmp: false,
-    max_page: 12,
-    element_n: 120,
-  },
-  {
-    id: 2,
-    name: 'Dataset Beta',
-    last_mod: new Date('2025-06-10'),
-    creation: new Date('2025-05-10'),
-    origin_id: 1,
-    tmp: false,
-    max_page: 8,
-    element_n: 80,
-  },
-  {
-    id: 3,
-    name: 'Dataset Gamma',
-    last_mod: new Date('2025-07-15'),
-    creation: new Date('2025-06-20'),
-    origin_id: 2,
-    tmp: false,
-    max_page: 10,
-    element_n: 100,
-  },
-  {
-    id: 4,
-    name: 'Dataset Delta',
-    last_mod: new Date('2025-08-20'),
-    creation: new Date('2025-07-25'),
-    origin_id: 3,
-    tmp: true,
-    max_page: 6,
-    element_n: 60,
-  },
-  {
-    id: 5,
-    name: 'Dataset Epsilon',
-    last_mod: new Date('2025-09-25'),
-    creation: new Date('2025-08-30'),
-    origin_id: 0,
-    tmp: false,
-    max_page: 5,
-    element_n: 55,
-  },
-  {
-    id: 6,
-    name: 'Dataset Zeta',
-    last_mod: new Date('2025-10-30'),
-    creation: new Date('2025-09-20'),
-    origin_id: 5,
-    tmp: true,
-    max_page: 7,
-    element_n: 77,
-  },
-  {
-    id: 7,
-    name: 'Dataset Eta',
-    last_mod: new Date('2025-11-05'),
-    creation: new Date('2025-10-01'),
-    origin_id: 0,
-    tmp: false,
-    max_page: 4,
-    element_n: 40,
-  },
-  {
-    id: 8,
-    name: 'Dataset Theta',
-    last_mod: new Date('2025-12-12'),
-    creation: new Date('2025-11-10'),
-    origin_id: 7,
-    tmp: true,
-    max_page: 9,
-    element_n: 95,
-  },
-  {
-    id: 9,
-    name: 'Dataset Theta2',
-    last_mod: new Date('2025-12-13'),
-    creation: new Date('2025-11-11'),
-    origin_id: 8,
-    tmp: false,
-    max_page: 11,
-    element_n: 110,
-  },
-  {
-    id: 10,
-    name: 'Dataset Iota',
-    last_mod: new Date('2025-12-20'),
-    creation: new Date('2025-12-01'),
-    origin_id: 1,
-    tmp: false,
-    max_page: 13,
-    element_n: 130,
-  },
-  {
-    id: 11,
-    name: 'Dataset Kappa',
-    last_mod: new Date('2025-12-25'),
-    creation: new Date('2025-12-10'),
-    origin_id: 10,
-    tmp: true,
-    max_page: 3,
-    element_n: 33,
-  },
-  {
-    id: 12,
-    name: 'Dataset Lambda',
-    last_mod: new Date('2026-01-01'),
-    creation: new Date('2025-12-15'),
-    origin_id: 11,
-    tmp: false,
-    max_page: 6,
-    element_n: 66,
-  },
-  {
-    id: 13,
-    name: 'Dataset Mu',
-    last_mod: new Date('2026-01-05'),
-    creation: new Date('2025-12-20'),
-    origin_id: 12,
-    tmp: false,
-    max_page: 9,
-    element_n: 90,
-  },
-  {
-    id: 14,
-    name: 'Dataset Nu',
-    last_mod: new Date('2026-01-10'),
-    creation: new Date('2025-12-25'),
-    origin_id: 13,
-    tmp: false,
-    max_page: 7,
-    element_n: 73,
-  },
-  {
-    id: 15,
-    name: 'Dataset Xi',
-    last_mod: new Date('2026-01-15'),
-    creation: new Date('2026-01-01'),
-    origin_id: 14,
-    tmp: true,
-    max_page: 5,
-    element_n: 52,
-  },
-];
-
-@Injectable({//Angular, registra automaticamente questo servizio come singleton disponibile in tutta l'applicazione.
+@Injectable({
   providedIn: 'root',
 })
 export class DatasetService {
-  constructor() {}
-  private datasets: DatasetDto[] = [...MOCK_DATASETS]; // Crea una copia mutabile del mock
-
-  getDataset(): DatasetDto[] {
-    return this.datasets;
+  cachedDatasetCaricato: any;
+  constructor(private http: HttpClient) {}
+  //rinomina il dataset
+  getAllDatasets(): Observable<DatasetDto[]> {
+    return this.http.get<DatasetDto[]>('/dataset');
   }
-  // Metodo per rinominare un dataset
-  renameDataset(index: number, newName: string): void {
-    if (this.datasets[index]) {
-      this.datasets[index].name = newName;
-      this.datasets[index].last_mod = new Date(); // aggiorna data di modifica
-      console.log('servizio', this.datasets[index]);
-    }
+  // aggiorno la lista ottenuta dal getAllDatasets() e poi faccio il funzione sottostante
+  renameDataset(dataset: DatasetDto): Observable<any> {
+    return this.http.post<any>('/dataset', dataset);
   }
-
-  copyDataset(index: number): void {
-    const original = this.datasets[index];
-    if (original) {
-      const baseName = `${original.name} (copia)`;
-      let newName = baseName;
-      let counter = 1;
-
-      // Finché esiste un dataset con quel nome, aggiungi un numero crescente
-      while (
-        this.datasets.some((datasetElement) => datasetElement.name === newName)
-      ) {
-        newName = `${baseName} ${counter}`;
-        counter++;
-      }
-
-      const copiedDataset: DatasetDto = {
-        id: this.generateUniqueId(), // o altro sistema per generare ID univoci
-        name: newName,
-        last_mod: new Date(),
-        creation: new Date(),
-        origin_id: original.id,
-        tmp: true, // oppure false, a seconda della logica
-        max_page: original.max_page,
-        element_n: original.element_n,
-      };
-
-      this.datasets = [...this.datasets, copiedDataset];
-      console.log('Dataset copiato:', newName);
-    }
+  // aggiorno la lista ottenuta dal getAllDatasets() e poi faccio il funzione sottostante
+  cloneDataset(dataset: DatasetDto): Observable<any> {
+    return this.http.post<any>('/dataset', dataset);
   }
-  //altrimenti c'è possibilità che id vengono ripetuti
-  generateUniqueId(): number {
-    const existingIds = new Set(this.datasets.map((d) => d.id));
-    let newId = 1;
-
-    while (existingIds.has(newId)) {
-      newId++;
-    }
-    console.log('id generato:', newId)
-    return newId;
+  // cancello il dataset dalla lista ottenuta dal getAllDatasets()  e poi chiamo il funzione sottostante
+  deleteDataset(dataset: DatasetDto): Observable<any> {
+    return this.http.post<any>('/dataset', dataset);
+  }
+  //carico dataset scelto mandato il suo id al db
+  loadDataset(id: number): Observable<DatasetDto> {
+    return this.http.get<DatasetDto>(`/dataset/${id}`);
   }
 
-  deleteDataset(id: number): void {
-    console.log('ID ricevuto per cancellazione:', id);
-
-    // Trova l'indice del dataset con l'id specificato
-    const index = this.datasets.findIndex((dataset) => dataset.id === id);
-
-    if (index !== -1) {
-      console.log('Dataset da rimuovere:', this.datasets[index]);
-      this.datasets.splice(index, 1); // Rimuove l'elemento
-      this.datasets = [...this.datasets]; // Forza aggiornamento (immutabilità)
-    } else {
-      console.warn('Nessun dataset trovato con id:', id);
-    }
-
-    console.log('Stato attuale:', this.datasets);
+  //aggiorno la lista attuale ottenuta dal getAllDatasets() e poi salvo nel db i suoi dati
+  createDatasetFromJSONFile(
+    dataset: DatasetDto,
+    qa_list: QADto[]
+  ): Observable<any> {
+    const payload = {
+      dataset: dataset,
+      qa_list: qa_list,
+    };
+    return this.http.post<any>('/dataset', payload);
   }
-  // da implementare
-  loadDataset() {}
+
+  //aggiorno il dataset creato dal pulsant di creazione, e poi salvo nel db
+  saveDatasetFromCreate(
+    dataset: DatasetDto,
+    qa_list: QADto[]
+  ): Observable<any> {
+    // ci ritorna un datasetDto poi in base quello si puo fare una richiesta di caricamento della pagina 1
+    const payload = {
+      dataset: dataset,
+      qa_list: qa_list,
+    };
+    return this.http.post<any>('/dataset', payload);
+  }
+  // da chiedere a Francesco
+  createWorkingCopy() {}
+
+  updateDatasetFromWorkingCopyThenDeleteWorkingCopy() {}
+
+  modifyDatasetQA(dataset: DatasetDto, qa: QADto): Observable<any> {
+    const payload = {
+      dataset: dataset,
+      qa: qa,
+    };
+    return this.http.post<any>('/dataset', payload);
+  }
+
+  deleteDatasetQA(dataset: DatasetDto, qa: QADto): Observable<any> {
+    const payload = {
+      dataset: dataset,
+      qa: qa,
+    };
+    return this.http.post<any>('/dataset', payload);
+  }
+  //addQA da chiedere a Francesco per precisazione
+  addQA() {}
+
+  //caso nel cui utente crea un dataset da zero senza salvarlo in db
+  runTestDatasetTemporaryFromDatasetPage(
+    dataset: DatasetDto,
+    qa_list: QADto[],
+    llmSelected: LlmDto
+  ) {
+    const payload = {
+      dataset: dataset,
+      qa_list: qa_list,
+      llmSelected: llmSelected,
+    };
+    return this.http.post<any>('/test', payload);
+  }
+
+  //negli altri casi, (working copy oppure dataset salvato, si puo trovarlo all'interno del db) mandare le informazioni necessari per eseguire, working copy è salvato all'interno del db
+  runTestDatasetSaveFromDatasetPage(dataset: DatasetDto, llmSelected: LlmDto) {
+    const payload = {
+      dataset: dataset,
+      llmSelected: llmSelected,
+    };
+    return this.http.post<any>('/test', payload);
+  }
 }

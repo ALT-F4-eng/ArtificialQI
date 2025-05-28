@@ -25,11 +25,12 @@ export class DatasetPageViewComponent {
   @Input() datasetPage?: DatasetPageDto;
   showConfirmDelete = false;
   idqa?: number;
-  @Output() modifyEventShowLabel = new EventEmitter<void>();
-  
-  totalItems = 200;// da chiedere al db
+
+  totalItems = 200; // da chiedere al db
   pageSize = 5; // dovrebbe essere 20
   currentPage = 1; // di deafult
+
+  @Output() modifyEventShowLabel = new EventEmitter<void>();
 
   constructor(private qaService: QAService) {}
   //chiama servizio di modifica
@@ -39,8 +40,17 @@ export class DatasetPageViewComponent {
     this.qaService.modifyDatasetPage(id, question, answer);
     this.modifyEventShowLabel.emit();
   }
+
+  @Output() modifySignal = new EventEmitter<void>();
+
+  @Output() rename = new EventEmitter<RenameEvent>();
+  onRename(index: number, newName: string) {
+    console.log('Nuovo nome nel list view:', newName);
+    this.rename.emit({ index, newName });
+  }
+
   //chiama servizio di cancellazione
-  deleteQA(id: number) {
+  /*deleteQA(id: number) {
     this.qaService.deleteQA(id);
   }
 
@@ -82,9 +92,9 @@ export class DatasetPageViewComponent {
     //mock della chiamata, dovrebbe avere come paramentro page ma quasto solo faccendo una mock
     this.datasetPage = this.qaService.getDatasetPage2mock(page);
     // Simulazione: sostituisci con chiamata HTTP reale
-    /*
+    
     this.apiService.getDatasetPage(page, this.pageSize).subscribe((data: DatasetPageDto) => {
       this.datasetPage = data;
-    });*/
-  }
+    });
+  }*/
 }

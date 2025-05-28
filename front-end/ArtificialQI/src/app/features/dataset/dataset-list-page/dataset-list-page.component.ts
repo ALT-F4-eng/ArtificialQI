@@ -41,6 +41,7 @@ export class DatasetListPageComponent {
   datasetid?: number;
   datasetSelected?: DatasetDto;
 
+  //per message component
   showMessage = true;
   resultMessage = '';
   messageType: 'success' | 'error' = 'error';
@@ -114,16 +115,7 @@ export class DatasetListPageComponent {
     this.datasetid = dataset.id;
     console.log('Indice ricevuto per cancellazione page:', dataset.id);
   }
-  /*
- onDatasetDeleteConfirmed() {
-    if (this.datasetid !== undefined) {
-      this.datasetService.deleteDataset(this.datasetid);
-      this.filteredDatasets = [...this.datasetService.getAllDatasets()];
-      this.allDatasets = [...this.datasetService.getAllDatasets()];
-      this.showConfirmDelete = false;
-      console.log('Dataset eliminato page:', this.allDatasets[this.datasetid]);
-    }
-  }*/
+  
 
   onDatasetDeleteConfirmed() {
     if (this.datasetid !== undefined) {
@@ -167,11 +159,13 @@ export class DatasetListPageComponent {
     this.datasetSelected = dataset;
     console.log('Dataset caricato:', dataset);
   }
+  
   onDatasetLoadConfirmed() {
     if (this.datasetSelected !== undefined) {
       // funzionalità da testare dopo la creazione del datasetcontentpage
       // da cambiare
       this.router.navigate(['/datasetContentPage', this.datasetid], {
+        state: { dataset: this.datasetSelected },
         queryParams: { mode: 'edit' },
       });
     }

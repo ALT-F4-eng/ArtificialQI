@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideZoneChangeDetection,
+  importProvidersFrom,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
@@ -12,18 +16,25 @@ import { DatasetService } from './core/services/dataset.service';
 import { MockDatasetService } from './core/services/mockDataset.service';
 import { TestService } from './core/services/test.service';
 import { MockTestService } from './core/services/mocktest.service';
-import { LlmService} from './core/services/llm.service';
+import { LlmService } from './core/services/llm.service';
 import { MockLlmService } from './test/llm-test/llm.service.mock';
 
+import { QAService } from './core/services/qa.service';
+import { MockQAService } from './core/services/mockQA.service';
 
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), 
-              provideRouter(routes), 
-              { provide: DatasetService, useClass:MockDatasetService },
-              { provide: TestService, useClass: MockTestService } , 
-              { provide: LlmService, useClass: MockLlmService },
-      provideNzI18n(en_US), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient()]
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    { provide: DatasetService, useClass: MockDatasetService },
+    { provide: QAService, useClass: MockQAService },
+    { provide: TestService, useClass: MockTestService },
+    { provide: LlmService, useClass: MockLlmService },
+    provideNzI18n(en_US),
+    importProvidersFrom(FormsModule),
+    provideAnimationsAsync(),
+    provideHttpClient(),
+  ],
 };
-

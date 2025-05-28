@@ -1,0 +1,24 @@
+
+.llm-item {
+  cursor: pointer;
+}
+
+.llm-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.llm-date {
+  color: gray;
+  font-size: 0.9rem;
+  min-width: 80px;
+}
+
+.llm-name {
+  font-weight: bold;
+  font-size: 1rem;
+}
+

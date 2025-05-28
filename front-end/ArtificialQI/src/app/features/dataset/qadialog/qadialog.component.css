@@ -1,0 +1,10 @@
+.full-width {
+  width: 100%;
+}
+
+textarea {
+  max-height: 400px;
+  min-height: 240px;
+  overflow-y: auto;
+  resize: none;
+}

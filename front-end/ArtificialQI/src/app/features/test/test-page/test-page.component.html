@@ -1,0 +1,25 @@
+<div class="test-page">
+  <app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="showMessage = false">
+</app-message-box>
+
+
+  <h2 *ngIf="test">{{ test.name }}</h2>
+
+  <div class="actions">
+    <button (click)="compareTest()">Confronta con un altro test</button>
+    <button *ngIf="test?.tmp" (click)="saveTest()">Salva test</button>
+  </div>
+
+  <p *ngIf="test?.tmp" class="tmp-label">⚠️ Questo test è temporaneo</p>
+
+  <div class="summary-section">
+    <app-test-index [results]="results"></app-test-index>
+  </div>
+
+  <app-test-page-view [testPage]="testPage"></app-test-page-view>
+
+</div>

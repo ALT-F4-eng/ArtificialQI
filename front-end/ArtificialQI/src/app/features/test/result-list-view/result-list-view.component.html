@@ -1,0 +1,5 @@
+<app-result-element
+  *ngFor="let result of results; let i = index"
+  [result]="result"
+  [elementId]="'question-' + (startIndex + i + 1)">
+</app-result-element>

@@ -1,0 +1,14 @@
+<!-- Pulsante Material che attiva l’input file -->
+<button mat-raised-button color="primary" (click)="fileInput.click()">
+  <mat-icon>upload</mat-icon> Carica file JSON
+</button>
+
+<!-- Input file nascosto -->
+<input
+  type="file"
+  accept=".json"
+  style="display: none"
+  (change)="onFileSelected($event)"
+  #fileInput
+  data-testid="file-input"
+/>

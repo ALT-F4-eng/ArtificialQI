@@ -1,0 +1,29 @@
+
+<app-search-bar (search)="handleSearch($event)"></app-search-bar>
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
+<app-test-list-view
+  [tests]="filteredTests"
+  (rename)="renameTest($event.index, $event.newName)"
+  (testDeleted)="onTestDeleteRequest($event)"
+  (testLoaded)="onTestLoadRequest($event)"
+></app-test-list-view>
+
+<app-confirm 
+  *ngIf="showDeleteConfirm"
+  [message]="showDeleteMessage"
+  (confirmed)="onTestDeleteConfirmed()"
+  (canceled)="onTestDeleteCanceled()"
+></app-confirm>
+
+<app-confirm 
+  *ngIf="showLoadConfirm"
+  [message]="showLoadMessage"
+  (confirmed)="onTestLoadConfirmed()"
+  (canceled)="onTestLoadCanceled()"
+></app-confirm>

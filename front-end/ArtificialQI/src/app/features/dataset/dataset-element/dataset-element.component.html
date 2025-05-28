@@ -1,0 +1,16 @@
+<mat-card class="dataset-element">
+  <mat-card-content>
+    <div class="header">
+      <div class="info">
+        <mat-card-title>{{ dataset?.name }}</mat-card-title>
+        <p>Ultima modifica: {{ dataset?.last_mod | date : "short" }}</p>
+      </div>
+      <div class="dataset-actions">
+        <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>
+        <button mat-raised-button (click)="onCopySignal()">Copia</button>
+        <button mat-raised-button (click)="onDeleteSignal()">Elimina</button>
+        <button mat-raised-button (click)="onLoadSignal()">Carica</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

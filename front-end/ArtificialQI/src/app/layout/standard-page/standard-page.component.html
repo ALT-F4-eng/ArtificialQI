@@ -1,0 +1,12 @@
+<app-loading *ngIf="isLoading" class="loading-overlay" />
+
+
+<div class="standard-page-container">
+  <app-menu />
+  <app-message></app-message>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <app-footer />
+</div>

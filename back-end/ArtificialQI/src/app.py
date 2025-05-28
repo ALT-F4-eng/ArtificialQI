@@ -20,7 +20,10 @@ DB_URL = os.environ.get("DB_URL")
 
 @app.route("/prova")
 def hello_world():
-    engine = create_engine(DB_URL)
+    db_url = os.getenv("DB_URL")
+    if db_url is None:
+        raise ValueError("DATABASE_URL is not set")
+    engine = create_engine(db_url)
     with engine.connect() as conn:
         results = [tuple(row) for row in conn.execute(text("SELECT * FROM PROVA")).fetchall()]
     return jsonify(results)

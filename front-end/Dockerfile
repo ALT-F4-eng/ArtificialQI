@@ -10,7 +10,7 @@ COPY ./app/package*.json .
 RUN --mount=type=cache,target=/root/.npm npm ci 
 
 # COPIA IL PROGETTO ANGULAR
-COPY ./ArtificialQI/ .
+COPY ./ArtificialQI .
 
 # PORTA UTILIZZATA DAL CONTAINER PER PUBBLICARE IL SERVIZIO
 EXPOSE 4200

@@ -11,6 +11,7 @@ describe('TestElementComponent', () => {
 
   const testMock: TestDto = {
     id: 1,
+    dataset_id: 1,
     name: 'Test Alpha',
     llm_name: 'LLM1',
     tmp: true,

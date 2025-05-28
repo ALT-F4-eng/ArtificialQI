@@ -32,6 +32,7 @@ export class TestPageComponent implements OnInit {
   resultMessage = '';
   showMessage = false;
   messageType: 'success' | 'error' = 'success';
+  
 
 
   testPage: TestPageDto = MOCK_TEST_PAGE;

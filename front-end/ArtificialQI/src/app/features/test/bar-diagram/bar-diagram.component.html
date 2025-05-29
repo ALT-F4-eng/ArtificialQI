@@ -1,7 +1,11 @@
 <div class="bar-diagram-wrapper">
-  <canvas baseChart
+  <canvas *ngIf="barChartData" baseChart
           [data]="barChartData"
           [options]="barChartOptions"
-          type="bar">
+          [type]="'bar'">
   </canvas>
+
+  <div *ngIf="!barChartData" class="test-placeholder">
+    <!-- Placeholder o niente in test -->
+  </div>
 </div>

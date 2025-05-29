@@ -37,6 +37,7 @@ describe('TestListViewComponent', () => {
     component.tests = [
   {
     id: 1,
+    dataset_id: 1,
     name: 'Test Alpha',
     llm_name: 'LLM1',
     tmp: true,
@@ -49,6 +50,7 @@ describe('TestListViewComponent', () => {
   },
   {
     id: 2,
+    dataset_id: 2,
     name: 'Test Beta',
     llm_name: 'LLM2',
     tmp: false,

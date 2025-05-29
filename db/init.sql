@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS TestResult (
     test uuid REFERENCES Test(id),
     qa uuid REFERENCES Elemento(id),
     is_correct BOOLEAN NOT NULL,
-    similarity_score NUMERIC NOT NUL,
+    similarity_score NUMERIC NOT NULL,
     obtained_answer TEXT NOT NULL,
     PRIMARY KEY(test, qa)
 );

@@ -1,39 +1,39 @@
 CREATE TABLE IF NOT EXISTS Llm (
     id uuid PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     url VARCHAR(512) NOT NULL,
-    chiave_richiesta VARCHAR(255) NOT NULL,
-    chiave_risposta VARCHAR(255) NOT NULL,
-    data_registrazione TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    key_response VARCHAR(255) NOT NULL,
+    key_request VARCHAR(255) NOT NULL,
+    save_date DATE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS CoppiaChiaveValore (
+CREATE TABLE IF NOT EXISTS KeyValuePair (
     id uuid PRIMARY KEY,
     is_header BOOLEAN NOT NULL,
-    chiave VARCHAR(255) UNIQUE,
-    valore TEXT NOT NULL,
+    key VARCHAR(255) UNIQUE,
+    value TEXT NOT NULL,
     llm uuid NOT NULL REFERENCES Llm(id)
 );
 
 CREATE TABLE IF NOT EXISTS Dataset (
     id uuid PRIMARY KEY,
-    is_tmp BOOLEAN NOT NULL,
-    nome VARCHAR(255) NOT NULL,
-    data_creazione TIMESTAMP NOT NULL,
-    data_ultima_modifica TIMESTAMP NOT NULL,
+    tmp BOOLEAN NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    first_save_date TIMESTAMP NOT NULL,
+    last_save_date TIMESTAMP NOT NULL,
     origin uuid REFERENCES Dataset(id)
 );
 
 CREATE TABLE IF NOT EXISTS Test (
     id uuid PRIMARY KEY,
-    is_tmp BOOLEAN NOT NULL,
-    nome VARCHAR(255),
-    data_esecuzione TIMESTAMP NOT NULL,
+    tmp BOOLEAN NOT NULL,
+    name VARCHAR(255),
+    execution_date TIMESTAMP NOT NULL,
     llm uuid NOT NULL REFERENCES Llm(id),
     dataset uuid NOT NULL REFERENCES Dataset(id)
 );
 
-CREATE TABLE IF NOT EXISTS Elemento (
+CREATE TABLE IF NOT EXISTS QuestionAnswer (
     id uuid PRIMARY KEY,
     domanda TEXT NOT NULL,
     risposta TEXT NOT NULL,
@@ -41,11 +41,11 @@ CREATE TABLE IF NOT EXISTS Elemento (
 
 );
 
-CREATE TABLE IF NOT EXISTS Risultato (
-    id SERIAL PRIMARY KEY,
-    test uuid NOT NULL REFERENCES Test(id),
-    elemento uuid NOT NULL REFERENCES Elemento(id),
-    is_corretto BOOLEAN NOT NULL,
-    grado_similarita NUMERIC(5,4) NOT NULL,
-    risposta_ottenuta TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS TestResult (
+    test uuid REFERENCES Test(id),
+    qa uuid REFERENCES Elemento(id),
+    is_correct BOOLEAN NOT NULL,
+    similarity_score NUMERIC NOT NUL,
+    obtained_answer TEXT NOT NULL,
+    PRIMARY KEY(test, qa)
 );

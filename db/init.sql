@@ -1,6 +1,7 @@
-CREATE TABLE CoppiaChiaveValore (--non posso avere due chiavi uguali--
+CREATE TABLE CoppiaChiaveValore (
+    id SERIAL PRIMARY KEY,
     is_header BOOLEAN NOT NULL DEFAULT FALSE,
-    chiave VARCHAR(255) PRIMARY KEY,
+    chiave VARCHAR(255) UNIQUE NOT NULL,
     valore TEXT NOT NULL
 );
 
@@ -12,7 +13,7 @@ CREATE TABLE LLM (
     chiave_risposta VARCHAR(255) NOT NULL,
     data_registrazione TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (chiave_richiesta) REFERENCES CoppiaChiaveValore(chiave),
-    FOREIGN KEY (chiave_risposta)  REFERENCES CoppiaChiaveValore(chiave)
+    FOREIGN KEY (chiave_risposta) REFERENCES CoppiaChiaveValore(chiave)
 );
 
 CREATE TABLE ParametroLLM (
@@ -31,8 +32,9 @@ CREATE TABLE Test (
 );
 
 CREATE TABLE LLMTestato (
-    test_id INTEGER NOT NULL UNIQUE,
-    llm_id  INTEGER,
+    test_id INTEGER NOT NULL,
+    llm_id  INTEGER NOT NULL,
+    PRIMARY KEY (test_id, llm_id),
     FOREIGN KEY (test_id) REFERENCES Test(id) ON DELETE CASCADE,
     FOREIGN KEY (llm_id) REFERENCES LLM(id) ON DELETE CASCADE
 );
@@ -64,8 +66,9 @@ CREATE TABLE Dataset (
 );
 
 CREATE TABLE TestSet (
-    test_id    INTEGER NOT NULL UNIQUE,
-    dataset_id INTEGER,
+    test_id    INTEGER NOT NULL,
+    dataset_id INTEGER NOT NULL,
+    PRIMARY KEY (test_id, dataset_id),
     FOREIGN KEY (test_id) REFERENCES Test(id) ON DELETE CASCADE,
     FOREIGN KEY (dataset_id) REFERENCES Dataset(id) ON DELETE CASCADE
 );

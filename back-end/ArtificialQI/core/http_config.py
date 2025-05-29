@@ -33,4 +33,12 @@ def http_config_function_factory(id: UUID, url: str, key_req: str, key_resp: str
     if not key_resp:
         raise ValueError("La chiave della risposta non può essere vuota.")
 
-    return HttpConfig(id=id, url=url, key_req=key_req, key_resp=key_resp, header=header, body=body)
+    return HttpConfig(
+        id=id, 
+        url=url, 
+        key_req=key_req, 
+        key_resp=key_resp, 
+        header=header, 
+        body=body
+    )
+

@@ -41,4 +41,23 @@ class PageNonExistentException(Exception):
 
     def __init__(self, n: int):
         super().__init__(f"La pagina numero {n} non esiste.")
+<<<<<<< HEAD
     
+=======
+
+class DuplicateQuestionAnswerException(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg) 
+
+class InvalidQuestionAnswerException(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg) 
+
+class QaPageNonExistentException(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg) 
+        
+>>>>>>> 9ccc3adb76f165495fb87784dd127293c4624051

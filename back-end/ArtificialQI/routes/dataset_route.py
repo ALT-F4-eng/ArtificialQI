@@ -7,7 +7,7 @@ from mapper.DatasetMapper import datasetList_to_datasetListDTO
 
 dataset_bp = Blueprint('datasets', __name__)
 
-
+@staticmethod
 @dataset_bp.route("/datasets", methods=["GET"])
 @inject
 def get_all_datasets(dataset_service: DatasetService = Provide[Container.dataset_service]):

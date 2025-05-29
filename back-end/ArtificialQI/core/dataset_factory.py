@@ -21,7 +21,7 @@ class DatasetFactory:
         """
         
         if dim < 0:
-            raise ValueError
+            raise ValueError("La dimensione di un dataset deve essere positiva.")
 
         return Dataset(
             id=id,
@@ -55,10 +55,10 @@ class DatasetFactory:
         """
 
         if dim < 0:
-            raise ValueError
+            raise ValueError("La dimensione di un dataset deve essere positiva.")
         
         if id == origin:
-            raise ValueError
+            raise ValueError("Un dataset working copy non può avere se stesso come origine.")
         
         return Dataset(
             id=id,
@@ -92,20 +92,23 @@ class DatasetFactory:
             ValueError: 
                 Se la 'dim' del dataset è negativa.
                 Se il 'name' è vuoto o composto da solo spazi.
-                Se la 'first_save_date' è maggiore di 'last_save_date'.
+                Se la 'first_save_date' è maggiore di 'last_save_date' o è futura.
                 Se la 'first_save_date' non è già passata o corrente.
         """
         if not name.strip():
-            raise ValueError
+            raise ValueError("Il nome di un dataset non può essere vuoto o composto da soli spazi")
 
         if first_save_date > last_save_date:
-            raise ValueError
+            raise ValueError("La data di primo salvataggio deve essere minore o uguale alla data di ultimo salvataggio.")
         
         if first_save_date > date.today():
-            raise ValueError
+            raise ValueError("La data di primo salvataggio non può essere futura.")
+        
+        if last_save_date > date.today():
+            raise ValueError("La data di ultimo salvataggio non può essere futura.")
 
         if dim < 0:
-            raise ValueError
+            raise ValueError("La dimensione di un dataset deve essere positiva.")
 
         return Dataset(
             id=id,

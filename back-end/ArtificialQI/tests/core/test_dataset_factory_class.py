@@ -2,7 +2,6 @@
 
 from datetime import date, timedelta
 from uuid import UUID, uuid4
-import unittest
 
 import pytest
 from core.dataset_factory import DatasetFactory

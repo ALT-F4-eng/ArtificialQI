@@ -32,7 +32,7 @@ class TestFactory:
         """
         
         if execution_date > date.today():
-            raise ValueError
+            raise ValueError("La data di esecuzione non può essere futura.")
 
         return Test(id, dataset, llm, index, True, None, execution_date)
    
@@ -64,9 +64,9 @@ class TestFactory:
         """
         
         if execution_date > date.today():
-            raise ValueError
+            raise ValueError("La data di esecuzione non può essere futura.")
 
         if not name.strip():
-            raise ValueError
+            raise ValueError("Il nome di un test salvato non può essere vuoto o composto da soli spazi.")
 
         return Test(id, dataset, llm, index, False, name, execution_date)

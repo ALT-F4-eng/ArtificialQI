@@ -41,3 +41,4 @@ class PageNonExistentException(Exception):
 
     def __init__(self, n: int):
         super().__init__(f"La pagina numero {n} non esiste.")
+    

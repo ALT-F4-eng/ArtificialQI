@@ -30,6 +30,6 @@ def page_factory_function(page_n: int, page_content: set[T]) -> Page[T]:
     """
 
     if page_n < 0:
-        raise ValueError
+        raise ValueError("Il numero di pagina non può essere negativo.")
 
     return Page(page_n, page_content)

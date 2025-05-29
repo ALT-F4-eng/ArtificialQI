@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import IO
 from uuid import UUID
 
+from port.outbound.file_qa_reader import IQuestionAnswerFileReader
 from core.dataset import Dataset
 
 
@@ -40,7 +40,7 @@ class DatasetUseCase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_from_json(self, file: IO[bytes], name: str) -> Dataset:
+    def create_from_json(self, file_path: str, name: str,  file_reader: IQuestionAnswerFileReader) -> Dataset:
         raise NotImplementedError
 
     @abstractmethod

@@ -5,8 +5,8 @@ from uuid import uuid4, UUID
 import re
 
 import pytest
-from adapter.inbound.dataset_service import DatasetService
-from port.outbound.dataset_repository import DatasetRepository
+from adapter.inbound.service.dataset import DatasetService
+from port.outbound.repository. import DatasetRepository
 from port.outbound.test_repository import TestRepository
 from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepository
 from port.outbound.test_result_repository import TestResultRepository

@@ -1,19 +1,18 @@
-from port.inbound.qa_use_case import QaUseCase
-from port.outbound.dataset_repository import DatasetRepository
-from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepository
-from core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
 from uuid import UUID, uuid4
 from typing import Optional
-from common.exceptions import *
+
+
+from common.exceptions import (PersistenceException, QaNonExistentException, PageNonExistentException, DatasetNonExistentException)
 from core.page import Page
+from port.outbound.qa_unit_of_work import IQaUnitOfWork
+from port.inbound.qa_use_case import QaUseCase
+from core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
 
 
 class QaService(QaUseCase):
     
-    def __init__(self, qa_repo:QuestionAnswerPairRepository , dataset_repo:DatasetRepository):
-        self.qa_repo:QuestionAnswerPairRepository = qa_repo
-        self.dataset_repo:DatasetRepository = dataset_repo
-
+    def __init__(self, qa_unit_of_work: IQaUnitOfWork):
+        self._unit_of_work:IQaUnitOfWork = qa_unit_of_work
     
     def create_qa(self, question:str, answer:str, dataset:UUID) -> QuestionAnswerPair:
         """
@@ -35,13 +34,13 @@ class QaService(QaUseCase):
             dataset=dataset, question=question, 
             answer=answer, id=uuid4()
         )
+        with self._unit_of_work as uow:
+            result: Optional[QuestionAnswerPair] = uow.qa_repo.create_qa(questionAnswerPair)
 
-        result: Optional[QuestionAnswerPair] = self.qa_repo.create_qa(questionAnswerPair)
-
-        if result is None:
-            raise PersistenceException("Errore durante la creazione della coppia domanda-risposta.")
-        
-        return result
+            if result is None:
+                raise PersistenceException("Errore durante la creazione della coppia domanda-risposta.")
+            
+            return result
 
     def get_qa_page(self, p:int, dataset:UUID, q:str="") -> Page[QuestionAnswerPair]:
         """
@@ -58,13 +57,19 @@ class QaService(QaUseCase):
         Raises:
             PageNonExistentException: Se non esiste la pagina richiesta per il dataset.
         """
+        with self._unit_of_work as uow:
+            
+            if not uow.dataset_repo.get_dataset_by_id(dataset):
+                raise DatasetNonExistentException(dataset)
 
-        qa_set: Optional[set[QuestionAnswerPair]] = self.qa_repo.get_qa_set(dataset, p, Page.ELEMENT_PER_PAGE, q)
+            offset: int = p * Page.ELEMENT_PER_PAGE
 
-        if qa_set is None:
-            raise PageNonExistentException(p)
-        
-        return Page[QuestionAnswerPair](p, qa_set)
+            qa_set: Optional[set[QuestionAnswerPair]] = uow.qa_repo.get_qa_set(dataset, offset, offset + Page.ELEMENT_PER_PAGE, q)
+
+            if qa_set is None:
+                raise PageNonExistentException(p)
+            
+            return Page[QuestionAnswerPair](p, qa_set)
     
     def get_qa_by_id(self, id:UUID) -> QuestionAnswerPair:
         """
@@ -79,13 +84,14 @@ class QaService(QaUseCase):
         Raises:
             QaNonExistentException: Se la coppia domanda-risposta richiesta non esiste.
         """
+        with self._unit_of_work as uow:
+            
+            questionAnswerPair: Optional[QuestionAnswerPair] = uow.qa_repo.get_qa_by_id(id)
 
-        questionAnswerPair: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(id)
-
-        if questionAnswerPair is None:
-            raise DatasetNonExistentException(id)
-        
-        return questionAnswerPair
+            if questionAnswerPair is None:
+                raise QaNonExistentException(id)
+            
+            return questionAnswerPair
     
     def update_qa(self, qa:QuestionAnswerPair) -> QuestionAnswerPair:
         """
@@ -101,18 +107,19 @@ class QaService(QaUseCase):
             QaNonExistentException: Se la coppia domanda-risposta da aggiornare non esiste.
             PersistenceException: Se avviene un errori di persistenza durante l'aggiornamento della coppia domanda-risposta.
         """
+        with self._unit_of_work as uow:
 
-        qa_current_version: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(qa.id)
+            qa_current_version: Optional[QuestionAnswerPair] = uow.qa_repo.get_qa_by_id(qa.id)
 
-        if qa_current_version is None:
-            raise QaNonExistentException(qa.id)
+            if qa_current_version is None:
+                raise QaNonExistentException(qa.id)
 
-        res: Optional[QuestionAnswerPair] = self.qa_repo.update_qa(qa_current_version)
+            res: Optional[QuestionAnswerPair] = uow.qa_repo.update_qa(qa_current_version)
 
-        if res is None:
-            raise PersistenceException("Errore di persistenza durante l'aggiornamento della coppia domanda-risposta.")
-        
-        return res
+            if res is None:
+                raise PersistenceException("Errore di persistenza durante l'aggiornamento della coppia domanda-risposta.")
+            
+            return res
     
     def delete_qa(self, id:UUID) -> UUID:
         """
@@ -128,15 +135,16 @@ class QaService(QaUseCase):
             QaNonExistentException: Se la coppia domanda-risposta non esiste.
             PersistenceException: Se si verifica un errore durante l'eliminazione della coppia domanda-risposta.
         """
+        with self._unit_of_work as uow:
 
-        questionAnswerPair: Optional[QuestionAnswerPair] = self.qa_repo.get_qa_by_id(id)
+            questionAnswerPair: Optional[QuestionAnswerPair] = uow.qa_repo.get_qa_by_id(id)
 
-        if questionAnswerPair is None:
-            raise QaNonExistentException(id)
+            if questionAnswerPair is None:
+                raise QaNonExistentException(id)
 
-        res_qa_elim: Optional[UUID] = self.qa_repo.delete_qa(id)
+            res_qa_elim: Optional[UUID] = uow.qa_repo.delete_qa(id)
 
-        if res_qa_elim is None:
-            raise PersistenceException(f"Errore durante l'eliminazione della qa {id}.")
+            if res_qa_elim is None:
+                raise PersistenceException(f"Errore durante l'eliminazione della qa {id}.")
 
-        return res_qa_elim
+            return res_qa_elim

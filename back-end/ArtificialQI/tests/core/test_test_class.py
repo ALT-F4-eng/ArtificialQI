@@ -1,10 +1,7 @@
 # type: ignore
 
-import unittest
-from uuid import UUID, uuid4
-from datetime import date
+from uuid import uuid4
 
-import pytest
 from core.test import Test
 
 class _TestClassTestEqualMethod:

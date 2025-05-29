@@ -36,7 +36,7 @@ def qa_pair_factory_function(dataset:UUID, question:str, answer:str, id: UUID=uu
     """
 
     if not (question.strip() or answer.strip()):
-        raise ValueError
+        raise ValueError("La domanda e la risposta non possono essere entrambe vuote o composte da soli spazi.")
 
     return QuestionAnswerPair(
         id=id, dataset=dataset, question=question, answer=answer

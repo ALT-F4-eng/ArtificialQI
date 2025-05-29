@@ -10,8 +10,8 @@ from core.test import Test
 from core.test_statistics import TestStatistics
 from core.page import Page
 from core.question_answer_pair import QuestionAnswerPair
-from adapter.qa_service import QaService
-from core.llm_config import Config
+from adapter.inbound.service.qa import QaService
+from core.comunication_config import ComunicationConfig
 from core.llm import Llm
 from core.test_result import TestResult
 

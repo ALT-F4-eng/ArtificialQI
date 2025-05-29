@@ -30,10 +30,10 @@ def llm_factory_function(id: UUID, name:str, config:ComunicationConfig, last_mod
     """
 
     if not name.strip():
-        raise ValueError
+        raise ValueError("Il nome di un llm non può essere vuoto o composto da soli spazi.")
 
     if last_mod > date.today():
-        raise ValueError
+        raise ValueError("La data di ultima modifica non può essere futura.")
 
     return Llm(
         id=id, name=name, config=config, last_mod=last_mod

@@ -23,6 +23,10 @@ class TestResult:
             and 
             self.question_answer_pair.id == result.question_answer_pair.id
         )
+    
+    def __hash__(self)->int:
+        return hash((self.test_id, self.question_answer_pair.id))
+
 
 
 def test_result_factory_function(
@@ -53,10 +57,10 @@ def test_result_factory_function(
     """
 
     if not obtained_answer.strip():
-        raise ValueError
+        raise ValueError("La risposta non può essere vuota o composta da soli spazi.")
 
     if similarity_score < 0 or similarity_score > 1:
-        raise ValueError
+        raise ValueError("Il valore di similarità deve essere compreso nel range [0,1].")
 
 
     return TestResult(

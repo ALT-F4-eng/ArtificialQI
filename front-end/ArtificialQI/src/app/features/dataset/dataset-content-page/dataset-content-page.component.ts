@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,8 @@ import { QADialogComponent } from '../qadialog/qadialog.component';
 import { LLMselectionListComponent } from '../llmselection-list/llmselection-list.component';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
+import { ApiService } from '../../../core/services/prova.service';
+
 @Component({
   selector: 'app-dataset-content-page',
   imports: [
@@ -33,7 +35,7 @@ import { DatasetNameDialogComponent } from '../../../shared/components/dataset-n
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
 })
-export class DatasetContentPageComponent {
+export class DatasetContentPageComponent implements OnInit{
   //dataset!: DatasetDto;
   //datasetQA!: DatasetPageDto;
   dataset!: DatasetDto;
@@ -43,13 +45,28 @@ export class DatasetContentPageComponent {
   // poi tutte le modifiche vengono salvate all'interno del db su workingcopy finche l'utente non decide di salvare tale dataset
   // inpute per pageNavigation della pagina
 
+  messaggio: string = '';
+
   mode: 'create' | 'edit' = 'create';
   constructor(
     private qaService: QAService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private apiService: ApiService
   ) {} //private router: Router
   ngOnInit(): void {
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    this.apiService.inviaMessaggio('Mario').subscribe({
+      next: (res) => {
+        this.messaggio = res.risposta;
+        console.log(this.messaggio);
+      },
+      error: (err) => {
+        console.error('Errore:', err);
+        this.messaggio = 'Errore nella richiesta.';
+      }
+    });
+  
     this.route.queryParams.subscribe((params) => {
       this.mode = params['mode'];
       if (this.mode === 'create') {

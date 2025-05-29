@@ -17,11 +17,13 @@ declare const process: {
 export class ContentComponent implements AfterViewInit {
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
+
+
   ngAfterViewInit(): void {
     if (this.isTestEnvironment()) {
       return;
     }
-
+    
     const elements = this.el.nativeElement.querySelectorAll('.fade-in-on-scroll');
 
     const observer = new IntersectionObserver(

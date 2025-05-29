@@ -1,10 +1,13 @@
 import os
 from routes.containers import Container
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify
 from sqlalchemy import create_engine, text
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 
 # Usa la variabile d'ambiente DB_URL
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
@@ -18,12 +21,14 @@ setattr(app, "container", container)
 
 DB_URL = os.environ.get("DB_URL")
 
-@app.route("/prova")
-def hello_world():
-    db_url = os.getenv("DB_URL")
-    if db_url is None:
-        raise ValueError("DATABASE_URL is not set")
-    engine = create_engine(db_url)
-    with engine.connect() as conn:
-        results = [tuple(row) for row in conn.execute(text("SELECT * FROM PROVA")).fetchall()]
-    return jsonify(results)
+@app.route('/api/messaggio', methods=['GET'])
+def ricevi_messaggio():
+    nome = request.args.get('nome')
+    if not nome:
+        return jsonify({'errore': 'Parametro "nome" mancante'}), 400
+    risposta = f"Ciao, {nome}! Messaggio ricevuto."
+    return jsonify({"risposta": risposta})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

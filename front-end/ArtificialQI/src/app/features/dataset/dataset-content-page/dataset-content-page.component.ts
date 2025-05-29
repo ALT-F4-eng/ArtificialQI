@@ -69,11 +69,12 @@ export class DatasetContentPageComponent {
       this.messageType = 'success';
       this.showMessage = true;
       //this.loadResults();
+    } else {
+      this.resultMessage = 'non è stato caricato nessun dataset per il momento';
+      this.messageType = 'error';
+      this.showMessage = true;
+      console.log('showMessage:', this.showMessage);
     }
-    this.resultMessage = 'Il dataset non è stato ancora caricato!';
-    this.messageType = 'error';
-    this.showMessage = true;
-    console.log('showMessage:', this.showMessage);
   }
 
   loadResults() {

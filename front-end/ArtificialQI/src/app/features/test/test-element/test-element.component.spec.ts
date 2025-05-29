@@ -11,6 +11,7 @@ describe('TestElementComponent', () => {
 
   const testMock: TestDto = {
     id: 1,
+    dataset_id: 1,
     name: 'Test Alpha',
     llm_name: 'LLM1',
     tmp: true,
@@ -43,17 +44,17 @@ describe('TestElementComponent', () => {
 
   it('should display the test name', () => {
     const nameEl = fixture.debugElement.query(By.css('.test-name'));
-    expect(nameEl.nativeElement.textContent).toContain('Test Demo');
+    expect(nameEl.nativeElement.textContent).toContain('Test Alpha');
   });
 
   it('should display the test id', () => {
     const idEl = fixture.debugElement.query(By.css('.test-id'));
-    expect(idEl.nativeElement.textContent).toContain('#123');
+    expect(idEl.nativeElement.textContent).toContain('#1');
   });
 
   it('should display the last modified date', () => {
     const dateEl = fixture.debugElement.query(By.css('p'));
-    expect(dateEl.nativeElement.textContent).toContain('Ultima modifica:');
+    expect(dateEl.nativeElement.textContent).toContain('Data di esecuzione: 5/1/25, 2:00 AM');
   });
 
   it('should display the rename button', () => {

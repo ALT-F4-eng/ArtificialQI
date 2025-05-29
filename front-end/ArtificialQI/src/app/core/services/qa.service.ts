@@ -11,16 +11,23 @@ import { LlmDto } from '../models/llm-dto.model';
   providedIn: 'root',
 })
 export class QAService {
+  cachedDatasetCaricato: any;
   constructor(private http: HttpClient) {}
   //sezione di create
   //back-end dovrebbe ritornare un oggetto dataset nuovo
   getNewDatasetTemporary(): Observable<DatasetDto> {
     return this.http.get<DatasetDto>('/dataset');
   }
-  
+
   getDatasetPage(index: number): Observable<DatasetPageDto> {
     return this.http.get<DatasetPageDto>(`/dataset/page/${index}`);
   }
+  
+  //
+  getDatasetPage2mock(index: number): Observable<DatasetPageDto> {
+    return this.http.get<DatasetPageDto>(`/dataset/page/${index}`);
+  }
+
   getDatasetPageFiltered(term: string): Observable<QADto[]> {
     return this.http.get<QADto[]>(`/dataset/page/${term}`);
   }
@@ -50,20 +57,20 @@ export class QAService {
     return this.http.get<DatasetDto>('/dataset');
   }
 
+  //qaID univoco per tutti gli dataset
   modifyDatasetQA(
-    datasetId: number,
     qaId: number,
     question: string,
     answer: string
   ): Observable<QADto> {
-    const body = { question, answer };
-    return this.http.patch<QADto>(`/dataset/${datasetId}/qa/${qaId}`, body);
+    const body = { qaId, question, answer };
+    return this.http.patch<QADto>(`/dataset/qa/${qaId}`, body);
   }
 
-  deleteDatasetQA(datasetId: number, qaId: number): Observable<void> {
-    return this.http.delete<void>(`/dataset/${datasetId}/qa/${qaId}`);
+  deleteDatasetQA(qaId: number): Observable<void> {
+    return this.http.delete<void>(`/dataset/qa/${qaId}`);
   }
-  
+
   runTest(dataset: DatasetDto, llmSelected: LlmDto) {
     const payload = {
       dataset: dataset,

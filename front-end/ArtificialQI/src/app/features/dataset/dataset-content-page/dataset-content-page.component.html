@@ -1,14 +1,29 @@
 <p>dataset-content-page works!</p>
 <h2>
-  {{ dataset.name }}
-  <span *ngIf="mode === 'create' && dataset.tmp" class="temporary-label">
+  <span *ngIf="dataset">
+    {{ dataset.name }}
+  </span>
+  <span
+    *ngIf="dataset && mode === 'create' && dataset.tmp"
+    class="temporary-label"
+  >
     Temporaneo
   </span>
 
-  <span *ngIf="mode === 'edit' && dataset.tmp" class="temporary-label">
+  <span
+    *ngIf="dataset && mode === 'edit' && dataset.tmp"
+    class="temporary-label"
+  >
     Working copy
   </span>
 </h2>
+
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
 
 <app-search-bar (search)="handleSearchQA($event)"></app-search-bar>
 <button mat-raised-button (click)="addQA()">
@@ -31,5 +46,21 @@
 
 <app-dataset-page-view
   [datasetPage]="datasetPage"
+  (modifyQASignal_datasetPageView)="
+    modifyQA($event.id, $event.question, $event.answer)
+  "
+  (deleteQASignal_datasetPageView)="onQADeleteRequest($event)"
   (modifyEventShowLabel)="onChangeShowLabel()"
+  (changePageSignal_datasetPageView)="loadPage($event)"
 ></app-dataset-page-view>
+
+<app-confirm
+  *ngIf="showConfirmDelete"
+  [message]="
+    'Sei sicuro di voler eliminare questa coppia di domanda e risposta?'
+  "
+  [confirmLabel]="'Sì, elimina'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onQADeleteConfirmed()"
+  (canceled)="onQADeleteCanceled()"
+></app-confirm>

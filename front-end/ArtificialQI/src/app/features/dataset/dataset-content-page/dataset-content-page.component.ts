@@ -23,7 +23,8 @@ import { DatasetPageViewComponent } from '../dataset-page-view/dataset-page-view
 import { QADialogComponent } from '../qadialog/qadialog.component';
 import { LLMselectionListComponent } from '../llmselection-list/llmselection-list.component';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
-
+import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
+import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 @Component({
   selector: 'app-dataset-content-page',
   imports: [
@@ -32,6 +33,8 @@ import { DatasetNameDialogComponent } from '../../../shared/components/dataset-n
     MatButtonModule,
     SearchBarComponent,
     DatasetPageViewComponent,
+    ConfirmComponent,
+    MessageBoxComponent,
   ],
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
@@ -46,13 +49,34 @@ export class DatasetContentPageComponent {
   // inpute per pageNavigation della pagina
 
   mode: 'create' | 'edit' = 'create';
+  showConfirmDelete = false;
+  idqa?: number;
+
+  //per message component
+  showMessage = true;
+  resultMessage = '';
+  messageType: 'success' | 'error' = 'error';
 
   constructor(
     private qaService: QAService,
     private route: ActivatedRoute,
     private router: Router
   ) {} //private router: Router
+
   ngOnInit(): void {
+    if (this.qaService.cachedDatasetCaricato) {
+      this.resultMessage = 'Il dataset caricato!';
+      this.messageType = 'success';
+      this.showMessage = true;
+      //this.loadResults();
+    }
+    this.resultMessage = 'Il dataset non è stato ancora caricato!';
+    this.messageType = 'error';
+    this.showMessage = true;
+    console.log('showMessage:', this.showMessage);
+  }
+
+  loadResults() {
     this.route.queryParams.subscribe((params) => {
       this.mode = params['mode'];
       if (this.mode === 'create') {
@@ -66,6 +90,7 @@ export class DatasetContentPageComponent {
           this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
           this.detectWokingCopy = true;
         });*/
+
         this.dataset = history.state.dataset; //verrà passata dal componente dataset list page con funzione load
         //chiamata al back-end per avere la prima pagina
         this.qaService.getDatasetPage(1).subscribe({
@@ -114,13 +139,18 @@ export class DatasetContentPageComponent {
           console.log('Hai cliccato Salva con:', result);
           //verra chiamata servizio di salvataggio
           this.dataset.tmp = true;
-
+          this.resultMessage = 'La coppia è stata aggiunta correttamente!';
+          this.messageType = 'success';
+          this.showMessage = true;
           /*this.qaService.addQA(result.question, result.answer);
           // dovrei controllare se elementi sono < dell'elementi presenti allinterno del datasetPageDto ,se si allora si aggiorna altrimenti vuoldire che verra aggiunto in coda e non necessita un aggiornamento
           this.datasetPage = this.qaService.updateDatasetPage(
             this.datasetPage.page_n
           );*/
         } else {
+          this.resultMessage = 'La coppia non è stata aggiunta correttamente!';
+          this.messageType = 'error';
+          this.showMessage = true;
           console.log('Hai cliccato Annulla o chiuso il dialog');
         }
       });
@@ -141,6 +171,10 @@ export class DatasetContentPageComponent {
           this.dataset.tmp = false;
 
           console.log('Nuovo nome nel elemento:', result);
+
+          this.resultMessage = 'il dataset è stata salvata correttamente!';
+          this.messageType = 'success';
+          this.showMessage = true;
           // dthis.renameSignal.emit(result); // Invia il nuovo nome al padre tramite l'evento
           //this.qaService.createDataset(this.dataset).subscribe((response) => {
           /*const newId = response.id; // <-- restituito dal back-end*/
@@ -189,5 +223,90 @@ export class DatasetContentPageComponent {
       if (selected) {
       }
     });
+  }
+
+  modifyQA(id: number, question: string, answer: string) {
+    console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
+
+    this.qaService.modifyDatasetQA(id, question, answer).subscribe({
+      next: (updatedQA) => {
+        console.log('QA modificato con successo:', updatedQA);
+        this.onChangeShowLabel();
+        this.resultMessage = 'la coppia è stata modificata correttamente!';
+        this.messageType = 'success';
+        this.showMessage = true;
+        // this.modifyEventShowLabel.emit(); // se vuoi attivare un evento personalizzato
+      },
+      error: (err) => {
+        this.resultMessage = 'la coppia è stata modificata correttamente!';
+        this.messageType = 'error';
+        this.showMessage = true;
+        console.error('Errore durante la modifica del QA:', err);
+      },
+    });
+  }
+
+  onQADeleteRequest(id: number) {
+    this.showConfirmDelete = true;
+    this.idqa = id;
+    console.log('Indice ricevuto per cancellazione page:', id);
+  }
+
+  onQADeleteConfirmed() {
+    if (this.idqa !== undefined) {
+      this.qaService.deleteDatasetQA(this.idqa).subscribe({
+        next: () => {
+          console.log('QA eliminato:', this.idqa);
+          this.showConfirmDelete = false;
+          this.onChangeShowLabel();
+          this.resultMessage = 'la coppia è stata eliminata correttamente!';
+          this.messageType = 'success';
+          this.showMessage = true;
+          // Esempio opzionale: aggiorna i dati dopo la cancellazione
+          /*
+        this.qaService.getDatasetPage(this.datasetPage!.page_n).subscribe(data => {
+          this.datasetPage = data;
+        });
+        */
+        },
+        error: (err) => {
+          this.resultMessage = 'la coppia non è stata eliminata correttamente!';
+          this.messageType = 'error';
+          this.showMessage = true;
+          console.error("Errore durante l'eliminazione del QA:", err);
+        },
+      });
+    }
+  }
+
+  onQADeleteCanceled() {
+    this.idqa = undefined;
+    this.showConfirmDelete = false;
+  }
+
+  loadPage(page: number) {
+    /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
+    // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
+    console.log('pagina reinidirizzata', page);
+    //mock della chiamata, dovrebbe avere come paramentro page ma quasto solo faccendo una mock
+    this.qaService.getDatasetPage2mock(page).subscribe({
+      next: (data) => {
+        this.datasetPage = data;
+        this.resultMessage = 'la pagina è stata caricata correttamente!';
+        this.messageType = 'success';
+        this.showMessage = true;
+      },
+      error: (err) => {
+        this.resultMessage = 'la pagina non è stata caricata correttamente!';
+        this.messageType = 'error';
+        this.showMessage = true;
+        console.error('Errore nel caricamento della pagina dataset:', err);
+      },
+    });
+  }
+  onCloseMessage() {
+    this.showMessage = false;
+    this.resultMessage = '';
+    this.messageType = 'error';
   }
 }

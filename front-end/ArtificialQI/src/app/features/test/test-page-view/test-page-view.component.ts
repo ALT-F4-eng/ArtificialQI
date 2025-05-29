@@ -58,4 +58,5 @@ export class TestPageViewComponent implements OnChanges {
     this.currentPage = page;
     this.loadPage(page);
   }
+  
 }

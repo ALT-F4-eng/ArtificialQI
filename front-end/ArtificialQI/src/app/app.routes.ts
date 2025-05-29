@@ -19,8 +19,8 @@ export const routes: Routes = [
       { path: '', component: HomePageComponent },
       { path: 'testlist', component: TestListPageComponent },
       { path: 'llm', component: LlmListPageComponent },
-      { path: 'dataset', component: DatasetListPageComponent },
-      { path: 'datasetContentPage', component: DatasetContentPageComponent },//per create (dato che non c'è un id)
+      { path: 'datasetlist', component: DatasetListPageComponent },
+      //{ path: 'datasetContentPage', component: DatasetContentPageComponent },//per create (dato che non c'è un id)
       { path: 'datasetContentPage/:id', component: DatasetContentPageComponent },//per load
       { path: 'test/:id', component: TestPageComponent },
       { path: 'llm/:id', component: LlmPageComponent },

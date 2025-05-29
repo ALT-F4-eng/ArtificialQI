@@ -1,7 +1,8 @@
 <nav>
   <a routerLink="/" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: true }">Home</a>
   <a routerLink="/llm" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: true }">LLM</a>
-  <a routerLink="/dataset" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: true }">Dataset</a>
+  <a routerLink="/datasetlist" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: true }">Dataset</a>
+  <a routerLink="/datasetContentPage/:id" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: false }">Dataset caricato</a>
   <a routerLink="/testlist" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: true }">Test salvati</a>
   <a routerLink="/test/:id" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: false }">Test caricato</a>
   <a routerLink="testComparisonPage" routerLinkActive="disabled" [routerLinkActiveOptions]="{ exact: false }">Test Comparison</a>

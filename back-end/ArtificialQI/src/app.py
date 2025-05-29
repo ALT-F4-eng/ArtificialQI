@@ -3,9 +3,8 @@
 import os
 from routes.containers import Container
 from flask import Flask, request, jsonify
-from sqlalchemy import create_engine, text
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from uuid import uuid4
 
 from src.db_config import db  # usa db separato
 from src.models.dataset_model import DatasetModel  # importa solo il modello
@@ -39,18 +38,18 @@ def ricevi_messaggio():
 @app.route("/test-db")
 def test_db():
     with app.app_context():  # richiesto da SQLAlchemy
-        new_dataset = DatasetModel(nome="Dataset di test", is_tmp=True) 
+        new_dataset = DatasetModel(name="Dataset di test", tmp=True) 
         db.session.add(new_dataset)
         db.session.commit()
         last = DatasetModel.query.order_by(DatasetModel.id.desc()).first()
         return {
             "id": last.id, 
-            "nome": last.nome,
-            "is_tmp": last.is_tmp,
-            "data_creazione": str(last.data_creazione),
-            "data_ultima_modifica": str(last.data_ultima_modifica)
+            "name": last.name,
+            "tmp": last.tmp,
+            "first_save_date": str(last.first_save_date),
+            "last_save_date": str(last.last_save_date),
+            "origin": uuid4()
         }
-    
     
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

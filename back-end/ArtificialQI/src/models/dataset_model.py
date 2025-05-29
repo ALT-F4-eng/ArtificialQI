@@ -1,12 +1,13 @@
-
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, func
 from src.db_config import db
+from uuid import uuid4
+from datetime import datetime
 
 class DatasetModel(db.Model):
     __tablename__ = 'dataset'
 
-    id = Column(Integer, primary_key=True)
-    is_tmp = Column(Boolean, nullable=False, default=False)
-    nome = Column(String(255), nullable=False)
-    data_creazione = Column(DateTime, nullable=False, server_default=func.now())
-    data_ultima_modifica = Column(DateTime, nullable=False, server_default=func.now(), onupdate=func.now())
+    id = db.Column(db.Uuid, primary_key=True, default=uuid4())
+    tmp = db.Column(db.Boolean, nullable=False)
+    name = db.Column(db.String(255), nullable=False)
+    first_save_date = db.Column(db.DateTime, nullable=True)
+    last_save_date = db.Column(db.DateTime, nullable=True)
+    origin = db.Column(db.Uuid, db.ForeignKey('dataset.id'), nullable=True)

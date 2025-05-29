@@ -39,12 +39,12 @@ def ricevi_messaggio():
 @app.route("/test-db")
 def test_db():
     with app.app_context():  # richiesto da SQLAlchemy
-        new_dataset = DatasetModel(nome="Dataset di test", is_tmp=True)
+        new_dataset = DatasetModel(nome="Dataset di test", is_tmp=True) 
         db.session.add(new_dataset)
         db.session.commit()
         last = DatasetModel.query.order_by(DatasetModel.id.desc()).first()
         return {
-            "id": last.id,
+            "id": last.id, 
             "nome": last.nome,
             "is_tmp": last.is_tmp,
             "data_creazione": str(last.data_creazione),

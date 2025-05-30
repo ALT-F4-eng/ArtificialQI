@@ -1,5 +1,7 @@
 from typing import Optional
 from uuid import UUID
+from google import genai
+import requests
 
 from common.exceptions import PersistenceException, TestNonExistentException, InvalidTestOperationException
 from core.test import Test
@@ -9,9 +11,11 @@ from port.outbound.dataset_repository import DatasetRepository
 from port.outbound.question_answer_pair_repository import QuestionAnswerPairRepository
 from port.outbound.test_repository import TestRepository
 from port.outbound.test_result_repository import TestResultRepository
+from core.question_answer_pair import Question_Answer_Pair
 
 
-class DatasetService(TestUseCase):
+
+class TestService(TestUseCase):
 
     def __init__(
         self,
@@ -27,7 +31,43 @@ class DatasetService(TestUseCase):
         self._result_repo: TestResultRepository = result_repo
 
     def run_test(self, dataset: UUID, llm: UUID) -> Test:
-        pass
+        #qa_list: list[Question_Answer_Pair] = _qa_repo.get_all_qa_list(dataset)
+        #qa_question_list :list[str]= []
+        #for qa_item in qa_list:
+        #    qa_question_list.append(qa_item.question)
+        domanda : str = "in che anno è nato cristoforo colombo?"
+        obtained_answer: list[str] =[]
+    
+    def run_domanda(self, dataset: UUID, llm: UUID) -> str:
+        domanda: str = "In che anno è nato Cristoforo Colombo?"
+        obtained_answer: list[str] = []
+
+        try:
+            response = requests.post(
+                "http://padova.zucchetti.it:11434/api/generate",
+                json={
+                    "model": "llama3.1:latest",
+                    "prompt": domanda,
+                    "stream": False
+                },
+                timeout=10
+            )
+
+            if response.ok:
+                data = response.json()
+                risposta = data["response"]
+                obtained_answer.append(risposta)
+            else:
+                print("Errore nella richiesta:", response.status_code)
+                obtained_answer.append(f"Errore: {response.status_code}")
+
+        except requests.exceptions.RequestException as e:
+            print("Errore di connessione o timeout:", e)
+            obtained_answer.append(f"Eccezione: {str(e)}")
+
+        # Per evitare l'avviso, accediamo alle variabili (es. stampiamo o ritorniamo)
+        return obtained_answer[0] if obtained_answer else "Nessuna risposta"
+
 
     def delete_test(self, id: UUID) -> UUID:
         """

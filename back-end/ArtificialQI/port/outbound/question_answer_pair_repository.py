@@ -30,6 +30,10 @@ class QuestionAnswerPairRepository(ABC):
     @abstractmethod
     def get_qa_set(self, dataset: UUID, start: int, offset: int, q: str = "") -> Optional[set[QuestionAnswerPair]]:
         raise NotImplemented
+
+    @abstractmethod
+    def get_all_qa_list(self, dataset: UUID) -> Optional[set[QuestionAnswerPair]]:
+        raise NotImplemented
     
     @abstractmethod 
     def get_qa_by_id(self, id: UUID) -> Optional[QuestionAnswerPair]:

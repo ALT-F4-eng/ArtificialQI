@@ -63,7 +63,7 @@ export class DatasetListPageComponent {
   }
 
   createDataset() {
-    console.log("diocane");
+    console.log("createdataset");
     this.router.navigate(['/datasetContentPage'], {
       queryParams: { mode: 'create' },
     });

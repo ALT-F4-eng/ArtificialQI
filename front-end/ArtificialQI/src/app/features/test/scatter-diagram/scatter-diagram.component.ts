@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import {
   ChartConfiguration,
   ChartData,
@@ -21,7 +28,6 @@ Chart.register(...registerables, zoomPlugin);
   templateUrl: './scatter-diagram.component.html',
   styleUrls: ['./scatter-diagram.component.css'],
 })
-
 export class ScatterDiagramComponent implements OnDestroy {
   @Input() elementValuesOrigin: { x: number; y: number }[] = [];
   @Input() elementValuesCompare: { x: number; y: number }[] = [];
@@ -30,7 +36,7 @@ export class ScatterDiagramComponent implements OnDestroy {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   scatterChartType: ChartType = 'scatter';
-  
+
   get scatterChartData(): ChartData<'scatter'> {
     const datasets = [
       {
@@ -54,7 +60,11 @@ export class ScatterDiagramComponent implements OnDestroy {
   }
 
   get scatterChartOptions(): ChartConfiguration<'scatter'>['options'] {
-    const baseOptions = {
+    const maxX = this.elementValuesOrigin?.length
+      ? this.elementValuesOrigin.length + 1
+      : 1;
+
+    const baseOptions: ChartConfiguration<'scatter'>['options'] = {
       responsive: true,
       interaction: {
         mode: 'nearest',
@@ -63,28 +73,13 @@ export class ScatterDiagramComponent implements OnDestroy {
       },
       plugins: {
         legend: { display: true },
-        zoom: {
-          zoom: {
-            wheel: { enabled: true },
-            pinch: { enabled: true },
-            mode: 'xy',
-          },
-          pan: {
-            enabled: true,
-            mode: 'xy',
-          },
-          limits: {
-            x: { min: 0, max: 'original' },
-            y: { min: 0, max: 1 },
-          },
-        },
       },
       scales: {
         x: {
           title: { display: true, text: 'Risultato n°' },
           ticks: { stepSize: 1 },
           min: 0,
-          max: this.elementValuesOrigin.length + 1,
+          max: maxX,
         },
         y: {
           title: { display: true, text: 'Similarità' },
@@ -95,28 +90,29 @@ export class ScatterDiagramComponent implements OnDestroy {
       onClick: (event: ChartEvent, elements: any[]) => {
         if (elements.length > 0) {
           const index = elements[0].index;
-          const xValue = this.elementValuesOrigin[index].x;
-          this.pointClicked.emit(xValue);
+          const point = this.elementValuesOrigin?.[index];
+          if (point && point.x !== undefined) {
+            this.pointClicked.emit(point.x);
+          }
         }
       },
     };
 
     if (this.enableZoom) {
-      // Aggiungi il plugin zoom solo se enableZoom è true
       (baseOptions.plugins as any).zoom = {
         zoom: {
           wheel: { enabled: true },
           pinch: { enabled: true },
-          mode: 'xy'
+          mode: 'xy',
         },
         pan: {
           enabled: true,
-          mode: 'xy'
+          mode: 'xy',
         },
         limits: {
           x: { min: 0, max: 'original' },
-          y: { min: 0, max: 1 }
-        }
+          y: { min: 0, max: 1 },
+        },
       };
     }
 

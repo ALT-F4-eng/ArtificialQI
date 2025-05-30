@@ -7,7 +7,7 @@ import { DatasetDto } from '../models/dataset-dto.model';
 import { DatasetPageDto } from '../models/datasetpage-dto.model';
 
 export const MOCK_DATASET: DatasetDto = {
-  id: 1,
+  id: '1e7b9c8a-1a2b-4c3d-8e9f-0a1b2c3d4e5f',
   name: 'Dataset Alpha',
   last_mod: new Date('2025-05-01'),
   creation: new Date('2025-04-01'),

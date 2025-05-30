@@ -22,7 +22,7 @@ import { LLMselectionListComponent } from '../llmselection-list/llmselection-lis
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 import { ApiService } from '../../../core/services/prova.service';
-import { DatasetTmpService } from '../../../core/services/prova.service';
+import { DatasetTmpService } from '../../../core/services/dataset.service';
 
 @Component({
   selector: 'app-dataset-content-page',
@@ -58,34 +58,27 @@ export class DatasetContentPageComponent implements OnInit{
   ) {} //private router: Router
   ngOnInit(): void {
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    this.apiService.inviaMessaggio('Mario').subscribe({
-      next: (res) => {
-        this.messaggio = res.risposta;
-        console.log(this.messaggio);
-      },
-      error: (err) => {
-        console.error('Errore:', err);
-        this.messaggio = 'Errore nella richiesta.';
-      }
-    });
     
     this.datasetTmpService.creaDatasetTmp().subscribe({
       next: (res) => {
-        this.messaggio = res.risposta;
-        console.log(this.messaggio);
-      },
-      error: (err) => {
-        console.error('Errore:', err);
-        this.messaggio = 'Errore nella richiesta di creazione dataset tmp.';
-      }
-    });
+      this.messaggio = res.message;
+      this.dataset.id = res.id as `${string}-${string}-${string}-${string}-${string}`; // 👈 salva l'id per usi futuri (PUT)
+      console.log('Dataset ID:', this.dataset.id);
+      console.log(this.messaggio);
+    },
+  error: (err) => {
+    console.error('Errore:', err);
+    this.messaggio = 'Errore nella richiesta di creazione dataset tmp.';
+  }
+});
+
   
     this.route.queryParams.subscribe((params) => {
       this.mode = params['mode'];
       if (this.mode === 'create') {
         this.dataset = emptyDataset;
         this.datasetPage = emptyDatasetPage;
-        this.showTamporaryLabel = true; // dentro datasetDto ha un campo dato tmp tocca raggionarci sopra
+        this.showTamporaryLabel = true; // dentro datasetDto ha un campo dato tmp tocca ragionarci sopra
       } else if (this.mode === 'edit') {
         // Carica dataset dall'id
         /*
@@ -155,10 +148,18 @@ export class DatasetContentPageComponent implements OnInit{
           });*/
           //la logica è salvare tutto e reindirizzare l'utente
           // chiama la funzione di salvataggio
-          this.qaService.saveDataset();
-          this.router.navigate(['/datasetContentPage', 88], {
-            queryParams: { mode: 'edit' },
+          this.datasetTmpService.updateDataset(this.dataset).subscribe({
+            next: (res) => {
+            console.log('Dataset aggiornato:', res);
+            this.router.navigate(['/datasetContentPage', this.dataset.id], {
+              queryParams: { mode: 'edit' },
           });
+  },
+  error: (err) => {
+    console.error('Errore durante l\'aggiornamento:', err);
+  }
+});
+
         }
       });
     }

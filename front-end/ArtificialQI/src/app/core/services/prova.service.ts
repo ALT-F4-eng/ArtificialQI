@@ -13,16 +13,3 @@ export class ApiService {
     return this.http.get<{ risposta: string }>(`${this.baseUrl}/messaggio`, { params });
   }
 }
-
-@Injectable({
-  providedIn: 'root'
-})
-export class DatasetTmpService {
-  private baseUrl = 'http://localhost:5000/datasets';
-
-  constructor(private http: HttpClient) {}
-
-  creaDatasetTmp(): Observable<{ risposta: string }> {
-  return this.http.post<{ risposta: string }>(this.baseUrl, null);
-}
-}

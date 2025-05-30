@@ -35,7 +35,7 @@ export class DatasetListPageComponent {
   filteredDatasets: DatasetDto[] = [];
   showConfirmDelete = false;
   showConfirmLoad = false;
-  datasetid?: number;
+  datasetid?: string;
   datasetSelected?: DatasetDto;
 
   constructor(private datasetService: DatasetService, private router: Router) {}
@@ -64,7 +64,7 @@ export class DatasetListPageComponent {
   }
 
   datasetCopied(index: number) {
-    this.datasetService.copyDataset(index);
+    //this.datasetService.copyDataset(index);
     this.filteredDatasets = [...this.datasetService.getDataset()];
     this.mockDatasets = [...this.datasetService.getDataset()];
     console.log('Dataset copiato page:', this.mockDatasets[index]);
@@ -83,7 +83,6 @@ export class DatasetListPageComponent {
       this.filteredDatasets = [...this.datasetService.getDataset()];
       this.mockDatasets = [...this.datasetService.getDataset()];
       this.showConfirmDelete = false;
-      console.log('Dataset eliminato page:', this.mockDatasets[this.datasetid]);
     }
   }
 

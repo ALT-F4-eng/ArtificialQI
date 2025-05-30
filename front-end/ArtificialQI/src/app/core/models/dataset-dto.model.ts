@@ -1,5 +1,5 @@
 export interface DatasetDto {
-  id: number;
+  id: string;
   name: string;
   last_mod: Date;
   creation: Date;
@@ -10,7 +10,7 @@ export interface DatasetDto {
 }
 
 export const emptyDataset: DatasetDto = {
-  id: 0,
+  id: '00000000-0000-0000-0000-000000000000',
   name: 'Nuovo Dataset',
   last_mod: new Date(),
   creation: new Date(),

@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS KeyValuePair (
 CREATE TABLE IF NOT EXISTS Dataset (
     id uuid PRIMARY KEY,
     tmp BOOLEAN NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255),
     first_save_date TIMESTAMP,
     last_save_date TIMESTAMP,
     origin uuid REFERENCES Dataset(id)

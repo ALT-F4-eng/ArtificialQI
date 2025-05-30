@@ -5,13 +5,14 @@ from routes.containers import Container
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from uuid import uuid4
-
+from datetime import datetime
 from src.db_config import db  # usa db separato
 from src.models.dataset_model import DatasetModel  # importa solo il modello
+from models.DatasetDTO import DatasetDTO
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, supports_credentials=True, origins=["http://localhost:4200"])
+#CORS(app)
 # Config DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -46,10 +47,56 @@ def test_db():
             "id": last.id, 
             "name": last.name,
             "tmp": last.tmp,
-            "first_save_date": str(last.first_save_date),
-            "last_save_date": str(last.last_save_date),
+            "first_save_date": datetime.now().isoformat(),
+            "last_save_date": datetime.now().isoformat(),
             "origin": uuid4()
         }
+    
+
+@app.route("/datasets", methods=["POST"])
+def create_dataset():
+    with app.app_context():
+
+        # Leggi parametri: dataset JSON (obbligatorio), file JSON (opzionale), copy ID (opzionale)
+        dataset_json = request.form.get("dataset")
+        file = request.files.get("file")
+        copy_id = request.form.get("copy")
+
+        '''if not dataset_json:
+            return {"error": "Missing dataset metadata"}, 400
+
+        try:
+            # Deserializza i metadati in DatasetDTO
+            dataset_dto = DatasetDTO.model_validate_json(dataset_json)
+        except Exception as e:
+            return {"error": f"Invalid dataset JSON: {e}"}, 400
+
+        # Leggi file JSON se presente
+        file_data = None
+        if file:
+            try:
+                file_data = file.read().decode("utf-8")
+            except Exception as e:
+                return {"error": f"Invalid file content: {e}"}, 400
+
+        # Copia ID opzionale: converti in int o None
+        copy_id_int = None
+        if copy_id:
+            try:
+                copy_id_int = int(copy_id)
+            except Exception:
+                return {"error": "copy must be an integer ID"}, 400
+
+        # Chiama il servizio per creare il dataset
+        #new_dataset_dto = dataset_service.create_dataset_tmp()'''
+
+
+        new_dataset = DatasetModel(id=uuid4(), tmp=True, name="provatmp3000") 
+        db.session.add(new_dataset)
+        db.session.commit()
+        return {"risposta": "Dataset created"}, 201
+    
+
     
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -22,6 +22,7 @@ import { LLMselectionListComponent } from '../llmselection-list/llmselection-lis
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 import { ApiService } from '../../../core/services/prova.service';
+import { DatasetTmpService } from '../../../core/services/prova.service';
 
 @Component({
   selector: 'app-dataset-content-page',
@@ -52,7 +53,8 @@ export class DatasetContentPageComponent implements OnInit{
     private qaService: QAService,
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private datasetTmpService: DatasetTmpService,
   ) {} //private router: Router
   ngOnInit(): void {
     console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -64,6 +66,17 @@ export class DatasetContentPageComponent implements OnInit{
       error: (err) => {
         console.error('Errore:', err);
         this.messaggio = 'Errore nella richiesta.';
+      }
+    });
+    
+    this.datasetTmpService.creaDatasetTmp().subscribe({
+      next: (res) => {
+        this.messaggio = res.risposta;
+        console.log(this.messaggio);
+      },
+      error: (err) => {
+        console.error('Errore:', err);
+        this.messaggio = 'Errore nella richiesta di creazione dataset tmp.';
       }
     });
   

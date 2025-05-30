@@ -63,9 +63,11 @@ export class DatasetListPageComponent {
   }
 
   createDataset() {
+    console.log("diocane");
     this.router.navigate(['/datasetContentPage'], {
       queryParams: { mode: 'create' },
     });
+
   }
 
   handleSearchDataset(term: string) {
@@ -164,12 +166,14 @@ export class DatasetListPageComponent {
     if (this.datasetSelected !== undefined) {
       // funzionalità da testare dopo la creazione del datasetcontentpage
       // da cambiare
+      //console.log("diocane")
       this.router.navigate(['/datasetContentPage', this.datasetid], {
         state: { dataset: this.datasetSelected },
         queryParams: { mode: 'edit' },
       });
     }
   }
+
   onDatasetLoadCanceled() {
     this.datasetSelected = undefined;
     this.showConfirmLoad = false;

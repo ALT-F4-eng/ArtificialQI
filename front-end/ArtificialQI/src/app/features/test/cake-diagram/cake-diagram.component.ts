@@ -12,7 +12,7 @@ import { ChartConfiguration } from 'chart.js';
 })
 export class CakeDiagramComponent {
   @Input() correctnessValue: number = 0;
-  @Input() comparedCorrectnessValue?: number;
+  //@Input() comparedCorrectnessValue?: number;
 
   isTestEnv = this.isTestEnvironment();
 

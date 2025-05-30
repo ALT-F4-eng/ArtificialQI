@@ -1,25 +1,65 @@
-<p>{{ messaggio }}</p>
-<p>dataset-content-page works!</p>
 <h2>
-  {{ dataset.name }}
-  <span *ngIf="showTamporaryLabel" class="temporary-label">Temporaneo</span>
+  <span *ngIf="dataset">
+    {{ dataset.name }}
+  </span>
+  <span
+    *ngIf="dataset && mode === 'create' && dataset.tmp"
+    class="temporary-label"
+  >
+    Temporaneo
+  </span>
+
+  <span
+    *ngIf="dataset && mode === 'edit' && dataset.tmp"
+    class="temporary-label"
+  >
+    Working copy
+  </span>
 </h2>
 
-<app-search-bar (search) = "handleSearchQA($event)"></app-search-bar>
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
+<app-search-bar (search)="handleSearchQA($event)"></app-search-bar>
 <button mat-raised-button (click)="addQA()">
-<mat-icon>add</mat-icon> addQA <!-- OPPURE play_arrow -->
+  <mat-icon>add</mat-icon> addQA
+  <!-- OPPURE play_arrow -->
 </button>
 <button mat-raised-button (click)="saveDataset()">
   <mat-icon>save</mat-icon> Salva le modifiche
 </button>
 
-<button mat-raised-button class="visible-disabled" [disabled]="isDatasetEmpty()" (click)="openLlmDialog()">
-<mat-icon>bug_report</mat-icon> Test Dataset <!-- OPPURE play_arrow -->
+<button
+  mat-raised-button
+  class="visible-disabled"
+  [disabled]="isDatasetEmpty()"
+  (click)="openLlmDialog()"
+>
+  <mat-icon>bug_report</mat-icon> Test Dataset
+  <!-- OPPURE play_arrow -->
 </button>
 
-<app-dataset-page-view 
-[datasetPage] = "datasetPage"
-(modifyEventShowLabel)="onChangeShowLabel()" 
+<app-dataset-page-view
+  [datasetPage]="datasetPage"
+  (modifyQASignal_datasetPageView)="
+    modifyQA($event.id, $event.question, $event.answer)
+  "
+  (deleteQASignal_datasetPageView)="onQADeleteRequest($event)"
+  (modifyEventShowLabel)="onChangeShowLabel()"
+  (changePageSignal_datasetPageView)="loadPage($event)"
 ></app-dataset-page-view>
 
-
+<app-confirm
+  *ngIf="showConfirmDelete"
+  [message]="
+    'Sei sicuro di voler eliminare questa coppia di domanda e risposta?'
+  "
+  [confirmLabel]="'Sì, elimina'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onQADeleteConfirmed()"
+  (canceled)="onQADeleteCanceled()"
+></app-confirm>

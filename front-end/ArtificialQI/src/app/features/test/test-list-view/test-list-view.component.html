@@ -8,6 +8,7 @@
     (testLoad)="onTestLoaded($event)"
     role="listitem"
   ></app-test-element>
+  
   <!-- Messaggio quando non ci sono test -->
   <ng-container *ngIf="tests.length === 0">
     <p class="empty-list">Nessun test salvato</p> <!-- paragrafo contenente il messaggio che viene visualizzato dall’utente nel caso non ci siano test salvati nel sistem, si puo anche scrivere altro-->

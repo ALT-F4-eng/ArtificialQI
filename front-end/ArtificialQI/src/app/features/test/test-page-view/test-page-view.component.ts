@@ -36,7 +36,7 @@ export class TestPageViewComponent implements OnChanges, OnDestroy {
       y: r.similarity
     }));
   }
-
+  // a mio parere non funziona cosi
   loadPage(page: number) {
     if (!this.testPage?.result_list) return;
     const startIndex = (page - 1) * this.pageSize;
@@ -66,10 +66,11 @@ export class TestPageViewComponent implements OnChanges, OnDestroy {
     this.currentPage = page;
     this.loadPage(page);
   }
-
+  
   ngOnDestroy() {
     if (this.highlightTimeoutId) {
       clearTimeout(this.highlightTimeoutId);
     }
   }
+
 }

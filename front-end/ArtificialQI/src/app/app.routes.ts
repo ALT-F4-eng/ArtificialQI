@@ -9,7 +9,7 @@ import { DatasetListPageComponent } from './features/dataset/dataset-list-page/d
 import { TestPageComponent } from './features/test/test-page/test-page.component';
 import { DatasetContentPageComponent } from './features/dataset/dataset-content-page/dataset-content-page.component';// per testing
 import { TestListPageComponent } from './features/test/test-list-page/test-list-page.component';
-
+import { TestComparisonPageComponent } from './features/test/test-comparison-page/test-comparison-page.component';
 
 export const routes: Routes = [
   {
@@ -19,13 +19,14 @@ export const routes: Routes = [
       { path: '', component: HomePageComponent },
       { path: 'testlist', component: TestListPageComponent },
       { path: 'llm', component: LlmListPageComponent },
-      { path: 'dataset', component: DatasetListPageComponent },
-      { path: 'datasetContentPage', component: DatasetContentPageComponent },//per create (dato che non c'è un id)
-      { path: 'datasetContentPage/:id', component: DatasetContentPageComponent },//per load
+      { path: 'datasetlist', component: DatasetListPageComponent },
+      { path: 'datasetContentPage', component: DatasetContentPageComponent }, // per create (dato che non c'è un id)
+      { path: 'datasetContentPage/:id', component: DatasetContentPageComponent },// per load
       { path: 'test/:id', component: TestPageComponent },
       { path: 'llm/:id', component: LlmPageComponent },
       { path: 'llm-form', component: LlmFormComponent },
-      { path: 'llm-form/:id', component: LlmFormComponent }
+      { path: 'llm-form/:id', component: LlmFormComponent },
+      { path: 'testComparisonPage', component: TestComparisonPageComponent }
     ],
   },
 ];

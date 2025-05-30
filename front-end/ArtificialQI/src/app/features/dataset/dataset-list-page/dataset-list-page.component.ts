@@ -11,6 +11,8 @@ import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
 
+import { MessageBoxComponent } from '../../../shared/error-message/message.component';
+
 @Component({
   selector: 'app-dataset-list-page',
   standalone: true,
@@ -24,6 +26,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     RouterModule,
     ConfirmComponent,
+    MessageBoxComponent,
   ],
   templateUrl: './dataset-list-page.component.html',
   styleUrl: './dataset-list-page.component.css',
@@ -31,44 +34,86 @@ import { CommonModule } from '@angular/common';
 export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
-  mockDatasets: DatasetDto[] = [];
+  allDatasets: DatasetDto[] = [];
   filteredDatasets: DatasetDto[] = [];
   showConfirmDelete = false;
   showConfirmLoad = false;
   datasetid?: string;
   datasetSelected?: DatasetDto;
 
+  //per message component
+  showMessage = true;
+  resultMessage = '';
+  messageType: 'success' | 'error' = 'error';
+
   constructor(private datasetService: DatasetService, private router: Router) {}
+
   ngOnInit(): void {
-    this.mockDatasets = this.datasetService.getDataset();
-    this.filteredDatasets = [...this.mockDatasets]; // mostra tutti inizialmente
+    //this.allDatasets =
+    this.datasetService.getAllDatasets().subscribe({
+      next: (datasets) => {
+        console.log(datasets);
+        this.allDatasets = datasets;
+        this.filteredDatasets = [...this.allDatasets]; // mostra tutti inizialmente
+      },
+      error: (err) => {
+        console.error('Errore nel ottenimento dei dataset:', err);
+      },
+    });
   }
+
   createDataset() {
+    console.log("diocane");
     this.router.navigate(['/datasetContentPage'], {
       queryParams: { mode: 'create' },
     });
+
   }
 
   handleSearchDataset(term: string) {
     const normalized = term.toLowerCase();
-    this.filteredDatasets = this.mockDatasets.filter((dataset) =>
+    this.filteredDatasets = this.allDatasets.filter((dataset) =>
       dataset.name.toLowerCase().includes(normalized)
     );
   }
 
-  renameDataset(index: number, newName: string) {
+  
+    renameDataset(index: number, newName: string) {/*
     // Rinomina il dataset chiamando il servizio
     this.datasetService.renameDataset(index, newName);
+    this.resultMessage = 'Test rinominato con successo!';
+    this.messageType = 'success';
+    this.showMessage = true;
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
-    //this.mockDatasets = [...this.mockDatasets];
-  }
+    //this.allDatasets = [...this.allDatasets];
+      */
+    }
 
-  datasetCopied(index: number) {
-    //this.datasetService.copyDataset(index);
-    this.filteredDatasets = [...this.datasetService.getDataset()];
-    this.mockDatasets = [...this.datasetService.getDataset()];
-    console.log('Dataset copiato page:', this.mockDatasets[index]);
-  }
+  datasetCopied(index: number): void { /*
+    this.datasetService.cloneDataset(index).subscribe({
+      next: (clonedDataset) => {
+        //manda una richiesta al back-end
+
+        // Aggiorna la lista locale aggiungendo il clone
+        this.allDatasets.push(clonedDataset);
+
+        // Aggiorna la lista filtrata (puoi decidere se includere o meno il clone nel filtro corrente)
+        this.filteredDatasets = [...this.allDatasets];
+        this.resultMessage = 'Test copiato con successo!';
+        this.messageType = 'success';
+        this.showMessage = true;
+        console.log('Dataset copiato page:', clonedDataset);
+      },
+      error: (err) => {
+        this.resultMessage = 'Test copiato con errore!';
+        this.messageType = 'error';
+        this.showMessage = true;
+        console.error('Errore durante la copia del dataset:', err);
+      },
+    });
+  */
+    }
+  
 
   // delete
   onDatasetDeleteRequest(dataset: DatasetDto) {
@@ -76,15 +121,42 @@ export class DatasetListPageComponent {
     this.datasetid = dataset.id;
     console.log('Indice ricevuto per cancellazione page:', dataset.id);
   }
+  
 
-  onDatasetDeleteConfirmed() {
+  
+  onDatasetDeleteConfirmed() {/*
     if (this.datasetid !== undefined) {
       this.datasetService.deleteDataset(this.datasetid);
       this.filteredDatasets = [...this.datasetService.getDataset()];
       this.mockDatasets = [...this.datasetService.getDataset()];
       this.showConfirmDelete = false;
+      this.datasetService.deleteDataset(this.datasetid).subscribe({
+        next: () => {
+          // Aggiorna la cache locale
+          this.datasetService.removeDatasetFromCache(this.datasetid!);
+
+          // Ricarica le liste aggiornate tramite Observable
+          this.datasetService.getAllDatasets().subscribe((datasets) => {
+            this.filteredDatasets = [...datasets];
+            this.allDatasets = [...datasets];
+          });
+
+          this.showConfirmDelete = false;
+          this.resultMessage = 'Test eliminato con successo!';
+          this.messageType = 'success';
+          this.showMessage = true;
+          console.log('Dataset eliminato con ID:', this.datasetid);
+        },
+        error: (err) => {
+          this.resultMessage = 'eliminazione fallito!';
+          this.messageType = 'error';
+          this.showMessage = true;
+          console.error('Errore durante la cancellazione:', err);
+        },
+      });
     }
-  }
+  */}
+  
 
   onDatasetDeleteCanceled() {
     this.datasetid = undefined;
@@ -99,21 +171,27 @@ export class DatasetListPageComponent {
     this.datasetSelected = dataset;
     console.log('Dataset caricato:', dataset);
   }
+  
   onDatasetLoadConfirmed() {
     if (this.datasetSelected !== undefined) {
       // funzionalità da testare dopo la creazione del datasetcontentpage
       // da cambiare
+      //console.log("diocane")
       this.router.navigate(['/datasetContentPage', this.datasetid], {
+        state: { dataset: this.datasetSelected },
         queryParams: { mode: 'edit' },
       });
-
-      /* this.router.navigate(['/datasetContentPage'], {
-        queryParams: { name: this.datasetSelected.name },
-      });*/
     }
   }
+
   onDatasetLoadCanceled() {
     this.datasetSelected = undefined;
     this.showConfirmLoad = false;
+  }
+
+  onCloseMessage() {
+    this.showMessage = false;
+    this.resultMessage = '';
+    this.messageType = 'error';
   }
 }

@@ -77,8 +77,8 @@ export class DatasetListPageComponent {
     );
   }
 
-  /*
-    renameDataset(index: number, newName: string) {
+  
+    renameDataset(index: number, newName: string) {/*
     // Rinomina il dataset chiamando il servizio
     this.datasetService.renameDataset(index, newName);
     this.resultMessage = 'Test rinominato con successo!';
@@ -86,9 +86,10 @@ export class DatasetListPageComponent {
     this.showMessage = true;
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
     //this.allDatasets = [...this.allDatasets];
-  }
+      */
+    }
 
-  datasetCopied(index: number): void {
+  datasetCopied(index: number): void { /*
     this.datasetService.cloneDataset(index).subscribe({
       next: (clonedDataset) => {
         //manda una richiesta al back-end
@@ -110,8 +111,9 @@ export class DatasetListPageComponent {
         console.error('Errore durante la copia del dataset:', err);
       },
     });
-  }
   */
+    }
+  
 
   // delete
   onDatasetDeleteRequest(dataset: DatasetDto) {
@@ -121,8 +123,8 @@ export class DatasetListPageComponent {
   }
   
 
-  /*
-  onDatasetDeleteConfirmed() {
+  
+  onDatasetDeleteConfirmed() {/*
     if (this.datasetid !== undefined) {
       this.datasetService.deleteDataset(this.datasetid);
       this.filteredDatasets = [...this.datasetService.getDataset()];
@@ -153,8 +155,8 @@ export class DatasetListPageComponent {
         },
       });
     }
-  }
-  */
+  */}
+  
 
   onDatasetDeleteCanceled() {
     this.datasetid = undefined;

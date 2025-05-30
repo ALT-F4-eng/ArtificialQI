@@ -1,25 +1,26 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScatterDiagramComponent } from '../scatter-diagram/scatter-diagram.component';
 import { PageNavigationComponent } from '../../../shared/components/page-navigation/page-navigation.component';
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
 import { ResultListViewComponent } from '../result-list-view/result-list-view.component';
 
-
 @Component({
   selector: 'app-test-page-view',
   standalone: true,
-  imports: [CommonModule, ScatterDiagramComponent, PageNavigationComponent, ResultListViewComponent,],
+  imports: [CommonModule, ScatterDiagramComponent, PageNavigationComponent, ResultListViewComponent],
   templateUrl: './test-page-view.component.html',
   styleUrls: ['./test-page-view.component.css']
 })
-export class TestPageViewComponent implements OnChanges {
+export class TestPageViewComponent implements OnChanges, OnDestroy {
   @Input() testPage?: TestPageDto;
 
   pagedResults: TestPageDto['result_list'] = [];
   totalItems = 0;
   pageSize = 5;
   currentPage = 1;
+
+  private highlightTimeoutId?: number;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['testPage'] && this.testPage?.result_list) {
@@ -48,8 +49,15 @@ export class TestPageViewComponent implements OnChanges {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
       element.style.backgroundColor = '#ffffcc';
-      setTimeout(() => {
+
+      // Cancella il timeout precedente se presente
+      if (this.highlightTimeoutId) {
+        clearTimeout(this.highlightTimeoutId);
+      }
+
+      this.highlightTimeoutId = window.setTimeout(() => {
         element.style.backgroundColor = 'transparent';
+        this.highlightTimeoutId = undefined;
       }, 1000);
     }
   }
@@ -59,4 +67,10 @@ export class TestPageViewComponent implements OnChanges {
     this.loadPage(page);
   }
   
+  ngOnDestroy() {
+    if (this.highlightTimeoutId) {
+      clearTimeout(this.highlightTimeoutId);
+    }
+  }
+
 }

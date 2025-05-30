@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, OnDestroy } from '@angular/core';
 import {
   ChartConfiguration,
   ChartData,
@@ -27,16 +21,16 @@ Chart.register(...registerables, zoomPlugin);
   templateUrl: './scatter-diagram.component.html',
   styleUrls: ['./scatter-diagram.component.css'],
 })
-export class ScatterDiagramComponent {
+
+export class ScatterDiagramComponent implements OnDestroy {
   @Input() elementValuesOrigin: { x: number; y: number }[] = [];
   @Input() elementValuesCompare: { x: number; y: number }[] = [];
-
   @Output() pointClicked = new EventEmitter<number>();
-
+  @Input() enableZoom = true;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   scatterChartType: ChartType = 'scatter';
-
+  
   get scatterChartData(): ChartData<'scatter'> {
     const datasets = [
       {
@@ -60,7 +54,7 @@ export class ScatterDiagramComponent {
   }
 
   get scatterChartOptions(): ChartConfiguration<'scatter'>['options'] {
-    return {
+    const baseOptions = {
       responsive: true,
       interaction: {
         mode: 'nearest',
@@ -106,5 +100,30 @@ export class ScatterDiagramComponent {
         }
       },
     };
+
+    if (this.enableZoom) {
+      // Aggiungi il plugin zoom solo se enableZoom è true
+      (baseOptions.plugins as any).zoom = {
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: 'xy'
+        },
+        pan: {
+          enabled: true,
+          mode: 'xy'
+        },
+        limits: {
+          x: { min: 0, max: 'original' },
+          y: { min: 0, max: 1 }
+        }
+      };
+    }
+
+    return baseOptions;
+  }
+
+  ngOnDestroy(): void {
+    // Se hai bisogno di pulire qualcosa qui, metti il codice
   }
 }

@@ -5,7 +5,7 @@ import {
   ChartEvent,
   ChartType,
   Chart,
-  registerables
+  registerables,
 } from 'chart.js';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule, BaseChartDirective } from 'ng2-charts';
@@ -19,10 +19,12 @@ Chart.register(...registerables, zoomPlugin);
   standalone: true,
   imports: [CommonModule, NgChartsModule],
   templateUrl: './scatter-diagram.component.html',
-  styleUrls: ['./scatter-diagram.component.css']
+  styleUrls: ['./scatter-diagram.component.css'],
 })
+
 export class ScatterDiagramComponent implements OnDestroy {
-  @Input() elementValues: { x: number, y: number }[] = [];
+  @Input() elementValuesOrigin: { x: number; y: number }[] = [];
+  @Input() elementValuesCompare: { x: number; y: number }[] = [];
   @Output() pointClicked = new EventEmitter<number>();
   @Input() enableZoom = true;
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
@@ -30,48 +32,73 @@ export class ScatterDiagramComponent implements OnDestroy {
   scatterChartType: ChartType = 'scatter';
   
   get scatterChartData(): ChartData<'scatter'> {
-    return {
-      datasets: [
-        {
-          label: 'Similarità per domanda',
-          data: this.elementValues,
-          backgroundColor: 'blue',
-          pointRadius: 5
-        }
-      ]
-    };
+    const datasets = [
+      {
+        label: 'Similarità per domanda (Origin)',
+        data: this.elementValuesOrigin,
+        backgroundColor: 'blue',
+        pointRadius: 5,
+      },
+    ];
+
+    if (this.elementValuesCompare && this.elementValuesCompare.length > 0) {
+      datasets.push({
+        label: 'Similarità per domanda (Compare)',
+        data: this.elementValuesCompare,
+        backgroundColor: 'red',
+        pointRadius: 5,
+      });
+    }
+
+    return { datasets };
   }
 
   get scatterChartOptions(): ChartConfiguration<'scatter'>['options'] {
     const baseOptions = {
       responsive: true,
       interaction: {
-        mode: 'nearest' as const,
-        intersect: true
+        mode: 'nearest',
+        axis: 'xy',
+        intersect: true,
       },
       plugins: {
-        legend: { display: true }
+        legend: { display: true },
+        zoom: {
+          zoom: {
+            wheel: { enabled: true },
+            pinch: { enabled: true },
+            mode: 'xy',
+          },
+          pan: {
+            enabled: true,
+            mode: 'xy',
+          },
+          limits: {
+            x: { min: 0, max: 'original' },
+            y: { min: 0, max: 1 },
+          },
+        },
       },
       scales: {
         x: {
           title: { display: true, text: 'Risultato n°' },
           ticks: { stepSize: 1 },
           min: 0,
-          max: this.elementValues.length + 1
+          max: this.elementValuesOrigin.length + 1,
         },
         y: {
           title: { display: true, text: 'Similarità' },
           min: 0,
-          max: 1.03
-        }
+          max: 1.03,
+        },
       },
       onClick: (event: ChartEvent, elements: any[]) => {
         if (elements.length > 0) {
           const index = elements[0].index;
-          const xValue = this.elementValues[index].x;
+          const xValue = this.elementValuesOrigin[index].x;
           this.pointClicked.emit(xValue);
         }
-      }
+      },
     };
 
     if (this.enableZoom) {

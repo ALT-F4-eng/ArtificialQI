@@ -48,4 +48,5 @@ export class DatasetListViewComponent {
   onDatasetLoaded(dataset: DatasetDto) {
     this.datasetLoaded.emit(dataset);
   }
+  
 }

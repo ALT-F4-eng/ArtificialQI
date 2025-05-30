@@ -8,7 +8,6 @@ import { TestIndexComponent } from '../test-index/test-index.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { TestPageViewComponent } from '../test-page-view/test-page-view.component';
-import { ActivatedRoute } from '@angular/router';
 import { TestPageDto } from '../../../core/models/testpage-dto.model';
 import { MOCK_TEST_PAGE } from '../../../core/services/mocktest.service';
 import { TestselectionListComponent } from '../testselection-list/testselection-list.component';
@@ -28,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
     MessageBoxComponent,
   ],
   templateUrl: './test-page.component.html',
-  styleUrls: ['./test-page.component.css']
+  styleUrls: ['./test-page.component.css'],
 })
 export class TestPageComponent implements OnInit, OnDestroy {
   test?: TestDto;
@@ -40,15 +39,27 @@ export class TestPageComponent implements OnInit, OnDestroy {
   results: TestResultDto[] = [];
   errorMessage: string | null = null;
 
-  private destroy$ = new Subject<void>();
+const testFromState = history.state.test;
 
-  constructor(private testService: TestService, private dialog: MatDialog, private route: ActivatedRoute) {}
+  if (
+    this.testService.cachedTestCaricato &&
+    testFromState &&
+    this.testService.cachedTestCaricato !== testFromState
+  ) {
+    this.testService.cachedTestCaricato = testFromState;
+    console.log("sovrascrivo");
+  }
 
-  ngOnInit() {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const testid = idParam ? +idParam : 1;
+  if (!this.testService.cachedTestCaricato) {
+    this.testService.cachedTestCaricato = testFromState;
+    console.log("assegnazione");
+  }
 
-    this.testService.getTest(testid).pipe(takeUntil(this.destroy$)).subscribe({
+  const cachedTest = this.testService.cachedTestCaricato;
+
+  if (cachedTest && cachedTest.id) {
+    // carico il test da backend tramite ID
+    this.testService.getTest(cachedTest.id).pipe(takeUntil(this.destroy$)).subscribe({
       next: (testData) => {
         this.test = testData;
         this.loadResults();
@@ -57,7 +68,11 @@ export class TestPageComponent implements OnInit, OnDestroy {
         this.errorMessage = 'Errore nel caricamento del test.';
       }
     });
+  } else {
+    this.errorMessage = 'Nessun test disponibile.';
   }
+}
+
 
   loadResults() {
     if (!this.test) return;
@@ -67,7 +82,7 @@ export class TestPageComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.errorMessage = 'Errore nel caricamento dei risultati.';
-      }
+      },
     });
   }
 

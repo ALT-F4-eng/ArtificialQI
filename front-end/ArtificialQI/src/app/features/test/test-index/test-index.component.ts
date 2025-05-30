@@ -12,6 +12,7 @@ import { TestResultDto } from '../../../core/models/testresult-dto.model';
   styleUrls: ['./test-index.component.css']
 })
 export class TestIndexComponent {
+  compareMode:boolean = false
   @Input() comparedCorrectnessValue?: number;
   @Input() comparedDistribution?: number[];
   @Input() results: TestResultDto[] = [];

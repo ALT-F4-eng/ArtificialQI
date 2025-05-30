@@ -1,0 +1,22 @@
+<div class="result-element" [attr.id]="elementId">
+  <p><strong>Question:</strong> {{ resultOrigin.qa.question }}</p>
+  <p><strong>ExpectedAnswer:</strong> {{ resultOrigin.qa.answer }}</p>
+
+  <p><strong>GivenAnswer1:</strong> {{ resultOrigin.llm_answer }}</p>
+  <p><strong>Similarity1:</strong> {{ resultOrigin.similarity | number:'1.2-2' }}</p>
+  <p>
+    <strong>Correctness Label1:</strong>
+    <span [ngClass]="{ correct: resultOrigin.correct, incorrect: !resultOrigin.correct }">
+      {{ resultOrigin.correct ? '✔️ Correct' : '❌ Incorrect' }}
+    </span>
+  </p>
+
+  <p><strong>GivenAnswer2:</strong> {{ resultCompared.llm_answer }}</p>
+  <p><strong>Similarity2:</strong> {{ resultCompared.similarity | number:'1.2-2' }}</p>
+  <p>
+    <strong>Correctness Label2:</strong>
+    <span [ngClass]="{ correct: resultCompared.correct, incorrect: !resultCompared.correct }">
+      {{ resultCompared.correct ? '✔️ Correct' : '❌ Incorrect' }}
+    </span>
+  </p>
+</div>

@@ -1,0 +1,22 @@
+<p>comparison-index works!</p>
+
+<div class="summary-charts">
+  <div class="chart-container">
+    <p>Test Originale:{{ test_Origin?.name }}</p>
+    <app-cake-diagram [correctnessValue]="correctnessValue"></app-cake-diagram>
+  </div>
+
+  <div class="chart-container">
+    <p>Test Confrontato:{{ test_Compared?.name }}</p>
+    <app-cake-diagram
+      [correctnessValue]="correctnessValueCompared"
+    ></app-cake-diagram>
+  </div>
+
+  <div class="chart-container">
+    <app-bar-diagram
+      [distribution]="distributionFunction(resultsOrigin_ComparisonIndex)"
+      [comparedDistribution]="distributionFunction(resultsCompared_ComparisonIndex)"
+    ></app-bar-diagram>
+  </div>
+</div>

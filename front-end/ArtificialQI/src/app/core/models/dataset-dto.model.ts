@@ -15,7 +15,7 @@ export const emptyDataset: DatasetDto = {
   last_mod: new Date(),
   creation: new Date(),
   origin_id: 0,
-  tmp: false,
+  tmp: true,
   max_page: 0,
   element_n: 0
 };

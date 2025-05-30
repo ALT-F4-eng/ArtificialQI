@@ -27,9 +27,9 @@ class TestResult:
 
 def test_result_factory_function(
     question_answer_pair: QuestionAnswerPair,
-    obtained_answer: str,
-    similarity_score: float,
-    is_correct: bool,
+    obtained_answer: str,# risposta di zucchetti
+    similarity_score: float,#embeddings
+    is_correct: bool,#gemini
     test_id: UUID,
 ) -> TestResult:
     """

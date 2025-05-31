@@ -31,7 +31,7 @@ class SqlAlchemyTestResultAdapter(TestResultRepository):
         res_set: Optional[set[TestResult]] = set()
 
         get_query = select(TestResultSqlAlchemyModel).where(
-            (TestResultSqlAlchemyModel.test_ref.id == test) &
+            (TestResultSqlAlchemyModel.test == test) &
             (
                 (func.lower(TestResultSqlAlchemyModel.qa_ref.question).like(f"%{q.lower()}%")) |
                 (func.lower(TestResultSqlAlchemyModel.qa_ref.answer).like(f"%{q.lower()}%")) |

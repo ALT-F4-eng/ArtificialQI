@@ -1,10 +1,10 @@
 from uuid import uuid4, UUID
 from artificialqi.core.http_config import HttpConfig, http_config_function_factory
-from artificialqi.models.configuration_dto import ConfigurationDTO
+from artificialqi.models.configuration_dto import ConfigurationDto
 
 
 
-def to_domain(dto: ConfigurationDTO, id: UUID) -> HttpConfig:
+def to_domain(dto: ConfigurationDto, id: UUID) -> HttpConfig:
     return http_config_function_factory(
         id = id or uuid4(),
         url = dto.url,
@@ -15,8 +15,8 @@ def to_domain(dto: ConfigurationDTO, id: UUID) -> HttpConfig:
     )
 
 
-def to_dto(config: HttpConfig) -> ConfigurationDTO:
-    return ConfigurationDTO(
+def to_dto(config: HttpConfig) -> ConfigurationDto:
+    return ConfigurationDto(
         ulr=str(config.url),
         key_req=config.key_req,
         key_resp=config.key_resp,

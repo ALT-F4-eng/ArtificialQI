@@ -20,7 +20,8 @@ class AppContainer(containers.DeclarativeContainer):
     qa_service = providers.Factory(QaService, qa_unit_of_work)
 
     test_result_unit_of_work = providers.Singleton(TestResultUnitOfWork, session_factory=session_factory)
-    test_reult_service = providers.Factory(TestResultService, test_result_unit_of_work)
+    test_result_service = providers.Factory(TestResultService, test_result_unit_of_work)
+    
     test_unit_of_work = providers.Singleton(TestUnitOfWork, session_factory=session_factory)
     test_service = providers.Factory(TestService, test_unit_of_work)
     

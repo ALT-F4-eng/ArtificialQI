@@ -1,6 +1,6 @@
-from models.llm_dto import LlmDTO
-from core.llm import Llm, llm_factory_function
-from mapper.ConfigMapper import configdto_to_config, config_to_configdto
+from artificialqi.models.llm_dto import LlmDTO
+from artificialqi.core.llm import Llm, llm_factory_function
+from artificialqi.mapper.config_mapper import to_domain, to_dto
 
 
 
@@ -9,7 +9,7 @@ def dto_to_llm(dto: LlmDTO) -> Llm:
         id=dto.id,
         name=dto.name,
         last_mod=dto.last_mod,
-        config=configdto_to_config(dto.configuration)
+        config=to_domain(dto.configuration)
     )
 
 def llm_to_dto(llm: Llm) -> LlmDTO:
@@ -17,5 +17,5 @@ def llm_to_dto(llm: Llm) -> LlmDTO:
         id=llm.id,
         name=llm.name,
         last_mod=llm.last_mod,
-        configuration=config_to_configdto(llm.config)
+        configuration=to_dto(llm.config)
     )

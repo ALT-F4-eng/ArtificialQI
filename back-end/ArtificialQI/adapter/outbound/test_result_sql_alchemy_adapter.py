@@ -33,8 +33,8 @@ class SqlAlchemyTestResultAdapter(TestResultRepository):
         get_query = select(TestResultSqlAlchemyModel).where(
             (TestResultSqlAlchemyModel.test == test) &
             (
-                (func.lower(TestResultSqlAlchemyModel.qa_ref.question).like(f"%{q.lower()}%")) |
-                (func.lower(TestResultSqlAlchemyModel.qa_ref.answer).like(f"%{q.lower()}%")) |
+            #    (func.lower(TestResultSqlAlchemyModel.qa_ref.question).like(f"%{q.lower()}%")) |
+            #    (func.lower(TestResultSqlAlchemyModel.qa_ref.answer).like(f"%{q.lower()}%")) |
                 (func.lower(TestResultSqlAlchemyModel.obtained_answer).like(f"%{q.lower()}%"))
             ) 
         ).offset(offset).limit(end)

@@ -1,4 +1,11 @@
 <div class="result-section">
+  <div class="scatter-section">
+    <h3>Diagramma di Dispersione</h3>
+    <app-scatter-diagram
+      [elementValuesOrigin]="elementValues"
+      (pointClicked)="scrollToQuestion($event)"
+    >
+    </app-scatter-diagram>
   <h3>Risultati</h3>
   <app-result-list-view
     [results]="pagedResults"
@@ -14,12 +21,6 @@
   >
   </app-page-navigation>
 
-  <div class="scatter-section">
-    <h3>Diagramma di Dispersione</h3>
-    <app-scatter-diagram
-      [elementValuesOrigin]="elementValues"
-      (pointClicked)="scrollToQuestion($event)"
-    >
-    </app-scatter-diagram>
+  
   </div>
 </div>

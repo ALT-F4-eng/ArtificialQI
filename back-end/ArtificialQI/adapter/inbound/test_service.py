@@ -8,7 +8,7 @@ from artificialqi.port.inbound.test_use_case import TestUseCase
 from artificialqi.port.outbound.unit_of_work.test_unit_of_work import ITestUnitOfWork
 
 
-class DatasetService(TestUseCase):
+class TestService(TestUseCase):
 
     def __init__(
         self,
@@ -153,7 +153,7 @@ class DatasetService(TestUseCase):
         Raises:
             PersistenceException: Se si verifica un errore durante il recupero.
         """
-        with self._unit_of_work as uow
+        with self._unit_of_work as uow:
             tests: Optional[list[Test]] = uow.test_repo.get_all_tests(q)
 
             if tests is None:

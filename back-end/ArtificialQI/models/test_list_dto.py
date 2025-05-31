@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from artificialqi.models.test_dto import TestDTO
+from artificialqi.models.test_dto import TestDto
 
-class TestListDTO(BaseModel):
-    test_list: list[TestDTO]
+class TestListDto(BaseModel):
+    test_list: list[TestDto]

@@ -6,8 +6,8 @@
 # from artificialqi.core.page import Page
 # from uuid import UUID
 # from typing import Optional
-# from artificialqi.models.qa_dto import QuestionAnswerPairDTO
-# from artificialqi.models.dataset_page_dto import DatsetPageDTO
+# from artificialqi.models.qa_dto import QuestionAnswerPairDto
+# from artificialqi.models.dataset_page_dto import DatsetPageDto
 # from artificialqi.mapper.qa_mapper import QaDtoMapper
 # from pydantic import ValidationError
 

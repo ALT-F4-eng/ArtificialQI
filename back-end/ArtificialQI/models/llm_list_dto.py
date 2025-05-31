@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from artificialqi.models.llm_dto import LlmDTO
+from artificialqi.models.llm_dto import LlmDto
 
-class LlmListDTO(BaseModel):
-    llm_list: list[LlmDTO]
+class LlmListDto(BaseModel):
+    llm_list: list[LlmDto]

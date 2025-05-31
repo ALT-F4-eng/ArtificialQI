@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from uuid import UUID
 from datetime import date
 
-class TestDTO(BaseModel):
+class TestDto(BaseModel):
     id: UUID
     name: str | None
     llm_name: str 

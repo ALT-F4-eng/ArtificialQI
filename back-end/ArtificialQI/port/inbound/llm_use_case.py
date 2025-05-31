@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from core.llm import Llm
+from artificialqi.core.llm import Llm
 
 
 class LlmUseCase(ABC):

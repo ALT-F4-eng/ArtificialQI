@@ -1,12 +1,12 @@
 from typing import Optional
 from uuid import UUID
 
-from core.dataset import Dataset
 from sqlalchemy.orm import Session
-from sqlalchemy import func, select, update, delete
-from port.outbound.dataset_repository import DatasetRepository 
-from adapter.outbound.sql_alchemy_model.dataset import DatasetSqlAlchemyModel
-from adapter.outbound.sql_alchemy_mapper.dataset import DatasetModelMapper
+from sqlalchemy import select, update, delete
+from artificialqi.core.dataset import Dataset
+from artificialqi.port.outbound.dataset_repository import DatasetRepository 
+from artificialqi.adapter.outbound.sql_alchemy_model.dataset import DatasetSqlAlchemyModel
+from artificialqi.adapter.outbound.sql_alchemy_mapper.dataset import DatasetModelMapper
 
 
 class SqlAlchemyDatasetAdapter(DatasetRepository):
@@ -21,9 +21,10 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
         del_query = delete(DatasetSqlAlchemyModel).where(DatasetSqlAlchemyModel.id == id)
 
         try:
-            self.session.scalars(del_query).one()
-        except:
-            res = None
+            self.session.execute(del_query)
+            self.session.flush()
+        except Exception:
+            return None
         
         return res
         
@@ -32,7 +33,7 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
 
         res: Optional[Dataset] = dataset
         
-        update_query = update(DatasetSqlAlchemyModel).where(DatasetSqlAlchemyModel.id == id).values(
+        update_query = update(DatasetSqlAlchemyModel).where(DatasetSqlAlchemyModel.id == dataset.id).values(
             name=dataset.name,
             first_save_date=dataset.first_save_date,
             last_save_date=dataset.last_save_date,
@@ -41,10 +42,11 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
         )
 
         try:
-            self.session.scalars(update_query).one()
+            self.session.execute(update_query)
+            self.session.flush()
         except Exception:
-            res = None
-        
+            return None
+
         return res
     
     def create_dataset(self, dataset: Dataset) -> Optional[Dataset]:
@@ -55,6 +57,7 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
 
         try:
             self.session.add(create_dataset)
+            self.session.flush()
         except Exception:
             res = None
         
@@ -62,7 +65,7 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
             
 
     def get_dataset_by_id(self, id: UUID) -> Optional[Dataset]:
-
+        
         res: Optional[Dataset] = None
         
         get_query = select(DatasetSqlAlchemyModel).where(DatasetSqlAlchemyModel.id == id)
@@ -80,17 +83,35 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
 
         res: Optional[list[Dataset]] = []
         
-        get_query = select(DatasetSqlAlchemyModel).where(func.lower(DatasetSqlAlchemyModel.name).like(f"%{q}%"))
+        get_query = select(DatasetSqlAlchemyModel).where(
+            DatasetSqlAlchemyModel.name.like(f"%{q}%")
+        )
 
         try:
             datasets: list[DatasetSqlAlchemyModel] = list(self.session.scalars(get_query).all())
             res = [DatasetModelMapper.to_domain(d) for d in datasets]
-
+        
         except Exception:
-            res = None
+            return None
+    
         
         return res
+    
+    def delete_with_origin(self, origin: UUID) -> bool:
+        
+        res: bool = True
 
+        del_query = delete(DatasetSqlAlchemyModel).where(
+            DatasetSqlAlchemyModel.origin == origin
+        )
+        
+        try:
+            self.session.execute(del_query)
+            self.session.flush()
+        except Exception:
+            res = False
+
+        return res
         
 
 

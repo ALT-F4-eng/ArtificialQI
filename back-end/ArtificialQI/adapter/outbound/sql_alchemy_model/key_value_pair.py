@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
-from adapter.outbound.sql_alchemy_model.llm import LlmSqlAlchemyModel
+from artificialqi.adapter.outbound.sql_alchemy_model.base import Base
 
 
-class KeyValuePairSqlAlchemyModel(DeclarativeBase):
+class KeyValuePairSqlAlchemyModel(Base):
     
-    __tablename__ = "KeyValuePair"
+    __tablename__ = "keyvaluepair"
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     is_header: Mapped[bool] 
@@ -15,7 +15,7 @@ class KeyValuePairSqlAlchemyModel(DeclarativeBase):
     key: Mapped[str]
     value: Mapped[str]
     
-    llm_ref: Mapped[LlmSqlAlchemyModel] = relationship(LlmSqlAlchemyModel, back_populates="dataset_ref")
+    llm_ref: Mapped["LlmSqlAlchemyModel"] = relationship(back_populates="config")
 
 
     

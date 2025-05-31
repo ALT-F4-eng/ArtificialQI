@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import date
 from uuid import UUID
 
-from core.test_statistics import TestStatistics
+from artificialqi.core.test_statistics import TestStatistics
 
 
 @dataclass

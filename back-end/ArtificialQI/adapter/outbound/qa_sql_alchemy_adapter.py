@@ -4,10 +4,10 @@ from uuid import UUID, uuid4
 from sqlalchemy import func, literal, update, delete, select, insert
 from sqlalchemy.orm import Session
 
-from core.question_answer_pair import QuestionAnswerPair
-from port.outbound.qa_repository import QuestionAnswerPairRepository
-from adapter.outbound.sql_alchemy_mapper.qa import QuestionAnswerModelMapper
-from adapter.outbound.sql_alchemy_model.qa import QuestionAnswerSqlAlchemyModel
+from artificialqi.core.question_answer_pair import QuestionAnswerPair
+from artificialqi.port.outbound.qa_repository import QuestionAnswerPairRepository
+from artificialqi.adapter.outbound.sql_alchemy_mapper.qa import QuestionAnswerModelMapper
+from artificialqi.adapter.outbound.sql_alchemy_model.qa import QuestionAnswerSqlAlchemyModel
 
 
 class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
@@ -26,7 +26,9 @@ class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
         )
 
         try:
-            self.session.execute(update_query).one()
+            self.session.execute(update_query)
+            self.session.flush()
+
         except Exception:
             res = None
         
@@ -40,6 +42,7 @@ class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
 
         try:
             self.session.add(new_qa)
+            self.session.flush()
         except Exception:
             res = None
         
@@ -52,7 +55,7 @@ class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
         del_query = delete(QuestionAnswerSqlAlchemyModel).where(QuestionAnswerSqlAlchemyModel.id == qa)
 
         try:
-            self.session.execute(del_query).one()
+            self.session.execute(del_query)
         except Exception:
             res = None
 
@@ -64,7 +67,8 @@ class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
         del_query = delete(QuestionAnswerSqlAlchemyModel).where(QuestionAnswerSqlAlchemyModel.dataset == dataset)
 
         try:
-            self.session.execute(del_query).all()
+            self.session.execute(del_query)
+            self.session.flush()
         except Exception:
             res = None
 
@@ -75,19 +79,24 @@ class SqlAlchemyQaPairAdapter(QuestionAnswerPairRepository):
         res: bool = True
 
         select_query = select(
-           QuestionAnswerSqlAlchemyModel.question, QuestionAnswerSqlAlchemyModel.answer,  literal(dst_dataset).label("dataset"), literal(uuid4()).label("id")
+           QuestionAnswerSqlAlchemyModel.question, QuestionAnswerSqlAlchemyModel.answer,  
+           literal(dst_dataset).label("dataset"),
+            func.gen_random_uuid().label("id")
+        ).where(
+            (QuestionAnswerSqlAlchemyModel.dataset == src_dataset)
         )
 
         insert_query = insert(QuestionAnswerSqlAlchemyModel).from_select(
-            ["id", "dataset", "question", "answer"],
+            ["question", "answer", "dataset", "id"],
             select_query
         )
 
-        try: 
+        try:
             self.session.execute(insert_query)
+            self.session.flush()
         except Exception:
             res = False
-
+      
         return res
 
 

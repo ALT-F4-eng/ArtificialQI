@@ -4,6 +4,8 @@ import os
 
 
 
-def get_session()-> Session:
+def get_session():
     db_url = os.environ["DB_URL"]
-    return Session(create_engine(db_url))
+    session = Session(create_engine(db_url))
+    
+    return lambda: session

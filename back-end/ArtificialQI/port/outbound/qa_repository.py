@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from uuid import UUID
 
-from core.question_answer_pair import QuestionAnswerPair
+from artificialqi.core.question_answer_pair import QuestionAnswerPair
 
 
 class QuestionAnswerPairRepository(ABC):

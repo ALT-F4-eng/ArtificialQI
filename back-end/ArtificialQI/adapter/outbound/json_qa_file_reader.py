@@ -2,7 +2,7 @@ import ijson
 from typing import Iterator
 from os import path
 
-from port.outbound.file_qa_reader import IQuestionAnswerFileReader
+from artificialqi.port.outbound.file_qa_reader import IQuestionAnswerFileReader
 
 class QuestionAnswerJsonFileReader(IQuestionAnswerFileReader):
 

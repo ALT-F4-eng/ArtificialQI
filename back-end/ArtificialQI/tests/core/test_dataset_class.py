@@ -1,70 +1,70 @@
-# type: ignore
+# # type: ignore
 
-from core.dataset import Dataset
+# from core.dataset import Dataset
 
 
-class _TestClassDatasetEqualMethod: 
+# class _TestClassDatasetEqualMethod: 
 
-    def _test_different_id_datasets(self, get_non_empty_saved_dataset, get_empty_saved_dataset):
-        first: Dataset = get_non_empty_saved_dataset
-        second: Dataset = get_empty_saved_dataset
+#     def _test_different_id_datasets(self, get_non_empty_saved_dataset, get_empty_saved_dataset):
+#         first: Dataset = get_non_empty_saved_dataset
+#         second: Dataset = get_empty_saved_dataset
        
-        assert first != second
+#         assert first != second
 
-    def _test_equal_id_datasets(self, get_non_empty_saved_dataset):
-        first: Dataset = get_non_empty_saved_dataset
-        second: Dataset = get_non_empty_saved_dataset 
+#     def _test_equal_id_datasets(self, get_non_empty_saved_dataset):
+#         first: Dataset = get_non_empty_saved_dataset
+#         second: Dataset = get_non_empty_saved_dataset 
 
-        assert first == second
+#         assert first == second
 
 
-class _TestClassDatasetIsTmpMethod: 
+# class _TestClassDatasetIsTmpMethod: 
 
-    def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
-        res: bool = get_non_empty_tmp_dataset.is_tmp() 
+#     def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
+#         res: bool = get_non_empty_tmp_dataset.is_tmp() 
 
-        assert res
+#         assert res
 
-    def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
-        res: bool =  get_non_empty_working_copy_dataset.is_tmp() 
+#     def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
+#         res: bool =  get_non_empty_working_copy_dataset.is_tmp() 
 
-        assert not res
+#         assert not res
 
-    def _test_saved_dataset(self, get_non_empty_saved_dataset):
-        res: bool = get_non_empty_saved_dataset.is_tmp() 
+#     def _test_saved_dataset(self, get_non_empty_saved_dataset):
+#         res: bool = get_non_empty_saved_dataset.is_tmp() 
 
-        assert not res
+#         assert not res
 
-class _TestClassDatasetIsWorkingCopy: 
+# class _TestClassDatasetIsWorkingCopy: 
 
-    def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
-        res: bool = get_non_empty_tmp_dataset.is_working_copy() 
+#     def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
+#         res: bool = get_non_empty_tmp_dataset.is_working_copy() 
 
-        assert not res
+#         assert not res
 
-    def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
-        res: bool =  get_non_empty_working_copy_dataset.is_working_copy() 
+#     def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
+#         res: bool =  get_non_empty_working_copy_dataset.is_working_copy() 
 
-        assert res
+#         assert res
 
-    def _test_saved_dataset(self, get_non_empty_saved_dataset):
-        res: bool = get_non_empty_saved_dataset.is_working_copy() 
+#     def _test_saved_dataset(self, get_non_empty_saved_dataset):
+#         res: bool = get_non_empty_saved_dataset.is_working_copy() 
 
-        assert not res
+#         assert not res
 
-class _TestClassDatasetIsSaved: 
+# class _TestClassDatasetIsSaved: 
 
-    def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
-        res: bool = get_non_empty_tmp_dataset.is_saved() 
+#     def _test_tmp_dataset(self, get_non_empty_tmp_dataset):
+#         res: bool = get_non_empty_tmp_dataset.is_saved() 
 
-        assert not res
+#         assert not res
 
-    def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
-        res: bool =  get_non_empty_working_copy_dataset.is_saved() 
+#     def _test_working_copy_dataset(self, get_non_empty_working_copy_dataset):
+#         res: bool =  get_non_empty_working_copy_dataset.is_saved() 
 
-        assert not res
+#         assert not res
 
-    def _test_saved_dataset(self, get_non_empty_saved_dataset):
-        res: bool = get_non_empty_saved_dataset.is_saved() 
+#     def _test_saved_dataset(self, get_non_empty_saved_dataset):
+#         res: bool = get_non_empty_saved_dataset.is_saved() 
 
-        assert res
+#         assert res

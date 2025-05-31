@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from uuid import UUID
 
-from core.dataset import Dataset
+from artificialqi.core.dataset import Dataset
 
 
 class DatasetRepository(ABC):
@@ -25,4 +25,8 @@ class DatasetRepository(ABC):
 
     @abstractmethod
     def get_all_datasets(self, q: str) -> Optional[list[Dataset]]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete_with_origin(self, origin: UUID) -> bool:
         raise NotImplementedError

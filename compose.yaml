@@ -33,24 +33,24 @@ services:
       - postgres
     volumes:
       - type: bind
-        source: ./back-end/ArtificialQI
-        target: /usr/src/ArtificialQI
+        source: ./back-end/artificialqi
+        target: /usr/src/artificialqi
     
-  angularclient:
-    image: AngularClient:latest
-    container_name: ArtificialQIClient
-    build: ./front-end/
-    # networks:
-    #   - frontend
-    ports:
-      - 4200:4200
-    restart: unless-stopped
-    volumes:
-      - type: bind
-        source: ./front-end/ArtificialQI/src
-        target: /usr/src/ArtificialQI/src
-    depends_on:
-      - flaskapi
+  # angularclient:
+  #   image: AngularClient:latest
+  #   container_name: ArtificialQIClient
+  #   build: ./front-end/
+  #   # networks:
+  #   #   - frontend
+  #   ports:
+  #     - 4200:4200
+  #   restart: unless-stopped
+  #   volumes:
+  #     - type: bind
+  #       source: ./front-end/ArtificialQI/src
+  #       target: /usr/src/ArtificialQI/src
+  #   depends_on:
+  #     - flaskapi
 
 volumes:
   pgdata:

@@ -1,10 +1,9 @@
 
 from typing import Any, Callable
 
-from port.outbound.unit_of_work.test_result_unit_of_work import ITestResultUnitOfWork 
-
-from adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
-from adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
+from artificialqi.port.outbound.unit_of_work.test_result_unit_of_work import ITestResultUnitOfWork 
+from artificialqi.adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
+from artificialqi.adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
 
 
 class TestResultUnitOfWork(ITestResultUnitOfWork): 
@@ -27,7 +26,7 @@ class TestResultUnitOfWork(ITestResultUnitOfWork):
             self.rollback()
 
     def commit(self) -> None:
-        raise NotImplementedError
+        self.session.commit()
 
     def rollback(self)->None:
         self.session.rollback()

@@ -1,5 +1,5 @@
-from adapter.outbound.sql_alchemy_model.qa import QuestionAnswerSqlAlchemyModel
-from core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
+from artificialqi.adapter.outbound.sql_alchemy_model.qa import QuestionAnswerSqlAlchemyModel
+from artificialqi.core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
 
 class QuestionAnswerModelMapper:
 

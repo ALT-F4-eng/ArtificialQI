@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from core.test import Test
+from artificialqi.core.test import Test
 
 
 class TestUseCase(ABC):

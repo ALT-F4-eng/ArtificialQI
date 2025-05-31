@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 from uuid import UUID
-from core.comunication_config import ComunicationConfig
+from artificialqi.core.comunication_config import ComunicationConfig
 
 @dataclass
 class Llm:

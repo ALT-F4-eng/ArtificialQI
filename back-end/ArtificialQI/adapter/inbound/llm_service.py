@@ -1,10 +1,10 @@
 from uuid import UUID
 from typing import Optional
-from common.exceptions import *
-from core.llm import Llm
-from core.test import Test
-from port.inbound.llm_use_case import LlmUseCase
-from port.outbound.unit_of_work.llm_unit_of_work import ILlmUnitOfWork
+from artificialqi.common.exceptions import (PersistenceException, LlmNonExistentException)
+from artificialqi.core.llm import Llm
+from artificialqi.core.test import Test
+from artificialqi.port.inbound.llm_use_case import LlmUseCase
+from artificialqi.port.outbound.unit_of_work.llm_unit_of_work import ILlmUnitOfWork
 
 
 class LlmService(LlmUseCase):

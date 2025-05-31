@@ -1,8 +1,8 @@
 # type: ignore
 
-from adapter.outbound.sql_alchemy_model.dataset import DatasetSqlAlchemyModel
-from core.dataset_factory import DatasetFactory
-from core.dataset import Dataset
+from artificialqi.adapter.outbound.sql_alchemy_model.dataset import DatasetSqlAlchemyModel
+from artificialqi.core.dataset_factory import DatasetFactory
+from artificialqi.core.dataset import Dataset
 
 class DatasetModelMapper:
 
@@ -17,23 +17,23 @@ class DatasetModelMapper:
                 first_save_date=model.first_save_date,
                 last_save_date=model.last_save_date
             )
-        elif not model.origin:
+        elif model.origin is None:
+             res = DatasetFactory.tmp(
+                id=model.id,
+                dim=len(model.qas)
+            )
+        else:
             res = DatasetFactory.working_copy(
                 id=model.id,
                 dim=len(model.qas),
                 origin=model.origin
             )
-        else:
-            res = DatasetFactory.tmp(
-                id=model.id,
-                dim=len(model.qas)
-            )
+           
 
         return res
 
     @staticmethod
     def from_domain(domain: Dataset) -> DatasetSqlAlchemyModel:
-
         return DatasetSqlAlchemyModel(
             id=domain.id,
             name=domain.name,

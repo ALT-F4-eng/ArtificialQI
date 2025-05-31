@@ -1,12 +1,12 @@
 from uuid import UUID
 from datetime import date
 
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
-from adapter.outbound.sql_alchemy_model.key_value_pair import KeyValuePairSqlAlchemyModel
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from artificialqi.adapter.outbound.sql_alchemy_model.base import Base
 
-class LlmSqlAlchemyModel(DeclarativeBase):
+class LlmSqlAlchemyModel(Base):
     
-    __tablename__ = "Llm"
+    __tablename__ = "llm"
 
     id: Mapped[UUID] = mapped_column(primary_key=True)
     url: Mapped[str]
@@ -14,7 +14,7 @@ class LlmSqlAlchemyModel(DeclarativeBase):
     key_request: Mapped[str]
     save_date: Mapped[date]
 
-    config: Mapped[list[KeyValuePairSqlAlchemyModel]] = relationship(KeyValuePairSqlAlchemyModel, back_populates="results")
+    config: Mapped[list["KeyValuePairSqlAlchemyModel"]] = relationship(back_populates="llm_ref")
 
 
 

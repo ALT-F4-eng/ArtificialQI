@@ -1,11 +1,11 @@
 from typing import Optional
 from uuid import UUID
 
-from common.exceptions import PersistenceException, TestNonExistentException, InvalidTestOperationException
-from core.test import Test
-from core.test_factory import TestFactory
-from port.inbound.test_use_case import TestUseCase
-from port.outbound.unit_of_work.test_unit_of_work import ITestUnitOfWork
+from artificialqi.common.exceptions import PersistenceException, TestNonExistentException, InvalidTestOperationException
+from artificialqi.core.test import Test
+from artificialqi.core.test_factory import TestFactory
+from artificialqi.port.inbound.test_use_case import TestUseCase
+from artificialqi.port.outbound.unit_of_work.test_unit_of_work import ITestUnitOfWork
 
 
 class DatasetService(TestUseCase):

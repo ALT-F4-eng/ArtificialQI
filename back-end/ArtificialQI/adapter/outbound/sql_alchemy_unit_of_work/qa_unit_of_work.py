@@ -1,25 +1,20 @@
-
 from typing import Any, Callable
 
-from artificialqi.port.outbound.unit_of_work.dataset_unit_of_work import IDatasetUnitOfWork 
+from artificialqi.port.outbound.unit_of_work.qa_unit_of_work import IQaUnitOfWork
 from artificialqi.adapter.outbound.qa_sql_alchemy_adapter import SqlAlchemyQaPairAdapter
 from artificialqi.adapter.outbound.dataset_sql_alchemy_adapter import SqlAlchemyDatasetAdapter
-from artificialqi.adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
-from artificialqi.adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
 
 
-class DatasetUnitOfWork(IDatasetUnitOfWork): 
+class QaUnitOfWork(IQaUnitOfWork): 
 
     def __init__(self, session_factory: Callable[[], Any]):
         self.session_factory = session_factory
         
 
-    def __enter__(self) -> IDatasetUnitOfWork:
+    def __enter__(self) -> IQaUnitOfWork:
         self.session = self.session_factory()
         self.dataset_repo = SqlAlchemyDatasetAdapter(self.session)
         self.qa_repo = SqlAlchemyQaPairAdapter(self.session)
-        self.test_repo = SqlAlchemyTestAdapter(self.session)
-        self.result_repo = SqlAlchemyTestResultAdapter(self.session)
         
         return self
 

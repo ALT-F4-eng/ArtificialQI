@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from port.outbound.dataset_repository import DatasetRepository
-from port.outbound.qa_repository import QuestionAnswerPairRepository
+from artificialqi.port.outbound.dataset_repository import DatasetRepository
+from artificialqi.port.outbound.qa_repository import QuestionAnswerPairRepository
 
 class IQaUnitOfWork(ABC):
 

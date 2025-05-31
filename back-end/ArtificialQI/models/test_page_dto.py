@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from models.TestResultDTO import TestResultDto
+from artificialqi.models.test_result_dto import TestResultDto
 
 class TestPageDTO(BaseModel):
     page_n : int

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from core.page import Page
-from core.test_result import TestResult
+from artificialqi.core.page import Page
+from artificialqi.core.test_result import TestResult
 
 
 class TestResultUseCase(ABC):

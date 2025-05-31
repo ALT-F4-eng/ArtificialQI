@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from port.outbound.test_result_repository import TestResultRepository
-from port.outbound.test_repository import TestRepository
+from artificialqi.port.outbound.test_result_repository import TestResultRepository
+from artificialqi.port.outbound.test_repository import TestRepository
 
 
 class ITestResultUnitOfWork(ABC):

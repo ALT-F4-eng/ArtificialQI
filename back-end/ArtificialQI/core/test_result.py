@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from core.question_answer_pair import QuestionAnswerPair
+from artificialqi.core.question_answer_pair import QuestionAnswerPair
 
 
 @dataclass

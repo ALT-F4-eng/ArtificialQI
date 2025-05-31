@@ -1,8 +1,8 @@
 # type: ignore
 
-from adapter.outbound.sql_alchemy_model.test_result import TestResultSqlAlchemyModel 
-from adapter.outbound.sql_alchemy_mapper.qa import QuestionAnswerModelMapper  
-from core.test_result import TestResult, test_result_factory_function
+from artificialqi.adapter.outbound.sql_alchemy_model.test_result import TestResultSqlAlchemyModel 
+from artificialqi.adapter.outbound.sql_alchemy_mapper.qa import QuestionAnswerModelMapper  
+from artificialqi.core.test_result import TestResult, test_result_factory_function
 
 class TestResultModelMapper:
 

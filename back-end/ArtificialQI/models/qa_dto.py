@@ -3,6 +3,7 @@ from uuid import UUID
 from typing import Optional
 
 class QuestionAnswerPairDTO(BaseModel):
-    id: UUID
+    id: Optional[UUID]
     question: Optional[str]
     answer: Optional[str]
+    dataset: UUID

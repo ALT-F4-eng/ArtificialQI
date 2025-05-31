@@ -1,8 +1,8 @@
 from uuid import UUID
 from datetime import date
 
-from core.test import Test
-from core.test_statistics import TestStatistics
+from artificialqi.core.test import Test
+from artificialqi.core.test_statistics import TestStatistics
 
 class TestFactory:
 

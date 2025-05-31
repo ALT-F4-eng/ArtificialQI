@@ -2,11 +2,11 @@ from uuid import UUID, uuid4
 from typing import Optional
 
 
-from common.exceptions import (PersistenceException, QaNonExistentException, PageNonExistentException, DatasetNonExistentException)
-from core.page import Page
-from port.outbound.qa_unit_of_work import IQaUnitOfWork
-from port.inbound.qa_use_case import QaUseCase
-from core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
+from artificialqi.common.exceptions import (PersistenceException, QaNonExistentException, PageNonExistentException, DatasetNonExistentException)
+from artificialqi.core.page import Page
+from artificialqi.port.outbound.unit_of_work.qa_unit_of_work import IQaUnitOfWork
+from artificialqi.port.inbound.qa_use_case import QaUseCase
+from artificialqi.core.question_answer_pair import QuestionAnswerPair, qa_pair_factory_function
 
 
 class QaService(QaUseCase):

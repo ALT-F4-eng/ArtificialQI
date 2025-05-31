@@ -1,21 +1,15 @@
 # type: ignore
 
-from adapter.outbound.sql_alchemy_model.test import TestSqlAlchemyModel 
-from core.test_factory import TestFactory
+from artificialqi.adapter.outbound.sql_alchemy_model.test import TestSqlAlchemyModel 
+from artificialqi.core.test_factory import TestFactory
 from sqlalchemy.engine import RowMapping
-from core.test_statistics import test_statistics_factory_function, TestStatistics
-from core.test import Test
+from artificialqi.core.test_statistics import test_statistics_factory_function, TestStatistics
+from artificialqi.core.test import Test
 
 class TestModelMapper:
 
     @staticmethod
-    def to_domain(model: TestSqlAlchemyModel, tindex: RowMapping) -> Test:
-        index: TestStatistics = test_statistics_factory_function(
-                similarity_avg=tindex["similarity_avg"],
-                similarity_std_dev=tindex["similarity_std_dev"],
-                result_distribution=tindex["result_distribution"],
-                correct_percentage=tindex["correct_percentage"]
-            )
+    def to_domain(model: TestSqlAlchemyModel, tindex: RowMapping=None) -> Test:
         
         if model.tmp:
 
@@ -23,7 +17,7 @@ class TestModelMapper:
                 id=model.id,
                 dataset=model.dataset,
                 llm=model.llm,
-                index=index,
+                index=None,
                 execution_date=model.execution_date
             )
         else:
@@ -32,7 +26,7 @@ class TestModelMapper:
                 id=model.id,
                 dataset=model.dataset,
                 llm=model.llm,
-                index=index,
+                index=None,
                 execution_date=model.execution_date,
                 name=model.name
             )

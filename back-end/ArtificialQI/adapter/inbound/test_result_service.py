@@ -1,11 +1,11 @@
 from uuid import UUID
 from typing import Optional
 
-from common.exceptions import (PersistenceException, PageNonExistentException, TestNonExistentException)
-from core.page import Page
-from core.test_result import TestResult
-from port.inbound.test_result_use_case import TestResultUseCase
-from port.outbound.unit_of_work.test_result_unit_of_work import ITestResultUnitOfWork
+from artificialqi.common.exceptions import (PersistenceException, PageNonExistentException, TestNonExistentException)
+from artificialqi.core.page import Page
+from artificialqi.core.test_result import TestResult
+from artificialqi.port.inbound.test_result_use_case import TestResultUseCase
+from artificialqi.port.outbound.unit_of_work.test_result_unit_of_work import ITestResultUnitOfWork
 
 
 class TestResultService(TestResultUseCase):

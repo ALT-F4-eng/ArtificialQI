@@ -1,11 +1,11 @@
 
 from typing import Any, Callable
 
-from port.outbound.unit_of_work.dataset_unit_of_work import IDatasetUnitOfWork 
-from adapter.outbound.qa_sql_alchemy_adapter import SqlAlchemyQaPairAdapter
-from adapter.outbound.dataset_sql_alchemy_adapter import SqlAlchemyDatasetAdapter
-from adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
-from adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
+from artificialqi.port.outbound.unit_of_work.dataset_unit_of_work import IDatasetUnitOfWork 
+from artificialqi.adapter.outbound.qa_sql_alchemy_adapter import SqlAlchemyQaPairAdapter
+from artificialqi.adapter.outbound.dataset_sql_alchemy_adapter import SqlAlchemyDatasetAdapter
+from artificialqi.adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
+from artificialqi.adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
 
 
 class TestUnitOfWork(IDatasetUnitOfWork): 
@@ -30,7 +30,7 @@ class TestUnitOfWork(IDatasetUnitOfWork):
             self.rollback()
 
     def commit(self) -> None:
-        raise NotImplementedError
+        self.session.commit()
 
     def rollback(self)->None:
         self.session.rollback()

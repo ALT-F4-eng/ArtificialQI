@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from models.QuestionAnswerPairDTO import QuestionAnswerPairDTO
+from artificialqi.models.qa_dto import QuestionAnswerPairDTO
 
 class DatsetPageDTO(BaseModel):
     page_n: int

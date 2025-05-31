@@ -4,7 +4,7 @@ from datetime import date
 from typing import Optional
 
 class DatasetDTO(BaseModel):
-    id: UUID
+    id: Optional[UUID]
     name: Optional[str]
     last_mod: Optional[date]
     first_save: Optional[date]

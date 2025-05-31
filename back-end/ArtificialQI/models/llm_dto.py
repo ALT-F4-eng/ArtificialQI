@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import date
-from models.ConfigurationDTO import ConfigurationDTO
+from artificialqi.models.configuration_dto import ConfigurationDTO
 
 class LlmDTO(BaseModel):
     id: UUID

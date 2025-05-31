@@ -2,16 +2,15 @@ from datetime import date
 from typing import Optional
 from uuid import UUID, uuid4
 
-from core.question_answer_pair import (qa_pair_factory_function, QuestionAnswerPair)
-from common.exceptions import (DatasetNonExistentException,
-                               InvalidDatasetOperationException,
-                               PersistenceException)
-from core.dataset import Dataset
-from core.dataset_factory import DatasetFactory
-from core.test import Test
-from port.inbound.dataset_use_case import DatasetUseCase
-from port.outbound.unit_of_work.dataset_unit_of_work import IDatasetUnitOfWork
-from port.outbound.file_qa_reader import IQuestionAnswerFileReader
+from artificialqi.core.question_answer_pair import (qa_pair_factory_function, QuestionAnswerPair)
+from artificialqi.common.exceptions import (DatasetNonExistentException,
+                                            InvalidDatasetOperationException,                        PersistenceException)
+from artificialqi.core.dataset import Dataset
+from artificialqi.core.dataset_factory import DatasetFactory
+from artificialqi.core.test import Test
+from artificialqi.port.inbound.dataset_use_case import DatasetUseCase
+from artificialqi.port.outbound.unit_of_work.dataset_unit_of_work import IDatasetUnitOfWork
+from artificialqi.port.outbound.file_qa_reader import IQuestionAnswerFileReader
 
 
 
@@ -142,6 +141,9 @@ class DatasetService(DatasetUseCase):
 
         if dataset is None:
             raise DatasetNonExistentException(id)
+        
+        if dataset.is_saved():
+            uow.dataset_repo.delete_with_origin(dataset.id)
 
         related_tests: Optional[list[Test]] = uow.test_repo.get_tests_from_dataset(
             dataset.id
@@ -434,12 +436,6 @@ class DatasetService(DatasetUseCase):
             if origin_to_update is None:
                 raise DatasetNonExistentException(id)
 
-            try:
-                self._delete_dataset_internal(origin_to_update.id, uow)
-            except DatasetNonExistentException as ex:
-                raise ex
-            except PersistenceException as ex:
-                raise ex
 
             updated_dataset: Dataset = DatasetFactory.saved(
                 id=dataset_to_save.id,
@@ -455,6 +451,13 @@ class DatasetService(DatasetUseCase):
                 raise PersistenceException(
                     "Errore di persistenza durante il salvataggio del dataset."
                 )
+            
+            try:
+                self._delete_dataset_internal(origin_to_update.id, uow)
+            except DatasetNonExistentException as ex:
+                raise ex
+            except PersistenceException as ex:
+                raise ex
 
             return res
 

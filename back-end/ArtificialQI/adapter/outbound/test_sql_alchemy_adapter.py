@@ -1,10 +1,10 @@
 from typing import Optional
 from uuid import UUID
 
-from core.test import Test
-from port.outbound.test_repository import TestRepository
-from adapter.outbound.sql_alchemy_mapper.test import TestModelMapper
-from adapter.outbound.sql_alchemy_model.test import TestSqlAlchemyModel
+from artificialqi.core.test import Test
+from artificialqi.port.outbound.test_repository import TestRepository
+from artificialqi.adapter.outbound.sql_alchemy_mapper.test import TestModelMapper
+from artificialqi.adapter.outbound.sql_alchemy_model.test import TestSqlAlchemyModel
 from sqlalchemy.orm import Session
 from sqlalchemy import delete, update, select
 
@@ -15,7 +15,18 @@ class SqlAlchemyTestAdapter(TestRepository):
 
 
     def get_tests_from_dataset(self, dataset: UUID) -> Optional[list[Test]]:
-        pass
+        
+        res: Optional[list[Test]] = []
+
+        get_query = select(TestSqlAlchemyModel).where(TestSqlAlchemyModel.dataset == dataset)
+        
+        try:
+           res = [ TestModelMapper.to_domain(r) for r in self.session.scalars(get_query).all()]
+
+        except Exception:
+            res = None
+
+        return res
 
     def delete_test(self, id: UUID) -> Optional[UUID]:
         
@@ -24,17 +35,39 @@ class SqlAlchemyTestAdapter(TestRepository):
         del_query = delete(TestSqlAlchemyModel).where(TestSqlAlchemyModel.id == id)
 
         try:
-            self.session.execute(del_query).one()
+            self.session.execute(del_query)
+            self.session.flush()
         except Exception:
             res = None
 
         return res
 
     def get_test_by_id(self, id: UUID) -> Optional[Test]:
-        pass
+
+        get_query = select(TestSqlAlchemyModel).where(TestSqlAlchemyModel.id == id)
+
+        try:
+            res: Optional[Test] = TestModelMapper.to_domain(self.session.scalars(get_query).one())
+
+        except Exception:
+            return None
+
+        return res
 
     def get_all_tests(self, q: str = "") -> Optional[list[Test]]:
-        pass
+        
+        res: Optional[list[Test]] = []
+
+        get_query = select(TestSqlAlchemyModel).where(TestSqlAlchemyModel.name.like(f"%{q}%"))
+
+        try:
+            resp = self.session.scalars(get_query).all()
+            res = [TestModelMapper.to_domain(r) for r in resp]
+
+        except Exception:
+            return None
+
+        return res
 
     def update_test(self, test: Test) -> Optional[Test]:
 
@@ -49,7 +82,8 @@ class SqlAlchemyTestAdapter(TestRepository):
         )
 
         try:
-            self.session.execute(update_query).one()
+            self.session.execute(update_query)
+            self.session.flush()
         except Exception:
             res = None
         
@@ -62,7 +96,8 @@ class SqlAlchemyTestAdapter(TestRepository):
         del_query = select(TestSqlAlchemyModel).where(TestSqlAlchemyModel.llm == llm)
 
         try:
-            res = [TestModelMapper.to_domain(res) for res in self.session.execute(del_query).all()]
+            resp = self.session.scalars(del_query).all()
+            res = [TestModelMapper.to_domain(r) for r in resp]
         except Exception:
             res = None
 

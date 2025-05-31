@@ -1,7 +1,7 @@
-from core.comunication_config import ComunicationConfig
+from artificialqi.core.comunication_config import ComunicationConfig
 from uuid import UUID
 from dataclasses import dataclass
-from core.http_key_value_pair import HttpKeyValuePair 
+from artificialqi.core.http_key_value_pair import HttpKeyValuePair 
 import regex as re 
 
 @dataclass

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from uuid import UUID
 
-from core.test_result import TestResult
+from artificialqi.core.test_result import TestResult
 
 
 class TestResultRepository(ABC):
@@ -12,7 +12,7 @@ class TestResultRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_results(self, test: UUID, start: int, offset: int, q: str = "") -> Optional[set[TestResult]]:
+    def get_results(self, test: UUID, offset: int, end: int, q: str = "") -> Optional[set[TestResult]]:
         raise NotImplementedError
 
     @abstractmethod

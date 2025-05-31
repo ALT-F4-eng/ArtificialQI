@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from core.page import Page
-from core.question_answer_pair import QuestionAnswerPair
+from artificialqi.core.page import Page
+from artificialqi.core.question_answer_pair import QuestionAnswerPair
 
 
 class QaUseCase(ABC):

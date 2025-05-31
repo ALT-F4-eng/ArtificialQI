@@ -1,6 +1,6 @@
 from datetime import date
 from uuid import UUID
-from core.dataset import Dataset
+from artificialqi.core.dataset import Dataset
 
 class DatasetFactory:
 

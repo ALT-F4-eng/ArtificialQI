@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from artificialqi.models.dataset_dto import DatasetDTO
+from artificialqi.models.dataset_dto import DatasetDto
 
-class DatasetListDTO(BaseModel):
-    dataset_list: list[DatasetDTO]
+class DatasetListDto(BaseModel):
+    dataset_list: list[DatasetDto]

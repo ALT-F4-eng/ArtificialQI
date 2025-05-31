@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from artificialqi.models.qa_dto import QuestionAnswerPairDTO
+from artificialqi.models.qa_dto import QuestionAnswerPairDto
 
-class DatsetPageDTO(BaseModel):
+class DatsetPageDto(BaseModel):
     page_n: int
-    qa_set: set[QuestionAnswerPairDTO]
+    qa_set: set[QuestionAnswerPairDto]

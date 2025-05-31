@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request
 from artificialqi.core.dataset import Dataset
 from uuid import UUID
 from typing import Optional
-from artificialqi.models.dataset_dto import DatasetDTO
+from artificialqi.models.dataset_dto import DatasetDto
 from artificialqi.mapper.dataset_mapper import DatasetDtoMapper
 from artificialqi.mapper.dataset_list_mapper import DatasetListDtoMapper
 from pydantic import ValidationError
@@ -41,7 +41,7 @@ def get_all_dataset(dataset_service: DatasetService = Provide[AppContainer.datas
 def create_dataset(dataset_service: DatasetService = Provide[AppContainer.dataset_service]):
     
     try:
-        dto: DatasetDTO = DatasetDTO.model_validate(request.json)
+        dto: DatasetDto = DatasetDto.model_validate(request.json)
     
     except ValidationError as ex:
         raise ex
@@ -57,7 +57,7 @@ def create_dataset(dataset_service: DatasetService = Provide[AppContainer.datase
 @inject
 def update(id: str, dataset_service: DatasetService = Provide[AppContainer.dataset_service]):
     try:
-        dto: DatasetDTO = DatasetDTO.model_validate(request.json)
+        dto: DatasetDto = DatasetDto.model_validate(request.json)
     
     except ValidationError as ex:
         raise ex

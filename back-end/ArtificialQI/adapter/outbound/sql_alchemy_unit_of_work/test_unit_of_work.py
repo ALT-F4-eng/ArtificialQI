@@ -3,7 +3,6 @@ from typing import Any, Callable
 
 from artificialqi.port.outbound.unit_of_work.test_unit_of_work import ITestUnitOfWork 
 
-from adapter.outbound.llm_sql_alchemy_adapter import SqlAlchemyLlmAdapter
 from artificialqi.adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTestAdapter
 from artificialqi.adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
 
@@ -16,7 +15,6 @@ class TestUnitOfWork(ITestUnitOfWork):
     def __enter__(self) -> ITestUnitOfWork:
 
         self.session = self.session_factory()
-        self.llm_repo = SqlAlchemyLlmAdapter(self.session)
         self.test_repo = SqlAlchemyTestAdapter(self.session)
         self.result_repo = SqlAlchemyTestResultAdapter(self.session)
         

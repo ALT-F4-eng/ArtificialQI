@@ -27,14 +27,14 @@ export class LlmElementComponent implements OnInit {
     console.log(this.llm); // Dovresti vedere i dati passati dal padre
   }
 
-  @Output() delete = new EventEmitter<number>();
+  @Output() delete = new EventEmitter<string>();
   deleteLlm() {
     if (this.llm) {
       this.delete.emit(this.llm.id); // comunica al padre quale llm eliminare
     }
   }
 
-  @Output() load = new EventEmitter<number>();
+  @Output() load = new EventEmitter<string>();
   loadLlm() {
     if (this.llm) {
       this.load.emit(this.llm.id);

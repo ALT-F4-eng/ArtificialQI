@@ -50,7 +50,7 @@ export class LlmFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = String(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.llmService.getLlm(id).subscribe({
         next: (data) => {

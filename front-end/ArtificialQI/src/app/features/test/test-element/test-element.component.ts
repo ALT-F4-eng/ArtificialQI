@@ -44,7 +44,7 @@ export class TestElementComponent {
       }
     });
   }
-  @Output() testDelete = new EventEmitter<number>();
+  @Output() testDelete = new EventEmitter<string>();
   deletetest() {
     if (this.test) {
       this.testDelete.emit(this.test.id); // Invia l'id del test al padre

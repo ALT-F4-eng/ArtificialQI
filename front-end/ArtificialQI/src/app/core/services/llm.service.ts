@@ -11,11 +11,11 @@ export class LlmService {
     return this.http.get<LlmDto[]>('/llms'); // URL del tuo backend
   }
 
-  deleteLlm(id: number): Observable<any> {
+  deleteLlm(id: string): Observable<any> {
     return this.http.delete(`/llms/${id}`);
   }
 
-  getLlm(id: number): Observable<LlmDto> {
+  getLlm(id: string): Observable<LlmDto> {
     return this.http.get<LlmDto>(`/llms/${id}`);
   }
 

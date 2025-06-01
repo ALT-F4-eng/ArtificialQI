@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class TestService {
+  private baseUrl = 'http://localhost:5000';
   cachedTestCaricato: any;
   constructor(private http: HttpClient) {}
 
@@ -18,7 +19,7 @@ export class TestService {
     return this.http.post<any>('/test/compare', { test1, test2 });
   }
 
-  getAllResults(testID: number): Observable<any[]> {
+  getAllResults(testID: string): Observable<any[]> {
     return this.http.get<any[]>(`/test/${testID}/results`);
   }
   //forse va cancellata
@@ -27,15 +28,24 @@ export class TestService {
   }
 
   getAllTests(): Observable<TestDto[]> {
-    return this.http.get<TestDto[]>('/testlist');
+    return this.http.get<TestDto[]>(`${this.baseUrl}/tests`);
   }
-  getTest(ID: number): Observable<TestDto> {
-    return this.http.get<TestDto>(`/testlist/${ID}`);
+
+  /* forse basterebbe il run di test
+  getTestByID(ID: string): Observable<TestDto> {
+    return this.http.get<TestDto>(`${this.baseUrl}/tests/${ID}`);
   }
-  deleteTest(ID: number): Observable<void> {
-    return this.http.delete<void>(`/testlist/${ID}`);
+  */
+  getTest(id:string): Observable<TestDto> {
+    return this.http.get<TestDto>(`${this.baseUrl}/tests/${id}`);
   }
-  renameTest(ID: number, newName: string): Observable<TestDto> {
+
+  deleteTest(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/tests/${id}`);
+  }
+
+  renameTest(ID: string, newName: string): Observable<TestDto> {
     return this.http.put<TestDto>(`/testlist/${ID}`, { name: newName });
-  }//aggiorna tutti campi dati 
+  } //aggiorna tutti campi dati
+  //
 }

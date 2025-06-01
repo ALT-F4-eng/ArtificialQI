@@ -21,13 +21,13 @@ import {LlmDto} from '../../../core/models/llm-dto.model'
 export class LlmListViewComponent {
   @Input() llms: LlmDto[] = [];
 
-  @Output() deleteLlm = new EventEmitter<number>();
-  onDeleteLlm(id: number) {
+  @Output() deleteLlm = new EventEmitter<string>();
+  onDeleteLlm(id: string) {
     this.deleteLlm.emit(id);
   }
 
-  @Output() viewLlm = new EventEmitter<number>();
-  onLoadLlm(id: number) {
+  @Output() viewLlm = new EventEmitter<string>();
+  onLoadLlm(id: string) {
     this.viewLlm.emit(id);
   }
 }

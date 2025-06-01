@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
-import { TestListViewComponent } from '../../../features/test/test-list-view/test-list-view.component';
+import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { TestService } from '../../../core/services/test.service';
-import { TestDto } from '../../../core/models/test-dto.model';
 import { RouterModule, Router } from '@angular/router';
+
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { TestListViewComponent } from '../../../features/test/test-list-view/test-list-view.component';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
-import { CommonModule } from '@angular/common';
 import { MessageBoxComponent } from '../../../shared/error-message/message.component';
+
+import { TestDto } from '../../../core/models/test-dto.model';
+import { TestService } from '../../../core/services/test.service';
 
 @Component({
   selector: 'app-test-list-page',
@@ -29,7 +32,7 @@ import { MessageBoxComponent } from '../../../shared/error-message/message.compo
   styleUrl: './test-list-page.component.css',
 })
 export class TestListPageComponent {
-  deletingid?: number;
+  deletingid?: string;
   mockTests: TestDto[] = [];
   filteredTests: TestDto[] = [];
   showMessage = true;
@@ -48,9 +51,10 @@ export class TestListPageComponent {
 
   handleSearch(term: string) {
     const normalized = term.toLowerCase();
-    this.filteredTests = this.mockTests.filter((test) =>
-      test.name.toLowerCase().includes(normalized)
-    );
+    this.filteredTests = this.mockTests.filter((test) => {
+      if (!test.name) return false;
+      return test.name.toLowerCase().includes(normalized);
+    });
     console.log('Risultato della ricerca:', this.filteredTests);
   }
 
@@ -84,7 +88,7 @@ export class TestListPageComponent {
     });
   }
 
-  loadingTestId?: number;
+  loadingTestId?: string;
   showLoadConfirm = false;
   showLoadMessage = '';
 
@@ -129,7 +133,7 @@ export class TestListPageComponent {
   showDeleteConfirm = false;
   showDeleteMessage = '';
 
-  onTestDeleteRequest(id: number) {
+  onTestDeleteRequest(id: string) {
     this.deletingid = id;
     this.showDeleteMessage = 'Sei sicuro di voler eliminare questo Test?';
     this.showDeleteConfirm = true;

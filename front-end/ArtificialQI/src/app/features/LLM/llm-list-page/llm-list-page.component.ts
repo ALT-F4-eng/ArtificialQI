@@ -31,7 +31,7 @@ export class LlmListPageComponent implements OnInit {
   showConfirm = false;
   showMessage = false;
   confirmMessage = '';
-  deletingId?: number;
+  deletingId?: string;
   resultMessage = '';
   messageType: 'success' | 'error' = 'error';
 
@@ -53,7 +53,7 @@ export class LlmListPageComponent implements OnInit {
     });
   }
 
-  onLlmDeleteRequest(id: number) {
+  onLlmDeleteRequest(id: string) {
     this.deletingId = id;
     this.confirmMessage = 'Sei sicuro di voler eliminare questo LLM?';
     this.showConfirm = true;
@@ -104,7 +104,7 @@ export class LlmListPageComponent implements OnInit {
     this.confirmMessage = '';
   }
 
-  onLlmViewRequest(id: number) {
+  onLlmViewRequest(id: string) {
     this.router.navigate(['/llm', id]);
   }
 

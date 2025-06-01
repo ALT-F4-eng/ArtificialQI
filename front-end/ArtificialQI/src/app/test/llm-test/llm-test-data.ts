@@ -1,10 +1,11 @@
 import { LlmDto } from "../../core/models/llm-dto.model";
 
-export const llmMockList: LlmDto[] = [
+export 
+const llmMockList: LlmDto[] = [
   { 
-    id: 1,
+    id: "1",
     name: "GPT-4 Turbo",
-    last_mod: new Date("2025-05-10T12:00:00Z"),
+    last_mod: "2025-05-10T12:00:00Z",
     url: "https://api.openai.com/v1/chat/completions",
     key_req: "prompt",
     key_resp: "choices",
@@ -12,9 +13,9 @@ export const llmMockList: LlmDto[] = [
     kv_header: []
   },
   {
-    id: 2,
+    id: "2",
     name: "Claude 3 Opus",
-    last_mod: new Date("2025-04-22T09:30:00Z"),
+    last_mod: "2025-04-22T09:30:00Z",
     url: "https://api.anthropic.com/v1/messages",
     key_req: "messages",
     key_resp: "completion",
@@ -22,9 +23,9 @@ export const llmMockList: LlmDto[] = [
     kv_header: []
   },
   {
-    id: 3,
+    id: "3",
     name: "Mistral 7B",
-    last_mod: new Date("2025-03-18T16:45:00Z"),
+    last_mod: "2025-03-18T16:45:00Z",
     url: "https://api.mistral.ai/v1/completions",
     key_req: "input",
     key_resp: "result",

@@ -12,7 +12,7 @@ import { DatasetDto } from '../../../core/models/dataset-dto.model';
 // Mock dati
 const mockDatasets: DatasetDto[] = [
   {
-    id: 1,
+    id: "1",
     name: 'Dataset Uno',
     last_mod: new Date('2025-05-01'),
     creation: new Date('2025-04-01'),
@@ -22,7 +22,7 @@ const mockDatasets: DatasetDto[] = [
     element_n: 120,
   },
   {
-    id: 2,
+    id: "2",
     name: 'Dataset Due',
     last_mod: new Date('2025-06-10'),
     creation: new Date('2025-05-10'),

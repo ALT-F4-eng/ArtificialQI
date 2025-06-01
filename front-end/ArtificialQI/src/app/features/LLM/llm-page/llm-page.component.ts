@@ -34,7 +34,7 @@ export class LlmPageComponent implements OnInit{
     constructor(private llmService: LlmService, private router: Router, private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'));
+        const id = String(this.route.snapshot.paramMap.get('id'));
         
         this.llmService.getLlm(id).subscribe({
         next: (data) => {
@@ -52,7 +52,7 @@ export class LlmPageComponent implements OnInit{
       });
     }
 
-    onModifyLlmRequest(id: number){
+    onModifyLlmRequest(id: string){
       this.router.navigate(['/llm-form', id]);
     }
 

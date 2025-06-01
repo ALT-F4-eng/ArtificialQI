@@ -38,8 +38,8 @@ export class TestListViewComponent {
     this.testCopied.emit(index);
   }
 
-  @Output() testDeleted = new EventEmitter<number>();
-  onDelete(id: number) {
+  @Output() testDeleted = new EventEmitter<string>();
+  onDelete(id: string) {
   this.testDeleted.emit(id); 
 }
 

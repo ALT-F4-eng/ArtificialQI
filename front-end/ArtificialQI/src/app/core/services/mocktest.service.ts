@@ -5,123 +5,124 @@ import { TestPageDto } from '../models/testpage-dto.model';
 
 export const MOCK_TEST: TestDto[] = [
   {
-    id: 1,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000001',
     name: 'Test Alpha',
-    dataset_id: 1,
+    dataset_id: 'dset-0001-0001-0001-000000000001',
     llm_name: 'LLM1',
     tmp: true,
     max_page: 10,
     avg_similarity: 0.85,
-    exec_date: new Date('2025-05-01'),
+    exec_date: '2025-05-01',
     std_dev_similarity: 0.05,
     correct_percentage: 90,
     distribution: [1, 2, 3, 4, 5],
   },
   {
-    id: 2,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000002',
     name: 'Test Beta',
-    dataset_id: 2,
+    dataset_id: 'dset-0001-0001-0001-000000000002',
     llm_name: 'LLM2',
     tmp: false,
     max_page: 12,
     avg_similarity: 0.78,
-    exec_date: new Date('2025-06-10'),
+    exec_date: '2025-06-10',
     std_dev_similarity: 0.08,
     correct_percentage: 85,
     distribution: [2, 3, 4, 5, 6],
   },
   {
-    id: 3,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000003',
     name: 'Test Gamma',
-    dataset_id: 3,
+    dataset_id: 'dset-0001-0001-0001-000000000003',
     llm_name: 'LLM3',
     tmp: false,
     max_page: 8,
     avg_similarity: 0.92,
-    exec_date: new Date('2025-07-15'),
+    exec_date: '2025-07-15',
     std_dev_similarity: 0.03,
     correct_percentage: 95,
     distribution: [3, 4, 5, 6, 7],
   },
   {
-    id: 4,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000004',
     name: 'Test Delta',
-    dataset_id: 1,
+    dataset_id: 'dset-0001-0001-0001-000000000001',
     llm_name: 'LLM4',
     tmp: false,
     max_page: 15,
     avg_similarity: 0.81,
-    exec_date: new Date('2025-08-20'),
+    exec_date: '2025-08-20',
     std_dev_similarity: 0.07,
     correct_percentage: 88,
     distribution: [4, 5, 6, 7, 8],
   },
   {
-    id: 5,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000005',
     name: 'Test Epsilon',
-    dataset_id: 2,
+    dataset_id: 'dset-0001-0001-0001-000000000002',
     llm_name: 'LLM5',
     tmp: false,
     max_page: 9,
     avg_similarity: 0.76,
-    exec_date: new Date('2025-09-25'),
+    exec_date: '2025-09-25',
     std_dev_similarity: 0.09,
     correct_percentage: 80,
     distribution: [5, 6, 7, 8, 9],
   },
   {
-    id: 6,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000006',
     name: 'Test Zeta',
-    dataset_id: 3,
+    dataset_id: 'dset-0001-0001-0001-000000000003',
     llm_name: 'LLM6',
     tmp: false,
     max_page: 11,
     avg_similarity: 0.88,
-    exec_date: new Date('2025-10-30'),
+    exec_date: '2025-10-30',
     std_dev_similarity: 0.04,
     correct_percentage: 92,
     distribution: [6, 7, 8, 9, 10],
   },
   {
-    id: 7,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000007',
     name: 'Test Eta',
-    dataset_id: 1,
+    dataset_id: 'dset-0001-0001-0001-000000000001',
     llm_name: 'LLM7',
     tmp: false,
     max_page: 13,
     avg_similarity: 0.83,
-    exec_date: new Date('2025-11-05'),
+    exec_date: '2025-11-05',
     std_dev_similarity: 0.06,
     correct_percentage: 87,
     distribution: [7, 8, 9, 10, 11],
   },
   {
-    id: 8,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000008',
     name: 'Test Theta',
-    dataset_id: 2,
+    dataset_id: 'dset-0001-0001-0001-000000000002',
     llm_name: 'LLM8',
     tmp: false,
     max_page: 14,
     avg_similarity: 0.79,
-    exec_date: new Date('2025-12-12'),
+    exec_date: '2025-12-12',
     std_dev_similarity: 0.1,
     correct_percentage: 82,
     distribution: [8, 9, 10, 11, 12],
   },
   {
-    id: 9,
+    id: 'a1b2c3d4-e1f2-4a5b-9c6d-000000000009',
     name: 'Test Theta2',
-    dataset_id: 3,
+    dataset_id: 'dset-0001-0001-0001-000000000003',
     llm_name: 'LLM9',
     tmp: false,
     max_page: 16,
     avg_similarity: 0.91,
-    exec_date: new Date('2025-12-12'),
+    exec_date: '2025-12-12',
     std_dev_similarity: 0.02,
     correct_percentage: 97,
     distribution: [9, 10, 11, 12, 13],
   },
 ];
+
 
 export const MOCK_RESULT: TestResultDto[] = [
   {
@@ -424,7 +425,7 @@ export class MockTestService {
     return of(MOCK_TEST);
   }
 
-  getTest(id: number) {
+  getTest(id: string) {
     const test = MOCK_TEST.find((test) => test.id === id);
     return of(test ?? null);
   }
@@ -442,7 +443,7 @@ export class MockTestService {
     return of(test);
   }
 
-  deleteTest(id: number) {
+  deleteTest(id: string) {
     const index = MOCK_TEST.findIndex((test) => test.id === id);
     if (index !== -1) {
       MOCK_TEST.splice(index, 1);
@@ -450,7 +451,7 @@ export class MockTestService {
     return of(null); // for Observable<void> compatibility
   }
 
-  renameTest(id: number, newName: string) {
+  renameTest(id: string, newName: string) {
     const test = MOCK_TEST.find((test) => test.id === id);
     if (test) {
       test.name = newName;
@@ -458,7 +459,7 @@ export class MockTestService {
     return of(test);
   }
 
-  getAllResults(testid: number) {
+  getAllResults() {
     return of(MOCK_RESULT);
   }
   getAllResultsCompare(testid: number) {

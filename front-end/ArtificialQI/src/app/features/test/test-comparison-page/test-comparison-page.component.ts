@@ -46,7 +46,7 @@ export class TestComparisonPageComponent implements OnInit {
     const compared = this.testCompared_TestComparison;
     */
     // id da cambiare
-    this.testService.getAllResults(1).subscribe({
+    this.testService.getAllResults("1").subscribe({
       next: (data) => {
         this.resultsOrigin_TestComparison = data;
         console.log(

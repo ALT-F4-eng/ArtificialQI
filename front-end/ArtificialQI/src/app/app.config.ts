@@ -28,7 +28,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    { provide: DatasetService, useClass: MockDatasetService },
     { provide: QAService, useClass: MockQAService },
     { provide: TestService, useClass: MockTestService },
     { provide: LlmService, useClass: MockLlmService },

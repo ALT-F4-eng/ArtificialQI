@@ -11,12 +11,9 @@ import { DatasetPageDto } from '../models/datasetpage-dto.model';
 export const MOCK_DATASET: DatasetDto = {
   id: '1e7b9c8a-1a2b-4c3d-8e9f-0a1b2c3d4e5f',
   name: 'Dataset Alpha',
-  last_mod: new Date('2025-05-01'),
-  creation: new Date('2025-04-01'),
-  origin_id: 0,
+  last_save_date: new Date('2025-05-01'),
+  origin: 0,
   tmp: false,
-  max_page: 12,
-  element_n: 120,
 };
 
 export const MOCK_DATASETPAGEQA: DatasetPageDto = {

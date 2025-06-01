@@ -1,5 +1,3 @@
-# app.py
-
 import os
 from routes.containers import Container
 from flask import Flask, request, jsonify
@@ -9,6 +7,9 @@ from datetime import datetime
 from src.db_config import db  # usa db separato
 from src.models.dataset_model import DatasetModel  # importa solo il modello
 from models.DatasetDTO import DatasetDTO
+from src.models.qa_model import QAModel  # importa il modello QAModel
+from src.models.llm_model import LlmModel  # importa il modello LlmModel
+
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://localhost:4200"])
@@ -52,6 +53,15 @@ def test_db():
             "origin": uuid4()
         }
     
+
+@app.route("/test-test")
+def test_test():
+    with app.app_context():
+        qas : list[QAModel]  = QAModel.query.filter_by(dataset="3f89c1e2-5a3f-4d78-a6b2-2c4b949c18e7").all()
+        domande = [questionanswer.domanda for questionanswer in qas]
+        stringify_domande = [str(domanda) for domanda in domande]
+
+        return stringify_domande
 
 @app.route("/datasets", methods=["POST"])
 def create_dataset():

@@ -2,7 +2,7 @@ from uuid import UUID
 from datetime import date
 from artificialqi.core.dataset import Dataset
 from artificialqi.core.dataset_factory import DatasetFactory
-from artificialqi.models.dataset_dto import DatasetDTO
+from artificialqi.models.dataset_dto import DatasetDto
 from math import ceil
 from artificialqi.core.page import Page
 
@@ -10,7 +10,7 @@ from artificialqi.core.page import Page
 class DatasetDtoMapper:
 
     @staticmethod
-    def to_domain(dto: DatasetDTO) -> Dataset:
+    def to_domain(dto: DatasetDto) -> Dataset:
 
         if not dto.tmp: 
             return DatasetFactory.saved(
@@ -36,8 +36,8 @@ class DatasetDtoMapper:
 
 
     @staticmethod
-    def to_dto(domain: Dataset) -> DatasetDTO:
-        return DatasetDTO(
+    def to_dto(domain: Dataset) -> DatasetDto:
+        return DatasetDto(
             id=domain.id,
             name=domain.name,
             last_mod=domain.last_save_date,

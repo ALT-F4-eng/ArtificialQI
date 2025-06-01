@@ -6,7 +6,7 @@ from artificialqi.core.question_answer_pair import QuestionAnswerPair
 from artificialqi.core.page import Page
 from uuid import UUID
 from typing import Optional
-from artificialqi.models.qa_dto import QuestionAnswerPairDTO
+from artificialqi.models.qa_dto import QuestionAnswerPairDto
 from artificialqi.mapper.qa_mapper import QaDtoMapper
 from flask import jsonify
 from pydantic import ValidationError
@@ -43,7 +43,7 @@ def get_qa_page(id_dataset: str, qa_service: QaUseCase = Provide[AppContainer.qa
 def create_qa(id_dataset: str, qa_service: QaUseCase = Provide[AppContainer.qa_service]):
 
     try:
-        dto: QuestionAnswerPairDTO = QuestionAnswerPairDTO.model_validate(request.json)
+        dto: QuestionAnswerPairDto = QuestionAnswerPairDto.model_validate(request.json)
 
     except ValidationError as ex:
         raise ex
@@ -60,7 +60,7 @@ def create_qa(id_dataset: str, qa_service: QaUseCase = Provide[AppContainer.qa_s
 def update_qa(id_dataset: str, id_qa: str, qa_service: QaUseCase = Provide[AppContainer.qa_service]):
     
     try:
-        dto: QuestionAnswerPairDTO = QuestionAnswerPairDTO.model_validate(request.json)
+        dto: QuestionAnswerPairDto = QuestionAnswerPairDto.model_validate(request.json)
     except ValidationError as ex:
         raise ex
     

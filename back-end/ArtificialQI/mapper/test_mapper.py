@@ -1,7 +1,7 @@
 from uuid import UUID
 from artificialqi.core.test import Test
 from artificialqi.core.test_statistics import test_statistics_factory_function
-from artificialqi.models.test_dto import TestDTO
+from artificialqi.models.test_dto import TestDto
 from artificialqi.core.llm import Llm
 from artificialqi.core.dataset import Dataset
 from artificialqi.core.test_factory import TestFactory
@@ -10,8 +10,8 @@ from artificialqi.core.test_factory import TestFactory
 class TestDtoMapper:
 
     @staticmethod
-    def to_dto(test: Test, llm: Llm, test_set: Dataset) -> TestDTO:
-        return TestDTO(
+    def to_dto(test: Test, llm: Llm, test_set: Dataset) -> TestDto:
+        return TestDto(
             id=test.id,
             name=test.name,
             llm_name=llm.name,
@@ -25,7 +25,7 @@ class TestDtoMapper:
         )
     
     @staticmethod
-    def to_domain(dto: TestDTO, dataset_id: UUID, llm_id: UUID) -> Test:
+    def to_domain(dto: TestDto, dataset_id: UUID, llm_id: UUID) -> Test:
         stats = test_statistics_factory_function(
             similarity_avg=dto.avg_similarity,
             similarity_std_dev=dto.std_dev_similarity,

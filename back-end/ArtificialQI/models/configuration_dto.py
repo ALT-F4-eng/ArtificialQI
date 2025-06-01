@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class ConfigurationDTO(BaseModel):
+class ConfigurationDto(BaseModel):
     url: str
     key_req: str
     key_resp: str

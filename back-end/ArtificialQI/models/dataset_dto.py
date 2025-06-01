@@ -3,7 +3,7 @@ from uuid import UUID
 from datetime import date
 from typing import Optional
 
-class DatasetDTO(BaseModel):
+class DatasetDto(BaseModel):
     id: Optional[UUID]
     name: Optional[str]
     last_mod: Optional[date]

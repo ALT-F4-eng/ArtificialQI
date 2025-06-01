@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Optional
+from typing import Optional, BinaryIO
 from uuid import UUID, uuid4
 
 from artificialqi.core.question_answer_pair import (qa_pair_factory_function, QuestionAnswerPair)
@@ -334,13 +334,13 @@ class DatasetService(DatasetUseCase):
 
             return res
 
-    def create_from_file(self, file_path: str, name: str,  file_reader: IQuestionAnswerFileReader) -> Dataset:
+    def create_from_file(self, file_stream: BinaryIO, name: str,  file_reader: IQuestionAnswerFileReader) -> Dataset:
         """
         Crea un nuovo dataset savlato a partire da un file contenente coppie domanda-risposta.
 
         Args:
             source_reader (IDataSourceReader): Un'istanza di un lettore di dati che implementa IDataSourceReader
-            file_path (str): Percorso del file contenente i dati.
+            file_stream (BinaryIO): Stream del file contenente i dati.
             name (str): Nome da assegnare al nuovo dataset.
 
         Returns:
@@ -377,7 +377,7 @@ class DatasetService(DatasetUseCase):
 
             
             try:
-                for record in file_reader.read_qa_pairs(file_path):
+                for record in file_reader.read_qa_pairs(file_stream):
 
                     qa: QuestionAnswerPair = qa_pair_factory_function(
                         dataset= dataset_to_create.id,

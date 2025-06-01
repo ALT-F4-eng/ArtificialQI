@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
+from typing import BinaryIO
 
 from artificialqi.port.outbound.file_qa_reader import IQuestionAnswerFileReader
 from artificialqi.core.dataset import Dataset
@@ -40,7 +41,7 @@ class DatasetUseCase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_from_file(self, file_path: str, name: str,  file_reader: IQuestionAnswerFileReader) -> Dataset:
+    def create_from_file(self, file_stream: BinaryIO, name: str,  file_reader: IQuestionAnswerFileReader) -> Dataset:
         raise NotImplementedError
 
     @abstractmethod

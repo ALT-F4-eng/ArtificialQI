@@ -3,6 +3,7 @@ from dependency_injector import containers, providers
 from artificialqi.routes.config import get_session
 from artificialqi.adapter.outbound.sql_alchemy_unit_of_work.dataset_unit_of_work import DatasetUnitOfWork
 from artificialqi.adapter.outbound.sql_alchemy_unit_of_work.qa_unit_of_work import QaUnitOfWork
+from artificialqi.adapter.outbound.json_qa_file_reader import QuestionAnswerJsonFileReader
 from artificialqi.adapter.inbound.dataset_service import DatasetService
 from artificialqi.adapter.inbound.qa_service import QaService
 
@@ -14,6 +15,8 @@ class AppContainer(containers.DeclarativeContainer):
 
     qa_unit_of_work = providers.Singleton(QaUnitOfWork, session_factory=session_factory)
     qa_service = providers.Factory(QaService, qa_unit_of_work)
+
+    file_reader = providers.Factory(QuestionAnswerJsonFileReader)
     
 
 

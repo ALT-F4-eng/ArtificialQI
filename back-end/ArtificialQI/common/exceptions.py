@@ -57,3 +57,9 @@ class QaPageNonExistentException(Exception):
     def __init__(self, msg: str):
         super().__init__(msg) 
         
+
+class FileError(Exception):
+
+    def __init__(self, msg: str):
+        super().__init__(msg) 
+        

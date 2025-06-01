@@ -8,7 +8,7 @@ from artificialqi.adapter.outbound.test_sql_alchemy_adapter import SqlAlchemyTes
 from artificialqi.adapter.outbound.test_result_sql_alchemy_adapter import SqlAlchemyTestResultAdapter
 
 
-class TestUnitOfWork(IDatasetUnitOfWork): 
+class LlmUnitOfWork(IDatasetUnitOfWork): 
 
     def __init__(self, session_factory: Callable[[], Any]):
         self.session_factory = session_factory

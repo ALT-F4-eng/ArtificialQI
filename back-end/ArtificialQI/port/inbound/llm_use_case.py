@@ -15,7 +15,7 @@ class LlmUseCase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def update_dataset(self, llm: Llm) -> Llm:
+    def update_llm(self, llm: Llm) -> Llm:
         raise NotImplementedError
 
     @abstractmethod

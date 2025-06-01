@@ -1,5 +1,6 @@
 from typing import Optional
 from uuid import UUID
+from uuid import uuid4
 
 from artificialqi.common.exceptions import PersistenceException, TestNonExistentException, InvalidTestOperationException
 from artificialqi.core.test import Test
@@ -17,8 +18,19 @@ class TestService(TestUseCase):
 
         self._unit_of_work = test_unit_of_work
 
-    def run_test(self, dataset: UUID, llm: UUID) -> Test:
-        return None
+    def run_test(self, test: UUID, llm: UUID) -> Test:
+
+        
+        with self._unit_of_work as uow:
+
+            test: Test = TestFactory.tmp(id=uuid4(), dim=0)
+
+            result: Optional[Test] = uow.test_repo.create_test(test)
+
+            if result is None:
+                raise PersistenceException("Errore durante la creazione del dataset.")
+
+            return result
 
     def delete_test(self, id: UUID) -> UUID:
         """

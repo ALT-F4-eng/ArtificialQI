@@ -16,7 +16,6 @@ class TestSqlAlchemyModel(Base):
     execution_date: Mapped[date]
     name: Mapped[Optional[str]]
     tmp: Mapped[bool]
-    
     results: Mapped[List["TestResultSqlAlchemyModel"]] = relationship(back_populates="test_ref")
 
 

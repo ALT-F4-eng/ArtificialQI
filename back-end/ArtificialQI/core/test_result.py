@@ -28,7 +28,7 @@ class TestResult:
         return hash((self.test_id, self.question_answer_pair.id))
 
 
-
+@staticmethod
 def test_result_factory_function(
     question_answer_pair: QuestionAnswerPair,
     obtained_answer: str,

@@ -9,6 +9,9 @@ from artificialqi.adapter.inbound.test_result_service import TestResultService
 from artificialqi.adapter.outbound.sql_alchemy_unit_of_work.test_result_unit_of_work import TestResultUnitOfWork
 from artificialqi.adapter.inbound.test_service import TestService
 from artificialqi.adapter.outbound.sql_alchemy_unit_of_work.test_unit_of_work import TestUnitOfWork
+from artificialqi.adapter.inbound.llm_service import LlmService
+from artificialqi.adapter.outbound.sql_alchemy_unit_of_work.llm_unit_of_work import LlmUnitOfWork
+
 
 class AppContainer(containers.DeclarativeContainer):
     session_factory = providers.Singleton(get_session)
@@ -25,5 +28,7 @@ class AppContainer(containers.DeclarativeContainer):
     test_unit_of_work = providers.Singleton(TestUnitOfWork, session_factory=session_factory)
     test_service = providers.Factory(TestService, test_unit_of_work)
     
+    llm_unit_of_work = providers.Singleton(LlmUnitOfWork, session_factory=session_factory)
+    llm_service = providers.Factory(LlmService, llm_unit_of_work)
 
 

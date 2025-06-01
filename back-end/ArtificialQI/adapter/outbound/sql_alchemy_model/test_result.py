@@ -4,7 +4,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey, func, and_, select
 from artificialqi.core.test_statistics import TestStatistics
 from artificialqi.adapter.outbound.sql_alchemy_model.base import Base
-from artificialqi.adapter.outbound.sql_alchemy_model.test import TestSqlAlchemyModel
 
 class TestResultSqlAlchemyModel(Base):
     
@@ -16,7 +15,7 @@ class TestResultSqlAlchemyModel(Base):
     similarity_score: Mapped[float]
     is_correct: Mapped[bool]
 
-    #qa_ref: Mapped["QuestionAnswerSqlAlchemyModel"] = relationship()
+    qa_ref: Mapped["QuestionAnswerSqlAlchemyModel"] = relationship()
     test_ref: Mapped["TestSqlAlchemyModel"] = relationship(back_populates="results")
 
 

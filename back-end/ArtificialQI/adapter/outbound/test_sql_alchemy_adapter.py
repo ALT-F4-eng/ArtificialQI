@@ -13,7 +13,6 @@ class SqlAlchemyTestAdapter(TestRepository):
     def __init__(self, session: Session):
         self.session = session
 
-
     def get_tests_from_dataset(self, dataset: UUID) -> Optional[list[Test]]:
         
         res: Optional[list[Test]] = []

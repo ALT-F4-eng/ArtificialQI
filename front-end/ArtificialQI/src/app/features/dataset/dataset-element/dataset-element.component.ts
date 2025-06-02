@@ -49,10 +49,10 @@ export class DatasetElementComponent implements OnInit {
     });
   }
 
-  @Output() copySignal = new EventEmitter<void>();
+  @Output() copySignal = new EventEmitter<string>();
   onCopySignal() {
     if (this.dataset) {
-      this.copySignal.emit();
+      this.copySignal.emit(this.dataset.id);
       console.log('Dataset copiato:', this.dataset.name);
       // Puoi aggiungere logica per "salvare" il dataset copiato nel mock o un altro array
     }

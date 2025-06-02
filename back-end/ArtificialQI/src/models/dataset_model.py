@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 import uuid
 from src.models.test_model import TestModel
 from src.models.qa_model import QAModel
+from sqlalchemy import func
 import json
 
 
@@ -130,3 +131,47 @@ class DatasetModel(db.Model):
             "message": f"Data ultima modifica aggiornata per il dataset {dataset_id}."
         }
 
+    @staticmethod
+    def clone_dataset_by_id(dataset_id):
+        # Ottieni il dataset originale
+        original = DatasetModel.query.get(dataset_id)
+        if not original:
+            return {
+                "success": False,
+                "message": f"Dataset con ID {dataset_id} non trovato."
+            }
+
+        # Base per il nuovo nome
+        base_name = f"{original.name} (copia)"
+        new_name = base_name
+        counter = 1
+
+        # Controlla nomi duplicati e genera un nome univoco
+        while DatasetModel.query.filter(func.lower(DatasetModel.name) == new_name.lower()).first():
+            new_name = f"{base_name} {counter}"
+            counter += 1
+            #original = DatasetModel.query.get(dataset_id)
+
+        now = datetime.now(timezone.utc)
+        # Crea il nuovo dataset clonando i campi
+        cloned_dataset = DatasetModel(
+            name=new_name,
+            tmp=False,
+            first_save_date=now,
+            last_save_date=now,
+            origin=dataset_id  # imposta l'origine
+        )
+        db.session.add(cloned_dataset)
+        db.session.flush()  # ottieni l'ID per referenziare da altri modelli
+        # Clona la QA associata (se esiste)
+        QAModel.copy_all_qa_by_dataset_id(dataset_id, cloned_dataset.id)
+        db.session.commit()
+        
+        return {
+            "id": cloned_dataset.id,
+            "name": cloned_dataset.name,
+            "tmp": cloned_dataset.tmp,
+            "first_save_date": cloned_dataset.first_save_date,
+            "last_save_date": cloned_dataset.last_save_date,
+            "origin": cloned_dataset.origin
+        }

@@ -61,6 +61,11 @@ def renameDataset(id):
     result = DatasetModel.rename_dataset_by_id(id, new_name)
     return jsonify(result)
 
+@app.route('/cloneDataset/<uuid:id>', methods=['POST'])
+def clone_dataset(id):
+    result = DatasetModel.clone_dataset_by_id(id)
+    return jsonify(result)
+
 
 @app.route('/api/messaggio')
 def ricevi_messaggio():

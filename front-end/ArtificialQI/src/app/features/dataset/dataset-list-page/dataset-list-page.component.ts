@@ -142,31 +142,32 @@ export class DatasetListPageComponent {
     });
   }
 
-  datasetCopied(index: number): void {
-    /*
-    this.datasetService.cloneDataset(index).subscribe({
-      next: (clonedDataset) => {
-        //manda una richiesta al back-end
-
-        // Aggiorna la lista locale aggiungendo il clone
+  datasetCopied(id: string): void {
+  this.datasetService.cloneDatasetById(id).subscribe({
+    next: (clonedDataset) => {
+      if (clonedDataset && clonedDataset.id) {
         this.allDatasets.push(clonedDataset);
-
-        // Aggiorna la lista filtrata (puoi decidere se includere o meno il clone nel filtro corrente)
         this.filteredDatasets = [...this.allDatasets];
-        this.resultMessage = 'Test copiato con successo!';
+        this.resultMessage = 'Dataset copiato con successo!';
         this.messageType = 'success';
         this.showMessage = true;
-        console.log('Dataset copiato page:', clonedDataset);
-      },
-      error: (err) => {
-        this.resultMessage = 'Test copiato con errore!';
+        console.log('Dataset copiato:', clonedDataset);
+      } else {
+        this.resultMessage = 'Errore nella clonazione del dataset.';
         this.messageType = 'error';
         this.showMessage = true;
-        console.error('Errore durante la copia del dataset:', err);
-      },
-    });
-  */
-  }
+        console.error('Risposta inattesa:', clonedDataset);
+      }
+    },
+    error: (err) => {
+      this.resultMessage = 'Errore durante la copia del dataset.';
+      this.messageType = 'error';
+      this.showMessage = true;
+      console.error('Errore nella richiesta di clonazione:', err);
+    },
+  });
+}
+
 
   // delete
   onDatasetDeleteRequest(dataset: DatasetDto) {

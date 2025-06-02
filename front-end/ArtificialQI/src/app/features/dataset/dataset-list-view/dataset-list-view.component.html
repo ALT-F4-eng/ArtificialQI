@@ -3,7 +3,7 @@
     *ngFor="let item of datasets; let i = index"
     [dataset]="item"
     (renameSignal)="onRename($event.id, $event.newName)"
-    (copySignal)="onCopy(i)"
+    (copySignal)="onCopy($event)"
     (deleteSignal)="onDelete($event)"
     (loadSignal)="onDatasetLoaded($event)"
     role="listitem"

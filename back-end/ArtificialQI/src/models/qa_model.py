@@ -27,3 +27,18 @@ class QAModel(db.Model):
             "deleted_count": len(results),
             "message": f"{len(results)} questionanswer eliminati per dataset {dataset_id}"
         }
+    
+    @staticmethod
+    def copy_all_qa_by_dataset_id(original_dataset_id, new_dataset_id):
+        original_qas = QAModel.query.filter_by(dataset=original_dataset_id).all()
+
+        if not original_qas:
+            return  # Nessuna QA da copiare, esci silenziosamente
+
+        for qa in original_qas:
+            cloned_qa = QAModel(
+                domanda=qa.domanda,
+                risposta=qa.risposta,
+                dataset=new_dataset_id
+            )
+            db.session.add(cloned_qa)

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS KeyValuePair (
     is_header BOOLEAN NOT NULL,
     key VARCHAR(255) UNIQUE,
     value TEXT NOT NULL,
-    llm uuid NOT NULL REFERENCES Llm(id)
+    llm uuid NOT NULL REFERENCES Llm(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Dataset (
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Test (
     tmp BOOLEAN NOT NULL,
     name VARCHAR(255),
     execution_date TIMESTAMP NOT NULL,
-    llm uuid NOT NULL REFERENCES Llm(id),
+    llm uuid NOT NULL REFERENCES Llm(id) ON DELETE CASCADE,
     dataset uuid NOT NULL REFERENCES Dataset(id)
 );
 
@@ -36,11 +36,10 @@ CREATE TABLE IF NOT EXISTS QuestionAnswer (
     domanda TEXT NOT NULL,
     risposta TEXT NOT NULL,
     dataset uuid REFERENCES Dataset(id)
-
 );
 
 CREATE TABLE IF NOT EXISTS TestResult (
-    test uuid REFERENCES Test(id),
+    test uuid REFERENCES Test(id) ON DELETE CASCADE,
     qa uuid REFERENCES QuestionAnswer(id),
     is_correct BOOLEAN NOT NULL,
     similarity_score NUMERIC NOT NULL,

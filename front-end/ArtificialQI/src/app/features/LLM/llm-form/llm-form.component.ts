@@ -17,7 +17,6 @@ import { Validators } from '@angular/forms';
 import { onlyspaceValidator } from '../../../shared/validators/onlyspace.validators';
 import { urlValidator } from '../../../shared/validators/url.validators';
 import { FormsModule } from '@angular/forms';
-//import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-llm-form',
@@ -31,7 +30,6 @@ import { FormsModule } from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     FormsModule,
-   // MatIcon
   ],
 })
 export class LlmFormComponent implements OnInit {
@@ -105,7 +103,7 @@ export class LlmFormComponent implements OnInit {
       } else {
         this.llmService.createLlm(result).subscribe({
           next: (data) => {
-            this.router.navigate(['/llm', data.id]);
+            this.router.navigate(['/llm']);
           },
           error: (err) => {
             console.error(`Errore durante la creazione dell'LLM`, err);
@@ -119,7 +117,7 @@ export class LlmFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.llmForm.reset();
+    this.router.navigate(['/llm']);
   }
 
   onCloseMessage() {

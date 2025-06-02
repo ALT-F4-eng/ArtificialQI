@@ -246,7 +246,7 @@ export class DatasetListPageComponent {
       .subscribe({
         next: (res) => {
           this.qaService.cachedDatasetCaricato = res;
-          this.router.navigate(['/datasetContentPage', this.datasetSelected], {
+          this.router.navigate(['/datasetContentPage'], {
             state: { dataset: this.datasetSelected },
           });
         },

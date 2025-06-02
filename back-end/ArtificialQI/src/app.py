@@ -66,6 +66,10 @@ def clone_dataset(id):
     result = DatasetModel.clone_dataset_by_id(id)
     return jsonify(result)
 
+@app.route('/loadDataset/<uuid:id>', methods=['GET'])
+def load_dataset(id):
+    result = DatasetModel.load_dataset_by_id(id)
+    return jsonify(result)
 
 @app.route('/api/messaggio')
 def ricevi_messaggio():
@@ -74,7 +78,6 @@ def ricevi_messaggio():
         return jsonify({'errore': 'Parametro "nome" mancante'}), 400
     risposta = f"Ciao, {nome}! Messaggio ricevuto."
     return jsonify({"risposta": risposta})
-
 
 @app.route("/test-db")
 def test_db():

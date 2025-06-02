@@ -9,19 +9,9 @@ import { PageNavigationComponent } from '../../../shared/components/page-navigat
 import { DatasetPageDto } from '../../../core/models/datasetpage-dto.model';
 import { QAService } from '../../../core/services/qa.service';
 
-export interface ModifyEvent {
-  id: number;
-  question: string;
-  answer: string;
-}
-
 @Component({
   selector: 'app-dataset-page-view',
-  imports: [
-    CommonModule,
-    QAListViewComponent,
-        PageNavigationComponent,
-  ],
+  imports: [CommonModule, QAListViewComponent, PageNavigationComponent],
   templateUrl: './dataset-page-view.component.html',
   styleUrl: './dataset-page-view.component.css',
 })
@@ -35,19 +25,24 @@ export class DatasetPageViewComponent {
 
   @Output() modifyEventShowLabel = new EventEmitter<void>();
 
-  @Output() modifyQASignal_datasetPageView = new EventEmitter<ModifyEvent>();
-  modifyQA_datasetPageView(id: number, question: string, answer: string) {
+  @Output() modifyQASignal_datasetPageView = new EventEmitter<{
+    id: string;
+    question: string;
+    answer: string;
+  }>();
+
+  modifyQA_datasetPageView(id: string, question: string, answer: string) {
     this.modifyQASignal_datasetPageView.emit({ id, question, answer });
   }
- 
-  @Output() deleteQASignal_datasetPageView = new EventEmitter<number>();
-  deleteQA_datasetPageView(qaId: number) {
+
+  @Output() deleteQASignal_datasetPageView = new EventEmitter<string>();
+  deleteQA_datasetPageView(qaId: string) {
     this.deleteQASignal_datasetPageView.emit(qaId);
   }
- 
+
   @Output() changePageSignal_datasetPageView = new EventEmitter<number>();
   onPageChange_datasetPageView(pageIndex: number) {
     this.changePageSignal_datasetPageView.emit(pageIndex);
   }
-
+  
 }

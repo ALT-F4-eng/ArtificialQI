@@ -54,7 +54,7 @@ export class DatasetContentPageComponent implements OnInit {
 
   mode: 'create' | 'edit' = 'create';
   showConfirmDelete = false;
-  idqa?: number;
+  idqa?: string;
 
   //per message component
   showMessage = true;
@@ -249,7 +249,7 @@ export class DatasetContentPageComponent implements OnInit {
     });
   }
 
-  modifyQA(id: number, question: string, answer: string) {
+  modifyQA(id: string, question: string, answer: string) {
     console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
 
     this.qaService.modifyDatasetQA(id, question, answer).subscribe({
@@ -270,7 +270,7 @@ export class DatasetContentPageComponent implements OnInit {
     });
   }
 
-  onQADeleteRequest(id: number) {
+  onQADeleteRequest(id: string) {
     this.showConfirmDelete = true;
     this.idqa = id;
     console.log('Indice ricevuto per cancellazione page:', id);

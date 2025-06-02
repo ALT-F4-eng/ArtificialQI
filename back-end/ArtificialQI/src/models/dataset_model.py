@@ -175,3 +175,33 @@ class DatasetModel(db.Model):
             "last_save_date": cloned_dataset.last_save_date,
             "origin": cloned_dataset.origin
         }
+    
+    
+    @staticmethod
+    def load_dataset_by_id(dataset_id):
+        dataset = DatasetModel.query.get(dataset_id)
+        if not dataset:
+            return {
+                "success": False,
+                "message": f"Dataset con ID {dataset_id} non trovato"
+            }
+
+        # Ottieni tutte le QA associate a questo dataset
+        qas = QAModel.get_all_qa_by_dataset_id(dataset_id)
+
+        # Serializza le QA in formato dizionario
+        qa_list = [
+            {
+                "id": str(qa.id),
+                "domanda": qa.domanda,
+                "risposta": qa.risposta
+            }
+            for qa in qas
+        ]
+
+        return {
+            "qa_list": qa_list
+        }
+
+
+

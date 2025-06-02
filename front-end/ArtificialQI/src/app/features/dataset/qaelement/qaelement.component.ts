@@ -44,7 +44,7 @@ export class QAElementComponent {
     });
   }
 
-  @Output() deleteSignal = new EventEmitter<number>();
+  @Output() deleteSignal = new EventEmitter<string>();
     onDeleteSignal() {
       if (this.qa) {
         this.deleteSignal.emit(this.qa.id); // comunica al padre qa da eliminare

@@ -1,6 +1,8 @@
 from src.db_config import db
 from datetime import datetime, timezone
 import uuid
+from src.models.test_model import TestModel
+from src.models.qa_model import QAModel
 import json
 
 
@@ -51,8 +53,9 @@ class DatasetModel(db.Model):
         'last_save_date':new_dataset.last_save_date,
         'origin':new_dataset.origin
     }
+
     @classmethod
-    def delete_temporary_dataset(cls):
+    def delete_all_temporary_dataset(cls):
         # Trova tutti i dataset temporanei
         temp_datasets = cls.query.filter_by(tmp=True).all()
 
@@ -66,4 +69,32 @@ class DatasetModel(db.Model):
             "deleted_count": len(temp_datasets),
             "message": "Dataset temporanei eliminati con successo"
         }
+    
+    @classmethod
+    def delete_dataset_by_id(cls, dataset_id):
+        with db.session.no_autoflush:
+            # Ottieni i test collegati al dataset
+            linked_tests = TestModel.get_all_test_by_dataset_id(dataset_id)
+             # Elimina tutti i test collegati
+            for test in linked_tests:
+                TestModel.delete_test_by_id(test.id)
+             
+            qa_delete_result = QAModel.delete_all_qa_by_dataset_id(dataset_id)
+            # Procedi con l'eliminazione del dataset
+            dataset = cls.query.get(dataset_id)
+            if not dataset:
+                return {
+                    "success": False,
+                    "message": "Dataset non trovato"
+                }
+
+            db.session.delete(dataset)
+            db.session.commit()
+
+            return {
+                "success": True,
+                "message": f"Dataset {dataset_id} eliminato con successo. "
+                            f"{len(linked_tests)} test e {qa_delete_result['deleted_count']} questionanswer eliminati."
+            }
+
         

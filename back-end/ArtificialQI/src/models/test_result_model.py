@@ -9,3 +9,21 @@ class TestResultModel(db.Model):
     is_correct = db.Column(db.Boolean, nullable=False)
     similarity_score = db.Column(db.Float, nullable=False)
     obtained_answer = db.Column(db.Text, nullable=False)
+
+    @classmethod
+    def get_all_test_result_by_test_id(cls, test_id):
+        return cls.query.filter_by(test=test_id).all()
+        
+    @classmethod
+    def delete_test_result_by_test_id(cls, test_id):
+        results = cls.get_all_test_result_by_test_id(test_id)
+
+        for result in results:
+            db.session.delete(result)
+        
+        db.session.commit()
+        
+        return {
+            "deleted_count": len(results),
+            "message": f"{len(results)} testresult eliminati per test {test_id}"
+        }

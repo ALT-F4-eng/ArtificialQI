@@ -150,21 +150,19 @@ export class DatasetListPageComponent {
   }
 
   onDatasetDeleteConfirmed() {
-    /*
     if (this.datasetid !== undefined) {
-      this.datasetService.deleteDataset(this.datasetid);
-      this.filteredDatasets = [...this.datasetService.getDataset()];
-      this.mockDatasets = [...this.datasetService.getDataset()];
       this.showConfirmDelete = false;
-      this.datasetService.deleteDataset(this.datasetid).subscribe({
+      /*this.filteredDatasets = [...this.datasetService.getDataset()];
+      this.mockDatasets = [...this.datasetService.getDataset()];*/
+      this.datasetService.deleteDatasetById(this.datasetid).subscribe({
         next: () => {
           // Aggiorna la cache locale
-          this.datasetService.removeDatasetFromCache(this.datasetid!);
+          //this.datasetService.removeDatasetFromCache(this.datasetid!);
 
-          // Ricarica le liste aggiornate tramite Observable
+          // Ricarica i dati aggiornati
           this.datasetService.getAllDatasets().subscribe((datasets) => {
-            this.filteredDatasets = [...datasets];
-            this.allDatasets = [...datasets];
+            this.allDatasets = datasets.filter((d) => d.tmp === false);
+            this.filteredDatasets = [...this.allDatasets];
           });
 
           this.showConfirmDelete = false;
@@ -181,7 +179,7 @@ export class DatasetListPageComponent {
         },
       });
     }
-  */
+
   }
 
   onDatasetDeleteCanceled() {

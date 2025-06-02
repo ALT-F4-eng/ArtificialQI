@@ -1,6 +1,5 @@
 from src.db_config import db
 import uuid
-from src.models.dataset_model import DatasetModel
 
 class QAModel(db.Model):
     __tablename__ = 'questionanswer'
@@ -12,3 +11,19 @@ class QAModel(db.Model):
 
     def get_id(self):
         return self.id
+    
+    @classmethod
+    def get_all_qa_by_dataset_id(cls, dataset_id):
+        return cls.query.filter_by(dataset=dataset_id).all()
+    
+    @classmethod
+    def delete_all_qa_by_dataset_id(cls, dataset_id):
+        results = cls.get_all_qa_by_dataset_id(dataset_id)
+        for r in results:
+            db.session.delete(r)
+            
+        db.session.commit()
+        return {
+            "deleted_count": len(results),
+            "message": f"{len(results)} questionanswer eliminati per dataset {dataset_id}"
+        }

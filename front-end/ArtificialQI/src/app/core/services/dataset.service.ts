@@ -141,6 +141,11 @@ export class DatasetService {
   deleteTemporaryDataset(): Observable<any> {
     return this.http.delete(`${this.baseUrl}/deleteDatasetTemporary`);
   }
+
+  deleteDatasetById(dataset_id:string): Observable<any>{
+    return this.http.delete(`${this.baseUrl}/deleteDataset/${dataset_id}`);
+  }
+
   /*
   deleteDataset(id: string): void {
     console.log('ID ricevuto per cancellazione:', id);

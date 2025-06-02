@@ -6,13 +6,11 @@ from uuid import uuid4
 from datetime import datetime
 from src.db_config import db  # usa db separato
 from src.models.dataset_model import DatasetModel  # importa solo il modello
-from models.DatasetDTO import DatasetDTO
 from src.models.qa_model import QAModel  # importa il modello QAModel
 from src.models.llm_model import LlmModel  # importa il modello LlmModel
 from uuid import UUID,uuid4
 import uuid
 from datetime import datetime
-from src.models.qa_model import QAModel
 from src.models.test_result_model import TestResultModel
 
 
@@ -45,7 +43,12 @@ def createTemporaryDataset():
 
 @app.route('/deleteDatasetTemporary', methods=['DELETE'])
 def deleteTemporaryDataset():
-    result = DatasetModel.delete_temporary_dataset()
+    result = DatasetModel.delete_all_temporary_dataset()
+    return jsonify(result)
+
+@app.route('/deleteDataset/<uuid:id>', methods=['DELETE'])
+def deleteDatasetById(id):
+    result = DatasetModel.delete_dataset_by_id(id)
     return jsonify(result)
 
 @app.route('/api/messaggio')

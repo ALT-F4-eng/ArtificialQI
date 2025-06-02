@@ -39,11 +39,12 @@ export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
   allDatasets: DatasetDto[] = [];
-  filteredDatasets: DatasetDto[] = [];// questo è quello che uso per mostrare nel front-end
+  filteredDatasets: DatasetDto[] = []; // questo è quello che uso per mostrare nel front-end
   showConfirmDelete = false;
   showConfirmLoad = false;
   showOverride = false;
-  datasetid?: string;
+
+  //datasetid?: string;
   datasetSelected?: DatasetDto;
 
   //per message component
@@ -88,7 +89,7 @@ export class DatasetListPageComponent {
         console.log('Dataset creato:', datasetDto);
         this.qaService.cachedDatasetCaricato = datasetDto;
         this.router.navigate(['/datasetContentPage'], {
-          state: { datasetDto: datasetDto, mode: 'create' },
+          state: { dataset: datasetDto },
         });
       },
       error: (err) => {
@@ -143,45 +144,43 @@ export class DatasetListPageComponent {
   }
 
   datasetCopied(id: string): void {
-  this.datasetService.cloneDatasetById(id).subscribe({
-    next: (clonedDataset) => {
-      if (clonedDataset && clonedDataset.id) {
-        this.allDatasets.push(clonedDataset);
-        this.filteredDatasets = [...this.allDatasets];
-        this.resultMessage = 'Dataset copiato con successo!';
-        this.messageType = 'success';
-        this.showMessage = true;
-        console.log('Dataset copiato:', clonedDataset);
-      } else {
-        this.resultMessage = 'Errore nella clonazione del dataset.';
+    this.datasetService.cloneDatasetById(id).subscribe({
+      next: (clonedDataset) => {
+        if (clonedDataset && clonedDataset.id) {
+          this.allDatasets.push(clonedDataset);
+          this.filteredDatasets = [...this.allDatasets];
+          this.resultMessage = 'Dataset copiato con successo!';
+          this.messageType = 'success';
+          this.showMessage = true;
+          console.log('Dataset copiato:', clonedDataset);
+        } else {
+          this.resultMessage = 'Errore nella clonazione del dataset.';
+          this.messageType = 'error';
+          this.showMessage = true;
+          console.error('Risposta inattesa:', clonedDataset);
+        }
+      },
+      error: (err) => {
+        this.resultMessage = 'Errore durante la copia del dataset.';
         this.messageType = 'error';
         this.showMessage = true;
-        console.error('Risposta inattesa:', clonedDataset);
-      }
-    },
-    error: (err) => {
-      this.resultMessage = 'Errore durante la copia del dataset.';
-      this.messageType = 'error';
-      this.showMessage = true;
-      console.error('Errore nella richiesta di clonazione:', err);
-    },
-  });
-}
-
+        console.error('Errore nella richiesta di clonazione:', err);
+      },
+    });
+  }
 
   // delete
   onDatasetDeleteRequest(dataset: DatasetDto) {
     this.showConfirmDelete = true;
-    this.datasetid = dataset.id;
-    console.log('Indice ricevuto per cancellazione page:', dataset.id);
+    this.datasetSelected = dataset;
   }
 
   onDatasetDeleteConfirmed() {
-    if (this.datasetid !== undefined) {
+    if (this.datasetSelected !== undefined) {
       this.showConfirmDelete = false;
       /*this.filteredDatasets = [...this.datasetService.getDataset()];
       this.mockDatasets = [...this.datasetService.getDataset()];*/
-      this.datasetService.deleteDatasetById(this.datasetid).subscribe({
+      this.datasetService.deleteDatasetById(this.datasetSelected.id).subscribe({
         next: () => {
           // Aggiorna la cache locale
           //this.datasetService.removeDatasetFromCache(this.datasetid!);
@@ -196,7 +195,7 @@ export class DatasetListPageComponent {
           this.resultMessage = 'Test eliminato con successo!';
           this.messageType = 'success';
           this.showMessage = true;
-          console.log('Dataset eliminato con ID:', this.datasetid);
+          console.log('Dataset eliminato con ID:', this.datasetSelected!.id);
         },
         error: (err) => {
           this.resultMessage = 'eliminazione fallito!';
@@ -209,39 +208,60 @@ export class DatasetListPageComponent {
   }
 
   onDatasetDeleteCanceled() {
-    this.datasetid = undefined;
+    this.datasetSelected = undefined;
     this.showConfirmDelete = false;
   }
 
   // load
   onDatasetLoadRequest(dataset: DatasetDto) {
     this.showConfirmLoad = true;
-    this.datasetid = dataset.id; // datasetid o datasetselected  da capire nel futuro
-    this.datasetSelected = dataset;
-    console.log('Dataset caricato:', dataset);
+    this.datasetSelected = dataset; // datasetid o datasetselected  da capire nel futuro
+    //console.log('Dataset caricato:', dataset);
   }
 
   onDatasetLoadConfirmed() {
     if (this.datasetSelected !== undefined) {
-      // funzionalità da testare dopo la creazione del datasetcontentpage
-      // da cambiare
-      //console.log("diocane")
-      this.router.navigate(['/datasetContentPage', this.datasetid], {
-        state: { dataset: this.datasetSelected },
-        queryParams: { mode: 'edit' },
-      });
+      if (this.isTempDatasetLoaded) {
+        //cancella tmp e poi ne crea un working poi this.qaService.cachedDatasetCaricato = res;
+        this.datasetService.deleteTemporaryDataset().subscribe({
+          next: () => {
+            this.createWorkingCopyTemporary();
+          },
+          error: (err) => {
+            console.error(
+              'Errore nella deleteTemporaryDataset del dataset:',
+              err
+            );
+          },
+        });
+      } else {
+        this.createWorkingCopyTemporary();
+      }
     }
+  }
+
+  createWorkingCopyTemporary() {
+    this.datasetService
+      .createWorkingCopyTemporary(this.datasetSelected!.id)
+      .subscribe({
+        next: (res) => {
+          this.qaService.cachedDatasetCaricato = res;
+          this.router.navigate(['/datasetContentPage', this.datasetSelected], {
+            state: { dataset: this.datasetSelected },
+          });
+        },
+        error: (err) => {
+          console.error(
+            'Errore nella createWorkingCopyTemporary del dataset:',
+            err
+          );
+        },
+      });
   }
 
   onDatasetLoadCanceled() {
     this.datasetSelected = undefined;
     this.showConfirmLoad = false;
-  }
-
-  onCloseMessage() {
-    this.showMessage = false;
-    this.resultMessage = '';
-    this.messageType = 'error';
   }
 
   onDatasetOverrideRequest() {
@@ -266,5 +286,15 @@ export class DatasetListPageComponent {
 
   onDatasetOverrideCanceled() {
     this.showOverride = false;
+  }
+
+  onCloseMessage() {
+    this.showMessage = false;
+    this.resultMessage = '';
+    this.messageType = 'error';
+  }
+
+  get isTempDatasetLoaded(): boolean {
+    return !!this.qaService.cachedDatasetCaricato;
   }
 }

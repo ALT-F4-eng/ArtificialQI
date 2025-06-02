@@ -12,15 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 
-import { DatasetService } from './core/services/dataset.service';
-import { MockDatasetService } from './core/services/mockDataset.service';
 import { TestService } from './core/services/test.service';
 import { MockTestService } from './core/services/mocktest.service';
 import { LlmService } from './core/services/llm.service';
 import { MockLlmService } from './test/llm-test/llm.service.mock';
 
-import { QAService } from './core/services/qa.service';
-import { MockQAService } from './core/services/mockQA.service';
 
 registerLocaleData(en);
 
@@ -28,7 +24,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    { provide: QAService, useClass: MockQAService },
     { provide: TestService, useClass: MockTestService },
     { provide: LlmService, useClass: MockLlmService },
     provideNzI18n(en_US),

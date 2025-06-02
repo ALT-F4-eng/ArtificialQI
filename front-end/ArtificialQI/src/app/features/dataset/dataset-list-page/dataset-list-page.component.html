@@ -38,8 +38,12 @@
 
 <app-confirm
   *ngIf="showConfirmLoad"
-  [message]="'Sei sicuro di voler caricare questo dataset?'"
-  [confirmLabel]="'Sì, carica'"
+  [message]="
+    isTempDatasetLoaded
+      ? 'Sei sicuro di sovrascrivere il dataset caricato temporaneamente?'
+      : 'Sei sicuro di voler caricare questo dataset?'
+  "
+  [confirmLabel]="'Sì'"
   [cancelLabel]="'Annulla'"
   (confirmed)="onDatasetLoadConfirmed()"
   (canceled)="onDatasetLoadCanceled()"

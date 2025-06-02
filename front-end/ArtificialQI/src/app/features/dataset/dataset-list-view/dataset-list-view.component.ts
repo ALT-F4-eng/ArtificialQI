@@ -29,9 +29,9 @@ export class DatasetListViewComponent {
     this.rename.emit({ id, newName });
   }
 
-  @Output() datasetCopied = new EventEmitter<number>();
-  onCopy(index: number) {
-    this.datasetCopied.emit(index);
+  @Output() datasetCopied = new EventEmitter<string>();
+  onCopy(id: string) {
+    this.datasetCopied.emit(id);
   }
 
   @Output() datasetDeleted = new EventEmitter<DatasetDto>();

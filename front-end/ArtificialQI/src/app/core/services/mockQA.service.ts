@@ -12,28 +12,28 @@ export const MOCK_DATASETPAGEQA: DatasetPageDto = {
   page_n: 1,
   qa_list: [
     {
-      id: 1,
+      id: "1",
       question: "Qual è la capitale d'Italia?",
       answer: 'Roma',
     },
     {
-      id: 2,
+      id: "1",
       question: "Chi ha scritto 'La Divina Commedia'?",
       answer: 'Dante Alighieri',
     },
     {
-      id: 3,
+      id: "1",
       question: "Quante regioni ha l'Italia?",
       answer: '20',
     },
     {
-      id: 4,
+      id: "1",
       question: "Che cos'è Angular?",
       answer:
         'Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,',
     },
     {
-      id: 5,
+      id: "1",
       question: '',
       answer: '',
     },
@@ -44,28 +44,28 @@ export const MOCK_DATASETPAGEQA_2: DatasetPageDto = {
   page_n: 2,
   qa_list: [
     {
-      id: 6,
+      id: "1",
       question: "Qual è il fiume più lungo d'Italia?",
       answer: 'Po',
     },
     {
-      id: 7,
+      id: "1",
       question: "Chi ha dipinto la 'Gioconda'?",
       answer: 'Leonardo da Vinci',
     },
     {
-      id: 8,
+      id: "1",
       question: 'In che anno è iniziata la Seconda Guerra Mondiale?',
       answer: '1939',
     },
     {
-      id: 9,
+      id: "1",
       question: "Che cos'è React?",
       answer:
         'Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,',
     },
     {
-      id: 10,
+      id: "1",
       question: '',
       answer: '',
     },
@@ -126,7 +126,7 @@ export class MockQAService {
     }
   }*/
   modifyDatasetQA(
-    qaId: number,
+    qaId: string,
     question: string,
     answer: string
   ): Observable<QADto> {
@@ -155,7 +155,7 @@ export class MockQAService {
   }
   saveDatasetPage(): void {}
 
-  deleteDatasetQA(qaId: number): Observable<void> {
+  deleteDatasetQA(qaId: string): Observable<void> {
     const index = MOCK_DATASETPAGEQA.qa_list.findIndex((qa) => qa.id === qaId);
 
     if (index !== -1) {

@@ -151,26 +151,11 @@ export class DatasetService {
     return this.http.put(`${this.baseUrl}/renameDataset/${dataset_id}`, body);
   }
 
-  /*
-  deleteDataset(id: string): void {
-    console.log('ID ricevuto per cancellazione:', id);
-
-    // Trova l'indice del dataset con l'id specificato
-    const index = this.datasets.findIndex(
-      (dataset) => dataset.id === String(id)
-    );
-
-    if (index !== -1) {
-      console.log('Dataset da rimuovere:', this.datasets[index]);
-      this.datasets.splice(index, 1); // Rimuove l'elemento
-      this.datasets = [...this.datasets]; // Forza aggiornamento (immutabilità)
-    } else {
-      console.warn('Nessun dataset trovato con id:', id);
-    }
-
-    console.log('Stato attuale:', this.datasets);
+  cloneDatasetById(dataset_id: string): Observable<DatasetDto> {
+    return this.http.post<DatasetDto>(`${this.baseUrl}/cloneDataset/${dataset_id}`, {});
   }
 
+  /*
   //carico dataset scelto mandato il suo id al db
   loadDataset(datasetId: number): Observable<DatasetDto> {
     return this.http.get<DatasetDto>(`/dataset/${datasetId}`);

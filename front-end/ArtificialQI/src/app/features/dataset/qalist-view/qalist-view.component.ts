@@ -19,13 +19,13 @@ export class QAListViewComponent {
   @Input() qaList?: QADto[] = [];
 
   @Output() modify = new EventEmitter<QADto>();
-  onModify(id: number, question: string, answer: string) {
+  onModify(id: string, question: string, answer: string) {
     console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
     this.modify.emit({ id, question, answer });
   }
   
-  @Output() delete = new EventEmitter<number>();
-  onDelete(id:number) {
+  @Output() delete = new EventEmitter<string>();
+  onDelete(id:string) {
     console.log('Indice ricevuto per cancellazione list view:', id);
     this.delete.emit(id);
   }

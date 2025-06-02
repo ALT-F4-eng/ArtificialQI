@@ -4,9 +4,13 @@ import { FileUploadComponent } from '../../../features/dataset/json-file-upload/
 import { DatasetListViewComponent } from '../../../features/dataset/dataset-list-view/dataset-list-view.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
+
 import { DatasetService } from '../../../core/services/dataset.service';
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
+import { QAService } from '../../../core/services/qa.service';
+
+import { MatButtonModule } from '@angular/material/button';
+
 import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
@@ -38,6 +42,7 @@ export class DatasetListPageComponent {
   filteredDatasets: DatasetDto[] = [];
   showConfirmDelete = false;
   showConfirmLoad = false;
+  showOverride = false;
   datasetid?: string;
   datasetSelected?: DatasetDto;
 
@@ -46,14 +51,18 @@ export class DatasetListPageComponent {
   resultMessage = '';
   messageType: 'success' | 'error' = 'error';
 
-  constructor(private datasetService: DatasetService, private router: Router) {}
+  constructor(
+    private datasetService: DatasetService,
+    private qaService: QAService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     //this.allDatasets =
     this.datasetService.getAllDatasets().subscribe({
       next: (datasets) => {
-        console.log("ciao",datasets);
-        this.allDatasets = datasets;
+        console.log('ciao', datasets);
+        this.allDatasets = datasets.filter((d) => d.tmp === false);
         this.filteredDatasets = [...this.allDatasets]; // mostra tutti inizialmente
       },
       error: (err) => {
@@ -62,12 +71,30 @@ export class DatasetListPageComponent {
     });
   }
 
-  createDataset() {
-    console.log("createdataset");
-    this.router.navigate(['/datasetContentPage'], {
-      queryParams: { mode: 'create' },
-    });
+  checkOverride() {
+    //caso che crea da 0 senza dataset caricato
+    if (!this.qaService.cachedDatasetCaricato) {
+      this.createTemoraryDataset();
+    } else {
+      console.log("sovrascrivo da checkoverride");
+      this.onDatasetOverrideRequest();
+    }
+  }
 
+  createTemoraryDataset() {
+    console.log('create Dataset temporaneo');
+    this.datasetService.createTemporaryDataset().subscribe({
+      next: (datasetDto) => {
+        console.log('Dataset creato:', datasetDto);
+        this.qaService.cachedDatasetCaricato = datasetDto;
+        this.router.navigate(['/datasetContentPage'], {
+          state: { datasetDto: datasetDto, mode: 'create' },
+        });
+      },
+      error: (err) => {
+        console.error('Errore nella creazione del dataset:', err);
+      },
+    });
   }
 
   handleSearchDataset(term: string) {
@@ -77,8 +104,8 @@ export class DatasetListPageComponent {
     );
   }
 
-  
-    renameDataset(index: number, newName: string) {/*
+  renameDataset(index: number, newName: string) {
+    /*
     // Rinomina il dataset chiamando il servizio
     this.datasetService.renameDataset(index, newName);
     this.resultMessage = 'Test rinominato con successo!';
@@ -87,9 +114,10 @@ export class DatasetListPageComponent {
     // Aggiorna la lista dei dataset per riflettere i cambiamenti
     //this.allDatasets = [...this.allDatasets];
       */
-    }
+  }
 
-  datasetCopied(index: number): void { /*
+  datasetCopied(index: number): void {
+    /*
     this.datasetService.cloneDataset(index).subscribe({
       next: (clonedDataset) => {
         //manda una richiesta al back-end
@@ -112,8 +140,7 @@ export class DatasetListPageComponent {
       },
     });
   */
-    }
-  
+  }
 
   // delete
   onDatasetDeleteRequest(dataset: DatasetDto) {
@@ -121,10 +148,9 @@ export class DatasetListPageComponent {
     this.datasetid = dataset.id;
     console.log('Indice ricevuto per cancellazione page:', dataset.id);
   }
-  
 
-  
-  onDatasetDeleteConfirmed() {/*
+  onDatasetDeleteConfirmed() {
+    /*
     if (this.datasetid !== undefined) {
       this.datasetService.deleteDataset(this.datasetid);
       this.filteredDatasets = [...this.datasetService.getDataset()];
@@ -155,8 +181,8 @@ export class DatasetListPageComponent {
         },
       });
     }
-  */}
-  
+  */
+  }
 
   onDatasetDeleteCanceled() {
     this.datasetid = undefined;
@@ -167,11 +193,10 @@ export class DatasetListPageComponent {
   onDatasetLoadRequest(dataset: DatasetDto) {
     this.showConfirmLoad = true;
     this.datasetid = dataset.id; // datasetid o datasetselected  da capire nel futuro
-
     this.datasetSelected = dataset;
     console.log('Dataset caricato:', dataset);
   }
-  
+
   onDatasetLoadConfirmed() {
     if (this.datasetSelected !== undefined) {
       // funzionalità da testare dopo la creazione del datasetcontentpage
@@ -193,5 +218,31 @@ export class DatasetListPageComponent {
     this.showMessage = false;
     this.resultMessage = '';
     this.messageType = 'error';
+  }
+
+  onDatasetOverrideRequest() {
+    this.showOverride = true;
+  }
+
+  onDatasetOverrideConfirmed() {
+    console.log("sovrascrivo confermato");
+    // richiesta di delete working copy o dataset temporary copy
+    this.qaService.cachedDatasetCaricato = null;
+    this.datasetService.deleteTemporaryDataset().subscribe({
+      next: (res) => {
+        console.log('Dataset temporaneo eliminato con successo:', res);
+        // Pulizia del dataset caricato in cache (se applicabile)
+        this.createTemoraryDataset();
+      },
+      error: (err) => {
+        console.error('Errore nella cancellazione del dataset:', err);
+      },
+    });
+
+  
+  }
+
+  onDatasetOverrideCanceled() {
+    this.showOverride = false;
   }
 }

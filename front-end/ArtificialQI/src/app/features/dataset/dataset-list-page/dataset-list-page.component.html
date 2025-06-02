@@ -6,7 +6,7 @@
 ></app-message-box>
 
 <app-file-upload></app-file-upload>
-<button mat-raised-button (click)="createDataset()">
+<button mat-raised-button (click)="checkOverride()">
   <mat-icon>add</mat-icon> Crea dataset
 </button>
 <app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
@@ -19,19 +19,29 @@
 ></app-dataset-list-view>
 
 <app-confirm
-      *ngIf="showConfirmDelete"
-      [message]="'Sei sicuro di voler eliminare questo dataset?'"
-      [confirmLabel]="'Sì, elimina'"
-      [cancelLabel]="'Annulla'"
-      (confirmed)="onDatasetDeleteConfirmed()"
-      (canceled)="onDatasetDeleteCanceled()"
+  *ngIf="showConfirmDelete"
+  [message]="'Sei sicuro di voler eliminare questo dataset?'"
+  [confirmLabel]="'Sì, elimina'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onDatasetDeleteConfirmed()"
+  (canceled)="onDatasetDeleteCanceled()"
 ></app-confirm>
+
 <app-confirm
-      *ngIf="showConfirmLoad"
-      [message]="'Sei sicuro di voler caricare questo dataset?'"
-      [confirmLabel]="'Sì, carica'"
-      [cancelLabel]="'Annulla'"
-      (confirmed)="onDatasetLoadConfirmed()"
-      (canceled)="onDatasetLoadCanceled()"
+  *ngIf="showOverride"
+  [message]="'Sei sicuro di Sovrascrivere dataset caricato temporaneo'"
+  [confirmLabel]="'Sì'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onDatasetOverrideConfirmed()"
+  (canceled)="onDatasetOverrideCanceled()"
+></app-confirm>
+
+<app-confirm
+  *ngIf="showConfirmLoad"
+  [message]="'Sei sicuro di voler caricare questo dataset?'"
+  [confirmLabel]="'Sì, carica'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onDatasetLoadConfirmed()"
+  (canceled)="onDatasetLoadCanceled()"
 ></app-confirm>
 <!-- message component -->

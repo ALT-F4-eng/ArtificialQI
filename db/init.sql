@@ -54,7 +54,7 @@ INSERT INTO Llm (id, name, url, save_date) VALUES
 
 INSERT INTO Dataset (id, tmp, name, first_save_date, last_save_date, origin) VALUES
 ('20000000-0000-0000-0000-000000000001', FALSE, 'Set di domande generali', '2025-05-15 10:00:00', '2025-05-28 15:00:00', NULL),
-('20000000-0000-0000-0000-000000000002', TRUE, 'Subset test temporaneo', '2025-05-25 08:00:00', '2025-05-25 08:00:00', '20000000-0000-0000-0000-000000000001');
+('20000000-0000-0000-0000-000000000002', FALSE, 'Subset test temporaneo', '2025-05-25 08:00:00', '2025-05-25 08:00:00', '20000000-0000-0000-0000-000000000001');
 
 INSERT INTO QuestionAnswer (id, domanda, risposta, dataset) VALUES
 ('30000000-0000-0000-0000-000000000001', 'Qual è la capitale della Spagna?', 'Madrid', '20000000-0000-0000-0000-000000000001'),

@@ -9,105 +9,105 @@ export const MOCK_DATASETS: DatasetDto[] = [
     id: '1',
     name: 'Dataset Alpha',
     last_save_date: new Date('2025-05-01'),
-    origin: 0,
+    origin: '0',
     tmp: false,
   },
   {
     id: '2',
     name: 'Dataset Beta',
     last_save_date: new Date('2025-06-10'),
-    origin: 1,
+    origin: '0',
     tmp: false,
   },
   {
     id: '3',
     name: 'Dataset Gamma',
     last_save_date: new Date('2025-07-15'),
-    origin: 2,
+    origin: '0',
     tmp: false,
   },
   {
     id: '4',
     name: 'Dataset Delta',
     last_save_date: new Date('2025-08-20'),
-    origin: 3,
+    origin: '0',
     tmp: true,
   },
   {
     id: '5',
     name: 'Dataset Epsilon',
     last_save_date: new Date('2025-09-25'),
-    origin: 0,
+    origin: '0',
     tmp: false,
   },
   {
     id: '6',
     name: 'Dataset Zeta',
     last_save_date: new Date('2025-10-30'),
-    origin: 5,
+    origin: '0',
     tmp: true,
   },
   {
     id: '7',
     name: 'Dataset Eta',
     last_save_date: new Date('2025-11-05'),
-    origin: 0,
+    origin: '0',
     tmp: false,
   },
   {
     id: '8',
     name: 'Dataset Theta',
     last_save_date: new Date('2025-12-12'),
-    origin: 7,
+    origin: '0',
     tmp: true,
   },
   {
     id: '9',
     name: 'Dataset Theta2',
     last_save_date: new Date('2025-12-13'),
-    origin: 8,
+    origin: '0',
     tmp: false,
   },
   {
     id: '10',
     name: 'Dataset Iota',
     last_save_date: new Date('2025-12-20'),
-    origin: 1,
+    origin: '0',
     tmp: false,
   },
   {
     id: '11',
     name: 'Dataset Kappa',
     last_save_date: new Date('2025-12-25'),
-    origin: 10,
+    origin: '0',
     tmp: true,
   },
   {
     id: '12',
     name: 'Dataset Lambda',
     last_save_date: new Date('2026-01-01'),
-    origin: 11,
+    origin: '0',
     tmp: false,
   },
   {
     id: '13',
     name: 'Dataset Mu',
     last_save_date: new Date('2026-01-05'),
-    origin: 12,
+    origin: '0',
     tmp: false,
   },
   {
     id: '14',
     name: 'Dataset Nu',
     last_save_date: new Date('2026-01-10'),
-    origin: 13,
+    origin: '0',
     tmp: false,
   },
   {
     id: '15',
     name: 'Dataset Xi',
     last_save_date: new Date('2026-01-15'),
-    origin: 14,
+    origin: '0',
     tmp: true,
   },
 ];
@@ -133,8 +133,8 @@ export class MockDatasetService {
     }
   }
 
-  
-  cloneDataset(index: number): Observable<any> {/*
+  cloneDataset(index: number): Observable<any> {
+    /*
     const original = this.datasets[index];
     if (!original) {
       return throwError(() => new Error('Dataset non trovato'));
@@ -164,12 +164,10 @@ export class MockDatasetService {
 
     return of(copiedDataset); // ritorna Observable che emette il nuovo dataset
   */
- return of(void 0);
-    }
-  
+    return of(void 0);
+  }
 
-
-// mock del back-end
+  // mock del back-end
   deleteDataset(id: string): Observable<void> {
     console.log('ID ricevuto per cancellazione:', id);
 
@@ -185,7 +183,7 @@ export class MockDatasetService {
     console.log('Stato attuale:', this.datasets);
     return of(void 0);
   }
-  
+
   // servirebbe per aggiornare la lista front-end
   removeDatasetFromCache(id: string): void {
     const index = this.datasets.findIndex((d) => d.id === id);

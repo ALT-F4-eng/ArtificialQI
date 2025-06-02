@@ -25,8 +25,6 @@ import { LLMselectionListComponent } from '../llmselection-list/llmselection-lis
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 
 import { ApiService } from '../../../core/services/prova.service';
-import { DatasetTmpService } from '../../../core/services/dataset.service';
-
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { MessageBoxComponent } from '../../../shared/error-message/message.component';
 @Component({
@@ -43,7 +41,7 @@ import { MessageBoxComponent } from '../../../shared/error-message/message.compo
   templateUrl: './dataset-content-page.component.html',
   styleUrl: './dataset-content-page.component.css',
 })
-export class DatasetContentPageComponent implements OnInit{
+export class DatasetContentPageComponent implements OnInit {
   dataset!: DatasetDto;
   qa_listForCreate: QADto[] = [];
   workingCopy?: DatasetDto;
@@ -67,8 +65,7 @@ export class DatasetContentPageComponent implements OnInit{
     private qaService: QAService,
     private route: ActivatedRoute,
     private router: Router,
-    private apiService: ApiService,
-    private datasetTmpService: DatasetTmpService,
+    private apiService: ApiService
   ) {} //private router: Router
 
   ngOnInit(): void {
@@ -76,16 +73,14 @@ export class DatasetContentPageComponent implements OnInit{
       this.resultMessage = 'Il dataset caricato!';
       this.messageType = 'success';
       this.showMessage = true;
-      //this.loadResults();
+      this.loadResults();
     } else {
       this.resultMessage = 'non è stato caricato nessun dataset per il momento';
       this.messageType = 'error';
       this.showMessage = true;
       console.log('showMessage:', this.showMessage);
     }
-  
-    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    
+
     /*this.datasetTmpService.creaDatasetTmp().subscribe({
       next: (res) => {
       this.messaggio = res.message;
@@ -97,10 +92,7 @@ export class DatasetContentPageComponent implements OnInit{
     console.error('Errore:', err);
     this.messaggio = 'Errore nella richiesta di creazione dataset tmp.';
   });*/
-}
-
-  
-    
+  }
 
   loadResults() {
     this.route.queryParams.subscribe((params) => {
@@ -214,18 +206,17 @@ export class DatasetContentPageComponent implements OnInit{
           });*/
           //la logica è salvare tutto e reindirizzare l'utente
           // chiama la funzione di salvataggio
-          this.datasetTmpService.updateDataset(this.dataset).subscribe({
+          /*this.datasetTmpService.updateDataset(this.dataset).subscribe({
             next: (res) => {
-            console.log('Dataset aggiornato:', res);
-            this.router.navigate(['/datasetContentPage', this.dataset.id], {
-              queryParams: { mode: 'edit' },
-          });
-  },
-  error: (err) => {
-    console.error('Errore durante l\'aggiornamento:', err);
-  }
-});
-
+              console.log('Dataset aggiornato:', res);
+              this.router.navigate(['/datasetContentPage', this.dataset.id], {
+                queryParams: { mode: 'edit' },
+              });
+            },
+            error: (err) => {
+              console.error("Errore durante l'aggiornamento:", err);
+            },
+          });*/
         }
       });
     }

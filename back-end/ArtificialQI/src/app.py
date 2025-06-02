@@ -12,8 +12,8 @@ from src.models.llm_model import LlmModel  # importa il modello LlmModel
 
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, origins=["http://localhost:4200"])
-#CORS(app)
+#CORS(app, supports_credentials=True, origins=["http://localhost:4200"])
+CORS(app)
 # Config DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DB_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -30,10 +30,20 @@ DB_URL = os.environ.get("DB_URL")
 
 @app.route('/datasets',methods=['GET'])
 def getAllDataset():
-    data = DatasetModel.get_all_dataset()  # ritorna lista di dict, non stringa
-    return jsonify(data)
+    datasets = DatasetModel.get_all_dataset()  # ritorna lista di dict, non stringa
+    return jsonify(datasets)
 
-@app.route('/api/messaggio', methods=['GET'])
+@app.route('/create/dataset', methods=['POST'])
+def createTemporaryDataset():
+    dataset = DatasetModel.create_temporary_dataset()
+    return jsonify(dataset)
+
+@app.route('/deleteDatasetTemporary', methods=['DELETE'])
+def deleteTemporaryDataset():
+    result = DatasetModel.delete_temporary_dataset()
+    return jsonify(result)
+
+@app.route('/api/messaggio')
 def ricevi_messaggio():
     nome = request.args.get('nome')
     if not nome:

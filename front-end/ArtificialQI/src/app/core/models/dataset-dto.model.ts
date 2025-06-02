@@ -2,7 +2,7 @@ export interface DatasetDto {
   id: string;
   name: string;
   last_save_date: Date;
-  origin: number;
+  origin: string;
   tmp: boolean;
 }
 
@@ -10,7 +10,7 @@ export const emptyDataset: DatasetDto = {
   id: '00000000-0000-0000-0000-000000000000',
   name: 'Nuovo Dataset',
   last_save_date: new Date(),
-  origin: 0,
+  origin: '0',
   tmp: true,
 };
 

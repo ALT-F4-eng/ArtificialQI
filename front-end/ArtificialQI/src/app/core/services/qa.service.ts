@@ -12,8 +12,7 @@ export const MOCK_DATASET: DatasetDto = {
   id: '1e7b9c8a-1a2b-4c3d-8e9f-0a1b2c3d4e5f',
   name: 'Dataset Alpha',
   last_save_date: new Date('2025-05-01'),
-  origin: 0,
-  tmp: false,
+origin: '0',  tmp: false,
 };
 
 export const MOCK_DATASETPAGEQA: DatasetPageDto = {

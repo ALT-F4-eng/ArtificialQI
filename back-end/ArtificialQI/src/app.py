@@ -326,6 +326,32 @@ def delete_qa(dataset_id, qa_id):
 
     return jsonify({'message': f'QA {qa_id} deleted from dataset {dataset_id}'}), 200
 
+
+
+@app.route('/datasets/<dataset_id>/qas', methods=['GET'])
+def get_qa_page(dataset_id):
+    try:
+        dataset_uuid = uuid.UUID(dataset_id)
+    except ValueError:
+        return jsonify({'message': 'Invalid UUID format'}), 400
+
+    dataset = DatasetModel.query.get(dataset_uuid)
+    if not dataset:
+        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
+
+    qa_list = QAModel.query.filter_by(dataset=dataset_uuid).all()
+
+    result = [
+        {
+            'id': str(qa.id),
+            'domanda': qa.domanda,
+            'risposta': qa.risposta
+        }
+        for qa in qa_list
+    ]
+
+    return jsonify(result), 200
+
     
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -7,7 +7,7 @@ RUN --mount=type=cache,target=/root/.cache/pip3 pip3 install torch --index-url h
 COPY ./pyproject.toml .
 RUN --mount=type=cache,target=/root/.cache/pip3 pip3 install -e .[dev]
 
-COPY ./artificialqi .
+COPY ./ArtificialQI .
 
 EXPOSE 5000
 

@@ -150,10 +150,17 @@ export class DatasetService {
     const body = { name: newName };
     return this.http.put(`${this.baseUrl}/renameDataset/${dataset_id}`, body);
   }
-
+  
   cloneDatasetById(dataset_id: string): Observable<DatasetDto> {
     return this.http.post<DatasetDto>(`${this.baseUrl}/cloneDataset/${dataset_id}`, {});
   }
+
+  createWorkingCopyTemporary(dataset_id:string):Observable<DatasetDto> {
+    return this.http.post<DatasetDto>(`${this.baseUrl}/createWorkingCopyTemporary/${dataset_id}`, {});
+  }
+
+  
+  
 
   /*
   //carico dataset scelto mandato il suo id al db

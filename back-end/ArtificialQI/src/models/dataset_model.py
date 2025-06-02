@@ -189,19 +189,58 @@ class DatasetModel(db.Model):
         # Ottieni tutte le QA associate a questo dataset
         qas = QAModel.get_all_qa_by_dataset_id(dataset_id)
 
-        # Serializza le QA in formato dizionario
+        # Serializza le QA in formato lista di dizionari
         qa_list = [
             {
                 "id": str(qa.id),
-                "domanda": qa.domanda,
-                "risposta": qa.risposta
+                "question": qa.domanda,
+                "answer": qa.risposta
             }
             for qa in qas
         ]
 
+        # Restituisci direttamente la lista, non un oggetto che la contiene
+        return qa_list
+
+    @staticmethod
+    def create_working_copy(dataset_id):
+        # Ottieni il dataset originale
+        original = DatasetModel.query.get(dataset_id)
+        if not original:
+            return {
+                "success": False,
+                "message": f"Dataset con ID {dataset_id} non trovato."
+            }
+
+        # Mantieni lo stesso nome del dataset originale
+        new_name = original.name
+
+        now = datetime.now(timezone.utc)
+
+        # Crea il nuovo dataset come copia temporanea
+        cloned_dataset = DatasetModel(
+            name=new_name,
+            tmp=True,  # <- copia temporanea
+            first_save_date=now,
+            last_save_date=now,
+            origin=dataset_id
+        )
+        db.session.add(cloned_dataset)
+        db.session.flush()  # Serve per ottenere l'ID prima della copia QA
+
+        # Clona la QA associata (se esiste)
+        QAModel.copy_all_qa_by_dataset_id(dataset_id, cloned_dataset.id)
+        db.session.commit()
+
         return {
-            "qa_list": qa_list
+            "id": cloned_dataset.id,
+            "name": cloned_dataset.name,
+            "tmp": cloned_dataset.tmp,
+            "first_save_date": cloned_dataset.first_save_date,
+            "last_save_date": cloned_dataset.last_save_date,
+            "origin": cloned_dataset.origin
         }
+
 
 
 

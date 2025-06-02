@@ -8,39 +8,41 @@ import { LlmDto } from '../models/llm-dto.model';
 import { DatasetDto } from '../models/dataset-dto.model';
 import { DatasetPageDto } from '../models/datasetpage-dto.model';
 
+
 export const MOCK_DATASET: DatasetDto = {
   id: '1e7b9c8a-1a2b-4c3d-8e9f-0a1b2c3d4e5f',
   name: 'Dataset Alpha',
   last_save_date: new Date('2025-05-01'),
-origin: '0',  tmp: false,
+  origin: '0',
+  tmp: false,
 };
 
 export const MOCK_DATASETPAGEQA: DatasetPageDto = {
   page_n: 1,
   qa_list: [
     {
-      id: "1",
+      id: '1',
       question: "Qual è la capitale d'Italia?",
       answer: 'Roma',
     },
     {
-      id: "1",
+      id: '1',
       question: "Chi ha scritto 'La Divina Commedia'?",
       answer: 'Dante Alighieri',
     },
     {
-      id: "1",
+      id: '1',
       question: "Quante regioni ha l'Italia?",
       answer: '20',
     },
     {
-      id: "1",
+      id: '1',
       question: "Che cos'è Angular?",
       answer:
         'Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,Un framework per applicazioni web sviluppato da Google,',
     },
     {
-      id: "1",
+      id: '1',
       question: '',
       answer: '',
     },
@@ -51,28 +53,28 @@ export const MOCK_DATASETPAGEQA_2: DatasetPageDto = {
   page_n: 2,
   qa_list: [
     {
-      id: "1",
+      id: '1',
       question: "Qual è il fiume più lungo d'Italia?",
       answer: 'Po',
     },
     {
-      id: "1",
+      id: '1',
       question: "Chi ha dipinto la 'Gioconda'?",
       answer: 'Leonardo da Vinci',
     },
     {
-      id: "1",
+      id: '1',
       question: 'In che anno è iniziata la Seconda Guerra Mondiale?',
       answer: '1939',
     },
     {
-      id: "1",
+      id: '1',
       question: "Che cos'è React?",
       answer:
         'Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,Una libreria JavaScript per costruire interfacce utente,',
     },
     {
-      id: "1",
+      id: '1',
       question: '',
       answer: '',
     },
@@ -82,18 +84,20 @@ export const MOCK_DATASETPAGEQA_2: DatasetPageDto = {
   providedIn: 'root',
 })
 export class QAService {
+  private baseUrl = 'http://localhost:5000';
   cachedDatasetCaricato: any;
   constructor(private http: HttpClient) {}
   //sezione di create
   //back-end dovrebbe ritornare un oggetto dataset nuovo
-  getNewDatasetTemporary(): Observable<DatasetDto> {
-    return this.http.get<DatasetDto>('/dataset');
+
+  getAllqaByDatasetId(dataset_id: string): Observable<QADto[]> {
+    return this.http.get<QADto[]>(`${this.baseUrl}/loadDataset/${dataset_id}`);
   }
 
   getDatasetPage(index: number): Observable<DatasetPageDto> {
     return this.http.get<DatasetPageDto>(`/dataset/page/${index}`);
   }
-  
+
   //
   getDatasetPage2mock(index: number): Observable<DatasetPageDto> {
     return this.http.get<DatasetPageDto>(`/dataset/page/${index}`);

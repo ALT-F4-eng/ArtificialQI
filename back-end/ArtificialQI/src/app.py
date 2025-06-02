@@ -71,6 +71,18 @@ def load_dataset(id):
     result = DatasetModel.load_dataset_by_id(id)
     return jsonify(result)
 
+@app.route('/createWorkingCopyTemporary/<uuid:id>', methods=['POST'])
+def createWorkingCopyTemporary(id):
+    #dataset_id = str(id)  # Converti UUID in stringa, se necessario
+
+    result = DatasetModel.create_working_copy(id)
+
+    if not result.get("success", True):  # Se `success` è False
+        return jsonify(result), 404
+    return jsonify(result), 200
+
+
+
 @app.route('/api/messaggio')
 def ricevi_messaggio():
     nome = request.args.get('nome')

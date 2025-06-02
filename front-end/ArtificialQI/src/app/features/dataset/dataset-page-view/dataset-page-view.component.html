@@ -1,5 +1,5 @@
 <app-qalist-view
-  [qaList]="datasetPage?.qa_list"
+  [qaList]="visibleQaList"
   (modify)="modifyQA_datasetPageView($event.id, $event.question, $event.answer)"
   (delete)="deleteQA_datasetPageView($event)"
 ></app-qalist-view>

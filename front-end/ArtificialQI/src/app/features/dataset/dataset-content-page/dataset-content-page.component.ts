@@ -43,31 +43,32 @@ import { MessageBoxComponent } from '../../../shared/error-message/message.compo
 })
 export class DatasetContentPageComponent implements OnInit {
   dataset!: DatasetDto;
-  qa_listForCreate: QADto[] = [];
-  workingCopy?: DatasetDto;
-  datasetPage!: DatasetPageDto;
+  qa_list: QADto[] = [];
+
+  // workingCopy?: DatasetDto;
+  //datasetPage!: DatasetPageDto;
   detectWokingCopy = false; // booleano per decidere quando si fa un working copy
   // poi tutte le modifiche vengono salvate all'interno del db su workingcopy finche l'utente non decide di salvare tale dataset
   // inpute per pageNavigation della pagina
 
-  messaggio: string = '';
+  // messaggio: string = '';
 
-  mode: 'create' | 'edit' = 'create';
+  // mode: 'create' | 'edit' = 'create';
   showConfirmDelete = false;
+
   idqa?: string;
 
   //per message component
   showMessage = true;
   resultMessage = '';
   messageType: 'success' | 'error' = 'error';
-
   constructor(
-    private qaService: QAService,
+    public qaService: QAService,
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService
   ) {} //private router: Router
-
+  
   ngOnInit(): void {
     if (this.qaService.cachedDatasetCaricato) {
       this.resultMessage = 'Il dataset caricato!';
@@ -80,51 +81,27 @@ export class DatasetContentPageComponent implements OnInit {
       this.showMessage = true;
       console.log('showMessage:', this.showMessage);
     }
-
-    /*this.datasetTmpService.creaDatasetTmp().subscribe({
-      next: (res) => {
-      this.messaggio = res.message;
-      this.dataset.id = res.id as `${string}-${string}-${string}-${string}-${string}`; // 👈 salva l'id per usi futuri (PUT)
-      console.log('Dataset ID:', this.dataset.id);
-      console.log(this.messaggio);
-    }, 
-  error: (err) => {
-    console.error('Errore:', err);
-    this.messaggio = 'Errore nella richiesta di creazione dataset tmp.';
-  });*/
   }
 
   loadResults() {
-    this.route.queryParams.subscribe((params) => {
-      this.mode = params['mode'];
-      if (this.mode === 'create') {
-        this.dataset = emptyDataset; // richiedere db di restituire di creare un dataset
-        this.datasetPage = emptyDatasetPage;
-      } else if (this.mode === 'edit') {
-        // Carica dataset dall'id
-        /*
-        this.qaService.getDatasetById(this.dataset.id).subscribe(dataset => {
-          this.dataset = dataset;
-          this.datasetPage = this.qaService.getDatasetPage(this.currentPage);
-          this.detectWokingCopy = true;
-        });*/
-
-        this.dataset = history.state.dataset; //verrà passata dal componente dataset list page con funzione load
-        //chiamata al back-end per avere la prima pagina
-        this.qaService.getDatasetPage(1).subscribe({
-          next: (page: DatasetPageDto) => {
-            this.datasetPage = page;
-          },
-          error: (err) => {
-            console.error(
-              'Errore durante il recupero della pagina del dataset:',
-              err
-            );
-          },
-        });
-        this.detectWokingCopy = true;
-      }
-    });
+    this.detectWokingCopy = true;
+    this.qaService
+      .getAllqaByDatasetId(this.qaService.cachedDatasetCaricato.id)
+      .subscribe({
+        next: (results) => {
+          // Qui puoi assegnare i risultati a una variabile o aggiornarli nella UI
+          this.qa_list = results; // <-- esempio
+          console.log('Risultati QA caricati con successo:', this.qa_list);
+        },
+        error: (err) => {
+          console.error('Errore nel caricamento dei risultati QA:', err);
+          // eventualmente mostra errore all’utente
+        },
+        complete: () => {
+          console.log('Caricamento QA completato.');
+          // Puoi anche settare un flag tipo this.loading = false;
+        },
+      });
   }
 
   handleSearchQA(term: string) {
@@ -178,6 +155,7 @@ export class DatasetContentPageComponent implements OnInit {
   private dialogName = inject(MatDialog);
 
   saveDataset() {
+    /*
     if (this.mode === 'create') {
       const dialogRef = this.dialogName.open(DatasetNameDialogComponent, {
         data: { title: 'Nuovo Nome' },
@@ -196,7 +174,7 @@ export class DatasetContentPageComponent implements OnInit {
           // dthis.renameSignal.emit(result); // Invia il nuovo nome al padre tramite l'evento
           //this.qaService.createDataset(this.dataset).subscribe((response) => {
           /*const newId = response.id; // <-- restituito dal back-end*/
-          /*const newId = 888;
+    /*const newId = 888;
             // Passa alla modalità 'edit' con id nel path
             this.router.navigate(['/datasetContentPage', newId], {
               queryParams: { mode: 'edit' },
@@ -204,9 +182,9 @@ export class DatasetContentPageComponent implements OnInit {
             // Aggiorna lo stato locale
             this.mode = 'edit';
           });*/
-          //la logica è salvare tutto e reindirizzare l'utente
-          // chiama la funzione di salvataggio
-          /*this.datasetTmpService.updateDataset(this.dataset).subscribe({
+    //la logica è salvare tutto e reindirizzare l'utente
+    // chiama la funzione di salvataggio
+    /*this.datasetTmpService.updateDataset(this.dataset).subscribe({
             next: (res) => {
               console.log('Dataset aggiornato:', res);
               this.router.navigate(['/datasetContentPage', this.dataset.id], {
@@ -216,10 +194,10 @@ export class DatasetContentPageComponent implements OnInit {
             error: (err) => {
               console.error("Errore durante l'aggiornamento:", err);
             },
-          });*/
+          });
         }
       });
-    }
+    }*/
     //detectworkingcopy per dire se deve creare una working copy
     this.detectWokingCopy = true; // nel momento in cui l'utente salva il dataset diventa un dataset caricato
   }
@@ -233,7 +211,7 @@ export class DatasetContentPageComponent implements OnInit {
   }
 
   isDatasetEmpty(): boolean {
-    return !this.datasetPage || this.datasetPage.qa_list.length === 0;
+    return !this.qa_list.length;
   }
 
   openLlmDialog() {
@@ -307,7 +285,7 @@ export class DatasetContentPageComponent implements OnInit {
     this.idqa = undefined;
     this.showConfirmDelete = false;
   }
-
+  /*
   loadPage(page: number) {
     /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
     // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
@@ -328,6 +306,7 @@ export class DatasetContentPageComponent implements OnInit {
       },
     });
   }
+  */
   onCloseMessage() {
     this.showMessage = false;
     this.resultMessage = '';

@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     { provide: QAService, useClass: MockQAService },
     { provide: TestService, useClass: MockTestService },
-    { provide: LlmService, useClass: MockLlmService },
+    { provide: LlmService},
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),

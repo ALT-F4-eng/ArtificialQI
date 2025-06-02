@@ -157,7 +157,7 @@ def get_all_llms():
     llms = LlmModel.query.all()
     names = [llm.name for llm in llms]
     ids = [llm.id for llm in llms]
-    return jsonify([{"id": str(llm.id), "name": llm.name} for llm in llms]), 200
+    return jsonify([{"id": str(llm.id), "name": llm.name, "url": str(llm.url), "save_date": llm.save_date} for llm in llms]), 200
 
 
 @app.route('/llms', methods=['POST'])

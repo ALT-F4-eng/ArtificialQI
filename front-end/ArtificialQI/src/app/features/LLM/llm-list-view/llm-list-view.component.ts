@@ -18,6 +18,8 @@ import {LlmDto} from '../../../core/models/llm-dto.model'
   templateUrl: './llm-list-view.component.html',
   styleUrls: ['./llm-list-view.component.css'],
 })
+
+
 export class LlmListViewComponent {
   @Input() llms: LlmDto[] = [];
 

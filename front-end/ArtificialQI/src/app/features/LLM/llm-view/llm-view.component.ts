@@ -24,12 +24,12 @@ import {LlmDto} from '../../../core/models/llm-dto.model';
 })
 
 export class LlmViewComponent {
-  @Input() llm!: LlmDto;
+  @Input() llm?: LlmDto;
   
   @Output() modifyLlm = new EventEmitter<string>();
   onModifyRequest(){
     if (this.llm) {
-      this.modifyLlm.emit(this.llm.id); // comunica al padre quale llm eliminare
+      this.modifyLlm.emit(this.llm.id);
     }
   }
 }

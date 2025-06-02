@@ -8,7 +8,6 @@ import {
 import { Router, ActivatedRoute } from '@angular/router';
 import { LlmService } from '../../../core/services/llm.service';
 import { LlmDto } from '../../../core/models/llm-dto.model';
-import { KeyValuePairDto } from '../../../core/models/keyvalue-dto.model';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +18,7 @@ import { onlyspaceValidator } from '../../../shared/validators/onlyspace.validat
 import { urlValidator } from '../../../shared/validators/url.validators';
 import { FormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
+
 @Component({
   selector: 'app-llm-form',
   templateUrl: './llm-form.component.html',
@@ -31,7 +31,7 @@ import { MatIcon } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    MatIcon,
+    MatIcon
   ],
 })
 export class LlmFormComponent implements OnInit {
@@ -50,72 +50,31 @@ export class LlmFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = String(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.llmService.getLlm(id).subscribe({
-        next: (data) => {
-          this.llm = data;
-          this.loading = false;
-          console.log('LLM ricevuto:', data);
-        },
-        error: (err) => {
-          console.error(
-            'Errore durante il caricamento delle informazioni per LLM:',
-            err
-          );
-          this.resultMessage =
-            'Errore durante il caricamento delle informazioni per LLM';
-          this.messageType = 'error';
-          this.showMessage = true;
-          this.loading = false;
-        },
-      });
-    }
-
-    this.llmForm = this.fb.group({
-      name: [this.llm?.name || '', [Validators.required, onlyspaceValidator]],
-      url: [
-        this.llm?.url || '',
-        [Validators.required, onlyspaceValidator, urlValidator],
-      ],
-      key_req: [
-        this.llm?.key_req || '',
-        [Validators.required, onlyspaceValidator],
-      ],
-      key_resp: [
-        this.llm?.key_resp || '',
-        [Validators.required, onlyspaceValidator],
-      ],
-      kv_header: this.fb.array(
-        this.initKeyValueArray(this.llm?.kv_header || [])
-      ),
-      kv_body: this.fb.array(this.initKeyValueArray(this.llm?.kv_body || [])),
-    });
-  }
-
-  initKeyValueArray(items: KeyValuePairDto[]): FormGroup[] {
-    return items.map((item) =>
-      this.fb.group({
-        key: [item.key],
-        value: [item.value],
-      })
-    );
-  }
-
-  get kvHeader(): FormArray {
-    return this.llmForm.get('kv_header') as FormArray;
-  }
-
-  get kvBody(): FormArray {
-    return this.llmForm.get('kv_body') as FormArray;
-  }
-
-  addHeader(): void {
-    this.kvHeader.push(this.fb.group({ key: [''], value: [''] }));
-  }
-
-  addBody(): void {
-    this.kvBody.push(this.fb.group({ key: [''], value: [''] }));
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+        this.llmService.getLlm(id).subscribe({
+          next: (data) => {
+            this.llm = data;
+            this.llmForm = this.fb.group({
+              name: [data.name, [Validators.required, onlyspaceValidator]],
+              url: [data.url, [Validators.required, onlyspaceValidator, urlValidator]]
+            });
+            this.loading = false;
+          },
+          error: (err) => {
+            this.resultMessage = 'Errore durante il caricamento del LLM';
+            this.messageType = 'error';
+            this.showMessage = true;
+            this.loading = false;
+          }
+        });
+      } else {
+        this.llmForm = this.fb.group({
+          name: ['', [Validators.required, onlyspaceValidator]],
+          url: ['', [Validators.required, onlyspaceValidator, urlValidator]]
+        });
+        this.loading = false;
+      }
   }
 
   onSubmit(): void {
@@ -126,25 +85,15 @@ export class LlmFormComponent implements OnInit {
       const result: LlmDto = {
         ...this.llmForm.value,
         name: this.llmForm.value.name.trim(),
-        url: this.llmForm.value.url.trim(),
-        key_req: this.llmForm.value.key_req.trim(),
-        key_resp: this.llmForm.value.key_resp.trim(),
-        kv_header: this.kvHeader.value.map((v: KeyValuePairDto) => ({
-          key: v.key?.trim() || '',
-          value: v.value?.trim() || '',
-        })),
-        kv_body: this.kvBody.value.map((v: KeyValuePairDto) => ({
-          key: v.key?.trim() || '',
-          value: v.value?.trim() || '',
-        })),
+        url: this.llmForm.value.url.trim()
       };
       console.log('Form inviato:', result);
       // chiamare servizio per salvare modifica
       if (this.llm) {
         result.id = this.llm.id;
-        this.llmService.saveLlm(result).subscribe({
+        this.llmService.updateLlm(result).subscribe({
           next: (data) => {
-            this.router.navigate(['/llm', data.id]);
+            this.router.navigate(['/llm']);
           },
           error: (err) => {
             console.error(`Errore durante la modifica dell'LLM`, err);

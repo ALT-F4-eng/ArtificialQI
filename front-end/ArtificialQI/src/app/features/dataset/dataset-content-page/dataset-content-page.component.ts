@@ -68,7 +68,7 @@ export class DatasetContentPageComponent implements OnInit {
     private router: Router,
     private apiService: ApiService
   ) {} //private router: Router
-  
+
   ngOnInit(): void {
     if (this.qaService.cachedDatasetCaricato) {
       this.resultMessage = 'Il dataset caricato!';
@@ -104,20 +104,7 @@ export class DatasetContentPageComponent implements OnInit {
       });
   }
 
-  handleSearchQA(term: string) {
-    const normalized = term.toLowerCase();
-    this.qaService.getDatasetPageFiltered(term).subscribe({
-      next: (filteredData: QADto[]) => {
-        // this.filteredPage = filteredData;
-      },
-      error: (err) => {
-        console.error(
-          'Errore durante il filtraggio della pagina del dataset:',
-          err
-        );
-      },
-    });
-  }
+  handleSearchQA(term: string) {}
 
   private dialog = inject(MatDialog);
   addQA() {
@@ -182,6 +169,7 @@ export class DatasetContentPageComponent implements OnInit {
             // Aggiorna lo stato locale
             this.mode = 'edit';
           });*/
+
     //la logica è salvare tutto e reindirizzare l'utente
     // chiama la funzione di salvataggio
     /*this.datasetTmpService.updateDataset(this.dataset).subscribe({
@@ -204,10 +192,10 @@ export class DatasetContentPageComponent implements OnInit {
 
   onChangeShowLabel() {
     //mostra etichetta e fa una copia nel working copy?
-    console.log('Hai modificato', this.detectWokingCopy);
+    /*console.log('Hai modificato', this.detectWokingCopy);
     if (this.detectWokingCopy) {
       this.dataset.tmp = true;
-    }
+    }*/
   }
 
   isDatasetEmpty(): boolean {
@@ -227,20 +215,31 @@ export class DatasetContentPageComponent implements OnInit {
     });
   }
 
-  modifyQA(id: string, question: string, answer: string) {
-    console.log('Nuova domanda:', question, 'Nuova risposta:', answer);
+  modifyQA(id: string, domanda: string, risposta: string) {
+    console.log('Nuova domanda:', domanda, 'Nuova risposta:', risposta);
 
-    this.qaService.modifyDatasetQA(id, question, answer).subscribe({
+    this.qaService.modifyDatasetQA(id, domanda, risposta).subscribe({
       next: (updatedQA) => {
         console.log('QA modificato con successo:', updatedQA);
+        // Aggiorna l'elemento nella lista locale qa_list
+        const index = this.qa_list.findIndex((qa) => qa.id === id);
+        if (index !== -1) {
+          this.qa_list[index] = updatedQA;
+          // Cambia la referenza creando un nuovo array (spread operator)
+          this.qa_list = [...this.qa_list];
+        }
         this.onChangeShowLabel();
-        this.resultMessage = 'la coppia è stata modificata correttamente!';
+        this.resultMessage = 'La coppia è stata modificata correttamente!';
         this.messageType = 'success';
         this.showMessage = true;
         // this.modifyEventShowLabel.emit(); // se vuoi attivare un evento personalizzato
       },
       error: (err) => {
-        this.resultMessage = 'la coppia è stata modificata correttamente!';
+        if (err.status === 400 && err.error?.message) {
+          this.resultMessage = err.error.message; // Mostra il messaggio esatto dal backend
+        } else {
+          this.resultMessage = 'Errore durante la modifica della coppia.';
+        }
         this.messageType = 'error';
         this.showMessage = true;
         console.error('Errore durante la modifica del QA:', err);
@@ -252,8 +251,7 @@ export class DatasetContentPageComponent implements OnInit {
     this.showConfirmDelete = true;
     this.idqa = id;
     console.log('Indice ricevuto per cancellazione page:', id);
-  }
-
+    /*
   onQADeleteConfirmed() {
     if (this.idqa !== undefined) {
       this.qaService.deleteDatasetQA(this.idqa).subscribe({
@@ -269,10 +267,38 @@ export class DatasetContentPageComponent implements OnInit {
         this.qaService.getDatasetPage(this.datasetPage!.page_n).subscribe(data => {
           this.datasetPage = data;
         });
-        */
+        
         },
         error: (err) => {
           this.resultMessage = 'la coppia non è stata eliminata correttamente!';
+          this.messageType = 'error';
+          this.showMessage = true;
+          console.error("Errore durante l'eliminazione del QA:", err);
+        },
+      });
+    }*/
+  }
+
+  onQADeleteConfirmed() {
+    if (this.idqa !== undefined && this.qaService.cachedDatasetCaricato?.id) {
+      const datasetId = this.qaService.cachedDatasetCaricato.id;
+
+      this.qaService.deleteDatasetQA(datasetId, this.idqa).subscribe({
+        next: () => {
+          console.log('QA eliminato:', this.idqa);
+
+          // Rimuovi localmente e forza aggiornamento della lista
+          const updatedList = this.qa_list.filter((qa) => qa.id !== this.idqa);
+          this.qa_list = [...updatedList]; // <--- spread operator qui
+
+          this.showConfirmDelete = false;
+          this.onChangeShowLabel();
+          this.resultMessage = 'La coppia è stata eliminata correttamente!';
+          this.messageType = 'success';
+          this.showMessage = true;
+        },
+        error: (err) => {
+          this.resultMessage = 'La coppia non è stata eliminata correttamente!';
           this.messageType = 'error';
           this.showMessage = true;
           console.error("Errore durante l'eliminazione del QA:", err);
@@ -285,28 +311,6 @@ export class DatasetContentPageComponent implements OnInit {
     this.idqa = undefined;
     this.showConfirmDelete = false;
   }
-  /*
-  loadPage(page: number) {
-    /// page è sembre un numero compresso tra gli intervalli accettabili anche se si mette un valore fuori intervalli, assumera Max o min della paginazione
-    // questo significa che dipende da gli elemnti totali e elementi da mostrare nella lista
-    console.log('pagina reinidirizzata', page);
-    //mock della chiamata, dovrebbe avere come paramentro page ma quasto solo faccendo una mock
-    this.qaService.getDatasetPage2mock(page).subscribe({
-      next: (data) => {
-        this.datasetPage = data;
-        this.resultMessage = 'la pagina è stata caricata correttamente!';
-        this.messageType = 'success';
-        this.showMessage = true;
-      },
-      error: (err) => {
-        this.resultMessage = 'la pagina non è stata caricata correttamente!';
-        this.messageType = 'error';
-        this.showMessage = true;
-        console.error('Errore nel caricamento della pagina dataset:', err);
-      },
-    });
-  }
-  */
   onCloseMessage() {
     this.showMessage = false;
     this.resultMessage = '';

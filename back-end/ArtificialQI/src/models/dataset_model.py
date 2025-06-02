@@ -192,7 +192,7 @@ class DatasetModel(db.Model):
         # Serializza le QA in formato lista di dizionari
         qa_list = [
             {
-                "id": str(qa.id),
+                "id": qa.id,
                 "question": qa.domanda,
                 "answer": qa.risposta
             }

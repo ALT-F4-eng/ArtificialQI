@@ -81,6 +81,53 @@ def createWorkingCopyTemporary(id):
         return jsonify(result), 404
     return jsonify(result), 200
 
+@app.route('/modifyQA/<uuid:id>', methods=['POST'])
+def modify_qa(id):
+    data = request.get_json()
+
+    domanda = data.get('domanda')
+    risposta = data.get('risposta')
+
+    if not domanda or not risposta:
+        return jsonify({
+            "success": False,
+            "message": "I campi 'domanda' e 'risposta' sono obbligatori."
+        }), 400
+
+    result = QAModel.modify_qa_by_id(id, domanda, risposta)
+    return jsonify(result)
+
+#@app.route('/datasets/deleteQA/<uuid:id>', methods=['DELETE'])
+#def delete_qa(id):
+#    result = QAModel.delete_qa_by_id(id)
+#    status_code = 200 if result.get("success") else 404
+#    return jsonify(result), status_code
+
+@app.route('/datasets/<dataset_id>/qas/<qa_id>', methods=['DELETE'])
+def delete_qa(dataset_id, qa_id):
+    try:
+        dataset_uuid = uuid.UUID(dataset_id)
+        qa_uuid = uuid.UUID(qa_id)
+    except ValueError:
+        return jsonify({'message': 'Invalid UUID format'}), 400
+
+    dataset = DatasetModel.query.get(dataset_uuid)
+    if not dataset:
+        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
+
+    qa = QAModel.query.get(qa_uuid)
+    if not qa or qa.dataset != dataset_uuid:
+        return jsonify({'message': f'QA {qa_id} not found in dataset {dataset_id}'}), 404
+
+    # Elimina tutti i TestResult associati
+    TestResultModel.query.filter_by(qa=qa_uuid).delete()
+
+    db.session.delete(qa)
+    db.session.commit()
+
+    return jsonify({'message': f'QA {qa_id} deleted from dataset {dataset_id}'}), 200
+
+
 
 
 @app.route('/api/messaggio')
@@ -90,6 +137,9 @@ def ricevi_messaggio():
         return jsonify({'errore': 'Parametro "nome" mancante'}), 400
     risposta = f"Ciao, {nome}! Messaggio ricevuto."
     return jsonify({"risposta": risposta})
+
+
+
 
 @app.route("/test-db")
 def test_db():
@@ -330,33 +380,6 @@ def update_qa(dataset_id, qa_id):
         'risposta': qa.risposta,
         'dataset': str(qa.dataset)
     }), 200
-
-
-
-@app.route('/datasets/<dataset_id>/qas/<qa_id>', methods=['DELETE'])
-def delete_qa(dataset_id, qa_id):
-    try:
-        dataset_uuid = uuid.UUID(dataset_id)
-        qa_uuid = uuid.UUID(qa_id)
-    except ValueError:
-        return jsonify({'message': 'Invalid UUID format'}), 400
-
-    dataset = DatasetModel.query.get(dataset_uuid)
-    if not dataset:
-        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
-
-    qa = QAModel.query.get(qa_uuid)
-    if not qa or qa.dataset != dataset_uuid:
-        return jsonify({'message': f'QA {qa_id} not found in dataset {dataset_id}'}), 404
-
-    # Elimina tutti i TestResult associati
-    TestResultModel.query.filter_by(qa=qa_uuid).delete()
-
-    db.session.delete(qa)
-    db.session.commit()
-
-    return jsonify({'message': f'QA {qa_id} deleted from dataset {dataset_id}'}), 200
-
 
 
 @app.route('/datasets/<dataset_id>/qas', methods=['GET'])

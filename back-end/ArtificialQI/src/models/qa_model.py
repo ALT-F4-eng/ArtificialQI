@@ -42,3 +42,45 @@ class QAModel(db.Model):
                 dataset=new_dataset_id
             )
             db.session.add(cloned_qa)
+
+    @staticmethod
+    def modify_qa_by_id(qa_id, domanda, risposta):
+        qa = QAModel.query.get(qa_id)
+
+        if not qa:
+            return {
+                "success": False,
+                "message": f"QA con ID {qa_id} non trovata."
+            }
+
+        qa.domanda = domanda
+        qa.risposta = risposta
+
+        db.session.commit()
+
+        return {
+                "id": qa.id,
+                "question": qa.domanda,
+                "answer": qa.risposta
+            }
+
+
+    @staticmethod
+    def delete_qa_by_id(qa_id):
+        qa = QAModel.query.get(qa_id)
+        if not qa:
+            return {
+                "success": False,
+                "message": f"Nessuna QA trovata con ID {qa_id}"
+            }
+
+        db.session.delete(qa)
+        db.session.commit()
+        return {
+            "success": True,
+            "message": f"QA con ID {qa_id} eliminata con successo."
+        }
+
+
+
+        

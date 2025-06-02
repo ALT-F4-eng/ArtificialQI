@@ -20,3 +20,12 @@ class LlmModel(db.Model):
     def get_url(self) -> str:
         
         return self.url
+    
+    def json(self):
+        return {
+            'id': str(self.id),  # UUID come stringa
+            'name': self.name,
+            'url': self.url,
+            'save_date': self.save_date.isoformat() if self.save_date else None  # Data in ISO 8601 string
+        }
+

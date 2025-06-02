@@ -9,6 +9,11 @@ from src.models.dataset_model import DatasetModel  # importa solo il modello
 from models.DatasetDTO import DatasetDTO
 from src.models.qa_model import QAModel  # importa il modello QAModel
 from src.models.llm_model import LlmModel  # importa il modello LlmModel
+from uuid import UUID,uuid4
+import uuid
+from datetime import datetime
+from src.models.qa_model import QAModel
+from src.models.test_result_model import TestResultModel
 
 
 app = Flask(__name__)
@@ -105,7 +110,203 @@ def create_dataset():
         db.session.add(new_dataset)
         db.session.commit()
         return {"risposta": "Dataset created"}, 201
+
+
+###########################   R O T T E      L L M   ###########################
+
+@app.route('/llms/<id_llm>', methods=['GET'])
+def get_llm(id_llm):
+    llm = LlmModel.query.get(id_llm)
+    if llm:
+        return jsonify(llm.json()), 200
+    else:
+        return jsonify({'message': 'LLM not found'}), 404
     
+
+@app.route('/llms', methods=['GET'])
+def get_all_llms():
+    llms = LlmModel.query.all()
+    names = [llm.name for llm in llms]
+    ids = [llm.id for llm in llms]
+    return jsonify([{"id": str(llm.id), "name": llm.name} for llm in llms]), 200
+
+
+@app.route('/llms', methods=['POST'])
+def create_llm():
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'No input data provided'}), 400
+    
+    name = data.get('name')
+    url = data.get('url')
+
+    if not name or not url:
+        return jsonify({'message': 'Missing required fields: name and url'}), 400
+    
+    new_llm = LlmModel(
+        id=uuid4(),
+        name=name,
+        url=url,
+        save_date=datetime.now()
+    )
+    
+    try:
+        db.session.add(new_llm)
+        db.session.commit()
+        return jsonify(new_llm.json()), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error creating LLM', 'error': str(e)}), 500
+    
+
+@app.route('/llms/<id_llm>', methods=['DELETE'])
+def delete_llm(id_llm):
+    llm = LlmModel.query.get(id_llm)
+    if not llm:
+        return jsonify({'message': 'LLM not found'}), 404
+    try:
+        db.session.delete(llm)
+        db.session.commit()
+        return jsonify({'message': f'LLM {id_llm} deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error deleting LLM', 'error': str(e)}), 500
+    
+
+@app.route('/llms/<id_llm>', methods=['PUT'])
+def update_llm(id_llm):
+    llm = LlmModel.query.get(id_llm)
+    if not llm:
+        return jsonify({'message': 'LLM not found'}), 404
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'No input data provided'}), 400
+
+    name = data.get('name')
+    url = data.get('url')
+
+    if name:
+        llm.name = name
+    if url:
+        llm.url = url
+    llm.save_date = datetime.now()
+
+    try:
+        db.session.commit()
+        return jsonify(llm.json()), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error updating LLM', 'error': str(e)}), 500
+    
+
+
+###########################   R O T T E      Q A   ###########################
+
+
+
+@app.route('/datasets/<dataset_id>/qas', methods=['POST'])
+def create_qa(dataset_id):
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'No input data provided'}), 400
+
+    domanda = data.get('domanda')
+    risposta = data.get('risposta')
+
+    if not domanda or not risposta:
+        return jsonify({'message': 'Missing required fields: domanda and risposta'}), 400
+
+    try:
+        dataset_uuid = uuid.UUID(dataset_id) 
+    except ValueError:
+        return jsonify({'message': 'Invalid dataset ID format'}), 400
+
+    dataset = DatasetModel.query.get(dataset_uuid)
+    if not dataset:
+        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
+
+    new_qa = QAModel(
+        id=uuid4(),
+        domanda=domanda,
+        risposta=risposta,
+        dataset=dataset_id
+    )
+
+    try:
+        db.session.add(new_qa)
+        db.session.commit()
+        return jsonify({
+            'id': str(new_qa.id),
+            'domanda': new_qa.domanda,
+            'risposta': new_qa.risposta,
+            'dataset': str(new_qa.dataset)
+        }), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Error creating QA', 'error': str(e)}), 500
+
+
+
+@app.route('/datasets/<dataset_id>/qas/<qa_id>', methods=['PUT'])
+def update_qa(dataset_id, qa_id):
+    try:
+        dataset_uuid = uuid.UUID(dataset_id)
+        qa_uuid = uuid.UUID(qa_id)
+    except ValueError:
+        return jsonify({'message': 'Invalid UUID format'}), 400
+
+    dataset = DatasetModel.query.get(dataset_uuid)
+    if not dataset:
+        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
+
+    qa = QAModel.query.get(qa_uuid)
+    if not qa or qa.dataset != dataset_uuid:
+        return jsonify({'message': f'QA {qa_id} not found in dataset {dataset_id}'}), 404
+
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'Missing JSON body'}), 400
+
+    if 'domanda' in data:
+        qa.domanda = data['domanda']
+    if 'risposta' in data:
+        qa.risposta = data['risposta']
+
+    db.session.commit()
+
+    return jsonify({
+        'id': str(qa.id),
+        'domanda': qa.domanda,
+        'risposta': qa.risposta,
+        'dataset': str(qa.dataset)
+    }), 200
+
+
+
+@app.route('/datasets/<dataset_id>/qas/<qa_id>', methods=['DELETE'])
+def delete_qa(dataset_id, qa_id):
+    try:
+        dataset_uuid = uuid.UUID(dataset_id)
+        qa_uuid = uuid.UUID(qa_id)
+    except ValueError:
+        return jsonify({'message': 'Invalid UUID format'}), 400
+
+    dataset = DatasetModel.query.get(dataset_uuid)
+    if not dataset:
+        return jsonify({'message': f'Dataset {dataset_id} not found'}), 404
+
+    qa = QAModel.query.get(qa_uuid)
+    if not qa or qa.dataset != dataset_uuid:
+        return jsonify({'message': f'QA {qa_id} not found in dataset {dataset_id}'}), 404
+
+    # Elimina tutti i TestResult associati
+    TestResultModel.query.filter_by(qa=qa_uuid).delete()
+
+    db.session.delete(qa)
+    db.session.commit()
+
+    return jsonify({'message': f'QA {qa_id} deleted from dataset {dataset_id}'}), 200
 
     
 if __name__ == '__main__':

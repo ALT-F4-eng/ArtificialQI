@@ -1,9 +1,9 @@
 <mat-card class="llm-element">
   <mat-card-content>
     <div class="header">
-      <div class="info">
-        <mat-card-title>{{ llm?.name }}</mat-card-title>
-        <p>Ultima modifica: {{ llm?.last_mod | date : "short" }}</p>
+      <div class="info" *ngIf="llm">
+        <mat-card-title>{{ llm.name }}</mat-card-title>
+        <p>Ultima modifica: {{ llm.save_date | date: 'short' }}</p>
       </div>
       <div class="llm-actions">
         <button mat-raised-button (click)="deleteLlm()">Elimina</button>

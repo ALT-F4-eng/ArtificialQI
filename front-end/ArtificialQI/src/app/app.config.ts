@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     { provide: TestService, useClass: MockTestService },
-    { provide: LlmService, useClass: MockLlmService },
+    { provide: LlmService},
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),

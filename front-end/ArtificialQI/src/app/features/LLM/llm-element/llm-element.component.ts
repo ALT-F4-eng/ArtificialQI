@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import {LlmDto} from '../../../core/models/llm-dto.model'
+import { MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'app-llm-element',
@@ -15,6 +16,7 @@ import {LlmDto} from '../../../core/models/llm-dto.model'
     DatePipe,
     MatButtonModule,
     RouterModule,
+    MatCardTitle
   ],
   templateUrl: './llm-element.component.html',
   styleUrls: ['./llm-element.component.css'],

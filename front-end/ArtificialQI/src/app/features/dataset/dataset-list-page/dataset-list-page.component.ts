@@ -39,7 +39,7 @@ export class DatasetListPageComponent {
   //comportamento che sicuramente si puo migliorare e cambiare
   //ad esempio ogni volta si fa una chiamata al backend per prendere i dataset e inizialmente con una chiamata '' vuota;
   allDatasets: DatasetDto[] = [];
-  filteredDatasets: DatasetDto[] = [];
+  filteredDatasets: DatasetDto[] = [];// questo è quello che uso per mostrare nel front-end
   showConfirmDelete = false;
   showConfirmLoad = false;
   showOverride = false;
@@ -76,7 +76,7 @@ export class DatasetListPageComponent {
     if (!this.qaService.cachedDatasetCaricato) {
       this.createTemoraryDataset();
     } else {
-      console.log("sovrascrivo da checkoverride");
+      console.log('sovrascrivo da checkoverride');
       this.onDatasetOverrideRequest();
     }
   }
@@ -104,16 +104,42 @@ export class DatasetListPageComponent {
     );
   }
 
-  renameDataset(index: number, newName: string) {
-    /*
-    // Rinomina il dataset chiamando il servizio
-    this.datasetService.renameDataset(index, newName);
-    this.resultMessage = 'Test rinominato con successo!';
-    this.messageType = 'success';
-    this.showMessage = true;
-    // Aggiorna la lista dei dataset per riflettere i cambiamenti
-    //this.allDatasets = [...this.allDatasets];
-      */
+  renameDataset(datasetid: string, newName: string) {
+    this.datasetService.renameDatasetById(datasetid, newName).subscribe({
+      next: () => {
+        this.resultMessage = 'Dataset rinominato con successo!';
+        this.messageType = 'success';
+        this.showMessage = true;
+
+        // Aggiorna la lista dei dataset in modo immutabile
+        this.allDatasets = this.allDatasets.map((dataset) => {
+          if (dataset.id === datasetid) {
+            return {
+              ...dataset,
+              name: newName, // aggiorna solo il nome
+            };
+          }
+          return dataset;
+        });
+
+        // Aggiorna filteredDatasets in modo coerente (se usi il filtro)
+        this.filteredDatasets = this.filteredDatasets.map((dataset) => {
+          if (dataset.id === datasetid) {
+            return {
+              ...dataset,
+              name: newName,
+            };
+          }
+          return dataset;
+        });
+      },
+      error: (err) => {
+        this.resultMessage = 'Errore durante la rinomina del dataset.';
+        this.messageType = 'error';
+        this.showMessage = true;
+        console.error(err);
+      },
+    });
   }
 
   datasetCopied(index: number): void {
@@ -179,7 +205,6 @@ export class DatasetListPageComponent {
         },
       });
     }
-
   }
 
   onDatasetDeleteCanceled() {
@@ -223,7 +248,7 @@ export class DatasetListPageComponent {
   }
 
   onDatasetOverrideConfirmed() {
-    console.log("sovrascrivo confermato");
+    console.log('sovrascrivo confermato');
     // richiesta di delete working copy o dataset temporary copy
     this.qaService.cachedDatasetCaricato = null;
     this.datasetService.deleteTemporaryDataset().subscribe({
@@ -236,8 +261,6 @@ export class DatasetListPageComponent {
         console.error('Errore nella cancellazione del dataset:', err);
       },
     });
-
-  
   }
 
   onDatasetOverrideCanceled() {

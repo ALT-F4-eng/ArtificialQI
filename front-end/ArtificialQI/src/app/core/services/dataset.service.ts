@@ -125,7 +125,7 @@ export const MOCK_DATASETS: DatasetDto[] = [
 })
 export class DatasetService {
   private baseUrl = 'http://localhost:5000';
-  
+
   //datasets: DatasetDto[] = []; // You can also use MOCK_DATASETS if you want to initialize with mock data
   constructor(private http: HttpClient) {}
   //rinomina il dataset
@@ -135,15 +135,20 @@ export class DatasetService {
   }
 
   createTemporaryDataset(): Observable<DatasetDto> {
-    return this.http.post<DatasetDto>(`${this.baseUrl}/create/dataset`,{});
+    return this.http.post<DatasetDto>(`${this.baseUrl}/create/dataset`, {});
   }
 
   deleteTemporaryDataset(): Observable<any> {
     return this.http.delete(`${this.baseUrl}/deleteDatasetTemporary`);
   }
 
-  deleteDatasetById(dataset_id:string): Observable<any>{
+  deleteDatasetById(dataset_id: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/deleteDataset/${dataset_id}`);
+  }
+
+  renameDatasetById(dataset_id: string, newName: string): Observable<any> {
+    const body = { name: newName };
+    return this.http.put(`${this.baseUrl}/renameDataset/${dataset_id}`, body);
   }
 
   /*
@@ -184,5 +189,4 @@ export class DatasetService {
   }
 
   removeDatasetFromCache(id: number): void {}*/
-
 }

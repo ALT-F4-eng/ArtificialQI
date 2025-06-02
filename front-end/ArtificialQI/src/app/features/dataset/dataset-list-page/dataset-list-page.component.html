@@ -12,7 +12,7 @@
 <app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
 <app-dataset-list-view
   [datasets]="filteredDatasets"
-  (rename)="renameDataset($event.index, $event.newName)"
+  (rename)="renameDataset($event.id, $event.newName)"
   (datasetCopied)="datasetCopied($event)"
   (datasetDeleted)="onDatasetDeleteRequest($event)"
   (datasetLoaded)="onDatasetLoadRequest($event)"

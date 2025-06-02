@@ -2,7 +2,7 @@
   <app-dataset-element
     *ngFor="let item of datasets; let i = index"
     [dataset]="item"
-    (renameSignal)="onRename(i, $event)"
+    (renameSignal)="onRename($event.id, $event.newName)"
     (copySignal)="onCopy(i)"
     (deleteSignal)="onDelete($event)"
     (loadSignal)="onDatasetLoaded($event)"

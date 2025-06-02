@@ -12,13 +12,13 @@ class QAModel(db.Model):
     def get_id(self):
         return self.id
     
-    @classmethod
-    def get_all_qa_by_dataset_id(cls, dataset_id):
-        return cls.query.filter_by(dataset=dataset_id).all()
+    @staticmethod
+    def get_all_qa_by_dataset_id(dataset_id):
+        return QAModel.query.filter_by(dataset=dataset_id).all()
     
-    @classmethod
-    def delete_all_qa_by_dataset_id(cls, dataset_id):
-        results = cls.get_all_qa_by_dataset_id(dataset_id)
+    @staticmethod
+    def delete_all_qa_by_dataset_id(dataset_id):
+        results = QAModel.get_all_qa_by_dataset_id(dataset_id)
         for r in results:
             db.session.delete(r)
             

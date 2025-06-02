@@ -33,7 +33,7 @@ export class DatasetElementComponent implements OnInit {
     console.log(this.dataset); // Dovresti vedere i dati passati dal padre
   }
 
-  @Output() renameSignal = new EventEmitter<string>(); // Emette il nuovo nome al padre
+  @Output() renameSignal = new EventEmitter<{ id: string; newName: string }>();; // Emette il nuovo nome al padre
   private dialog = inject(MatDialog);
   openRenameDialog() {
     if (!this.dataset) return; // Se non c'è un dataset, esci
@@ -44,7 +44,7 @@ export class DatasetElementComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Nuovo nome nel elemento:', result);
-        this.renameSignal.emit(result); // Invia il nuovo nome al padre tramite l'evento
+        this.renameSignal.emit({ id: this.dataset!.id, newName: result }); // Invia il nuovo nome al padre tramite l'evento
       }
     });
   }

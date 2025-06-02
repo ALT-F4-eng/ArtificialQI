@@ -15,29 +15,28 @@ class TestModel(db.Model):
 
     def get_id(self):
         return self.id
-    #due metodi che serve per eliminazione del test
-    @classmethod
-    def get_all_test_by_dataset_id(cls, dataset_id): 
-        return cls.query.filter_by(dataset=dataset_id).all()
     
-    @classmethod
-    def delete_test_by_id(cls, test_id):
+    @staticmethod
+    def get_all_test_by_dataset_id(dataset_id): 
+        return TestModel.query.filter_by(dataset=dataset_id).all()
+    
+    @staticmethod
+    def delete_test_by_id(test_id):
         with db.session.no_autoflush:
-        # <-- blocca l'autoflush
             # Recupera e cancella i testresult prima del test
             result_delete = TestResultModel.delete_test_result_by_test_id(test_id)
-            test = cls.query.get(test_id)
+            test = TestModel.query.get(test_id)
             if not test:
                 return {
                     "success": False,
                     "message": f"Test con ID {test_id} non trovato"
                 }
-
+    
             db.session.delete(test)
-
+    
         db.session.commit()
-
+    
         return {
-        "success": True,
-        "message": f"Test {test_id} eliminato con successo. {result_delete['deleted_count']} testresult eliminati."
+            "success": True,
+            "message": f"Test {test_id} eliminato con successo. {result_delete['deleted_count']} testresult eliminati."
         }

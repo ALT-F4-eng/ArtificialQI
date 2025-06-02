@@ -6,10 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
 // dataset-list-view.component.ts
-export interface RenameEvent {
-  index: number;
-  newName: string;
-}
 
 @Component({
   selector: 'app-dataset-list-view',
@@ -27,10 +23,10 @@ export interface RenameEvent {
 export class DatasetListViewComponent {
   @Input() datasets: DatasetDto[] = [];
 
-  @Output() rename = new EventEmitter<RenameEvent>();
-  onRename(index: number, newName: string) {
+  @Output() rename = new EventEmitter<{ id: string; newName: string }>();
+  onRename(id: string, newName: string) {
     console.log('Nuovo nome nel list view:', newName);
-    this.rename.emit({ index, newName });
+    this.rename.emit({ id, newName });
   }
 
   @Output() datasetCopied = new EventEmitter<number>();

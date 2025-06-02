@@ -51,6 +51,17 @@ def deleteDatasetById(id):
     result = DatasetModel.delete_dataset_by_id(id)
     return jsonify(result)
 
+@app.route('/renameDataset/<uuid:id>', methods=['PUT'])
+def renameDataset(id):
+    data = request.get_json()
+    new_name = data.get('name')
+    if not new_name:
+        return jsonify({"success": False, "message": "Nome nuovo mancante"}), 400
+    
+    result = DatasetModel.rename_dataset_by_id(id, new_name)
+    return jsonify(result)
+
+
 @app.route('/api/messaggio')
 def ricevi_messaggio():
     nome = request.args.get('nome')

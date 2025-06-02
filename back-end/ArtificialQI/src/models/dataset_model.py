@@ -16,10 +16,10 @@ class DatasetModel(db.Model):
     last_save_date = db.Column(db.DateTime, nullable=False)
     origin = db.Column(db.Uuid, db.ForeignKey('dataset.id'), nullable=True)
 
-    @classmethod
-    def get_all_dataset(cls):
-        results = cls.query.with_entities(
-            cls.id, cls.name, cls.tmp, cls.last_save_date, cls.origin
+    @staticmethod
+    def get_all_dataset():
+        results = DatasetModel.query.with_entities(
+            DatasetModel.id, DatasetModel.name, DatasetModel.tmp, DatasetModel.last_save_date, DatasetModel.origin
         ).all()
         return [
             {
@@ -32,11 +32,10 @@ class DatasetModel(db.Model):
             for r in results
         ]
     
-
-    @classmethod
-    def create_temporary_dataset(cls) :
+    @staticmethod
+    def create_temporary_dataset() :
         now = datetime.now(timezone.utc)
-        new_dataset = cls(
+        new_dataset = DatasetModel(
             tmp=True,
             name="New Dataset",
             first_save_date=now,
@@ -54,14 +53,14 @@ class DatasetModel(db.Model):
         'origin':new_dataset.origin
     }
 
-    @classmethod
-    def delete_all_temporary_dataset(cls):
+    @staticmethod
+    def delete_all_temporary_dataset():
         # Trova tutti i dataset temporanei
-        temp_datasets = cls.query.filter_by(tmp=True).all()
+        temp_datasets = DatasetModel.query.filter_by(tmp=True).all()
 
         # Rimuovili dal database
         for dataset in temp_datasets:
-            db.session.delete(dataset)
+            DatasetModel.delete_dataset_by_id(dataset.id)
 
         db.session.commit()
 
@@ -70,18 +69,18 @@ class DatasetModel(db.Model):
             "message": "Dataset temporanei eliminati con successo"
         }
     
-    @classmethod
-    def delete_dataset_by_id(cls, dataset_id):
+    @staticmethod
+    def delete_dataset_by_id(dataset_id):
         with db.session.no_autoflush:
             # Ottieni i test collegati al dataset
             linked_tests = TestModel.get_all_test_by_dataset_id(dataset_id)
              # Elimina tutti i test collegati
             for test in linked_tests:
                 TestModel.delete_test_by_id(test.id)
-             
+            
             qa_delete_result = QAModel.delete_all_qa_by_dataset_id(dataset_id)
             # Procedi con l'eliminazione del dataset
-            dataset = cls.query.get(dataset_id)
+            dataset = DatasetModel.query.get(dataset_id)
             if not dataset:
                 return {
                     "success": False,
@@ -97,4 +96,37 @@ class DatasetModel(db.Model):
                             f"{len(linked_tests)} test e {qa_delete_result['deleted_count']} questionanswer eliminati."
             }
 
-        
+    @staticmethod
+    def rename_dataset_by_id(dataset_id, new_name):
+        dataset = DatasetModel.query.get(dataset_id)
+        if not dataset:
+            return {
+                "success": False,
+                "message": "Dataset non trovato"
+            }
+
+        dataset.name = new_name
+        result = DatasetModel.update_last_save_date(dataset_id)
+
+        return {
+        "success": True,
+        "message": f"Dataset {dataset_id} rinominato in '{new_name}' con successo. {result['message']}"
+        }
+    
+    @staticmethod
+    def update_last_save_date(dataset_id):
+        dataset = DatasetModel.query.get(dataset_id)
+        if not dataset:
+            return {
+                "success": False,
+                "message": "Dataset non trovato"
+            }
+
+        dataset.last_save_date = datetime.now(timezone.utc)
+        db.session.commit()
+
+        return {
+            "success": True,
+            "message": f"Data ultima modifica aggiornata per il dataset {dataset_id}."
+        }
+

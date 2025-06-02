@@ -33,6 +33,11 @@ setattr(app, "container", container)
 
 DB_URL = os.environ.get("DB_URL")
 
+@app.route('/datasets',methods=['GET'])
+def getAllDataset():
+    data = DatasetModel.get_all_dataset()  # ritorna lista di dict, non stringa
+    return jsonify(data)
+
 @app.route('/api/messaggio', methods=['GET'])
 def ricevi_messaggio():
     nome = request.args.get('nome')

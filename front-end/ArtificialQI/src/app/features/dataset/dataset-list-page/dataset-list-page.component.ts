@@ -52,7 +52,7 @@ export class DatasetListPageComponent {
     //this.allDatasets =
     this.datasetService.getAllDatasets().subscribe({
       next: (datasets) => {
-        console.log(datasets);
+        console.log("ciao",datasets);
         this.allDatasets = datasets;
         this.filteredDatasets = [...this.allDatasets]; // mostra tutti inizialmente
       },

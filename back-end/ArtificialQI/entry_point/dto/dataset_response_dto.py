@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from uuid import UUID
 from datetime import date
 
@@ -16,7 +15,7 @@ class DatasetResponseDto(BaseModel):
         return DatasetResponseDto(
             id=domain.id,
             name=domain.name,
-            creation_date=date
+            creation_date=domain.creation_date
         )
 
 

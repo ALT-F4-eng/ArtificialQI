@@ -1,4 +1,4 @@
-from dependency_injector import containers, providers, wiring
+from dependency_injector import containers, providers
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from adapter.inbound.dataset_service import DatasetService
@@ -15,5 +15,5 @@ class AppContainer(containers.DeclarativeContainer):
     engine = providers.Singleton(create_engine, config.db_url)
     session_factory = providers.Singleton(sessionmaker, bind=engine)
 
-    sql_alchemy_adapter: SqlAlchemyDatasetAdapter = providers.Factory(SqlAlchemyDatasetAdapter, session_factory)
-    dataset_service: DatasetService = providers.Factory(DatasetService, sql_alchemy_adapter)
+    sql_alchemy_adapter: SqlAlchemyDatasetAdapter = providers.Factory(SqlAlchemyDatasetAdapter, session_factory) #type: ignore
+    dataset_service: DatasetService = providers.Factory(DatasetService, sql_alchemy_adapter) #type: ignore

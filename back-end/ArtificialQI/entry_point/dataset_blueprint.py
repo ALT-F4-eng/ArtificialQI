@@ -30,7 +30,7 @@ def delete(id: UUID, service: DatasetUseCase = Provide[AppContainer.dataset_serv
 @inject
 def create(service: DatasetUseCase = Provide[AppContainer.dataset_service]):
     try:
-        dto: DatasetUpdateDto = DatasetUpdateDto.model_validate(request.json)
+        dto: DatasetCreateDto = DatasetCreateDto.model_validate(request.json)
     except ValidationError as ex:
         raise ex
 
@@ -45,6 +45,6 @@ def update(id: UUID, service: DatasetUseCase = Provide[AppContainer.dataset_serv
     except ValidationError as ex:
         raise ex
     
-    to_update: Dataset = DatasetUpdateDto.to_domain()
+    to_update: Dataset = DatasetUpdateDto.to_domain(dataset_dto)
 
     return DatasetResponseDto.to_dto(service.update(to_update)).model_dump()

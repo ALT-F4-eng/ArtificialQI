@@ -1,34 +1,47 @@
+
+
 from dataclasses import dataclass
 from datetime import date
-from uuid import UUID
+from uuid import UUID, uuid4
 
-@dataclass
 class Dataset:
-    id: UUID
-    dim: int
-    name: str|None
-    first_save_date: date|None
-    last_save_date: date|None
-    tmp: bool
-    origin: UUID|None
 
-    def __eq__(self, dataset: object) -> bool:
-        "Controllo di uguaglianza sugli id"
+    def __init__(self, name: str, id: UUID = uuid4(), creation_date: date = date.today()):
+        self._name = name
+        self._id = id
+        self._creation_date = creation_date
 
-        if not isinstance(dataset, Dataset):
+    def __eq__(self, dataset: object):
+
+        if not isinstance(dataset, "Dataset"):
             return False
         
-        return self.id == dataset.id
+        return dataset.id == self.id
     
-    def is_tmp(self) -> bool:
-        "Restituisce True se il dataset è temporaneo"
-        return self.tmp and (self.origin is None)
+    @property
+    def name(self):
+        return self._name
+    
+    @property 
+    def id(self):
+        return self._id
+    
+    @property 
+    def creation_date(self):
+        return self._creation_date
 
-    def is_working_copy(self) -> bool:
-        "Restituisce True se il dataset è una copia di lavoro di un altro dataset"
-        return self.tmp and (self.origin is not None)
+    @name.setter
+    def name(self, n: str):
+        if not n.strip():
+            raise ValueError("Il nome di un dataset non può essere vuoto o composto da soli spazi.")
 
-    def is_saved(self) -> bool:
-        "Restituisce True se il dataset è salvato"
-        return not self.tmp
+        self._name = n 
 
+    @creation_date.setter
+    def creation_date(self, d: date):
+        if not d > date.today():
+            raise ValueError("La data di creazione del dataset non può essere futura.")
+
+        self._creation_date = d 
+
+    

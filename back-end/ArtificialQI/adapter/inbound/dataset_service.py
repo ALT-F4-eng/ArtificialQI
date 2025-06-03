@@ -42,13 +42,15 @@ class DatasetService(DatasetUseCase):
 
         if delete_res is None:
             raise PersistenceError("Errore durante l'eliminazione del dataset.")
+        
+        return id
     
     def update(self, dataset: Dataset) -> Dataset:
 
         to_update: Optional[Dataset] = self._dataset_repo.get_by_id(dataset.id)
 
         if to_update is None:
-            raise DatasetNonExsistentError(id)
+            raise DatasetNonExsistentError(dataset.id)
         
         update_res: Optional[Dataset] = self._dataset_repo.update(dataset)
 

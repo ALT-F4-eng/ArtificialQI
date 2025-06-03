@@ -16,24 +16,24 @@ def create_app():
     app.register_blueprint(dataset_bp) 
 
     container: AppContainer = AppContainer()
-    app.container = container
-    container.config.from_dict({"db_url": f"{app.config.get("DB_URL")}"})
+    app.container = container # type: ignore
+    container.config.from_dict({"db_url": app.config.get("DB_URL")}) # type: ignore
 
         
     @app.errorhandler(DatasetNonExsistentError)
-    def dataset_non_existent(e):
+    def dataset_non_existent(e: Exception): # type: ignore
         return {
             "msg": str(e)
         }, 404
 
     @app.errorhandler(DuplicateNameDatasetError)
-    def dataset_conflict(e):
+    def dataset_conflict(e: Exception): # type: ignore
         return {
             "msg": str(e)
         }, 409
 
     @app.errorhandler(PersistenceError)
-    def persistence_error(e):
+    def persistence_error(e: Exception): # type: ignore
         return {
             "msg": str(e)
         }, 500

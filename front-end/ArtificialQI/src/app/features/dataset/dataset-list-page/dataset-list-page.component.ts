@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 import { DatasetListViewComponent } from '../../../features/dataset/dataset-list-view/dataset-list-view.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,10 @@ import { RouterModule, Router } from '@angular/router';
 import { ConfirmComponent } from '../../../core/components/confirm/confirm.component';
 import { CommonModule } from '@angular/common';
 
+import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
 import { MessageBoxComponent } from '../../../shared/error-message/message.component';
+
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dataset-list-page',
@@ -110,26 +113,18 @@ export class DatasetListPageComponent {
         this.messageType = 'success';
         this.showMessage = true;
 
-        // Aggiorna la lista dei dataset in modo immutabile
-        this.allDatasets = this.allDatasets.map((dataset) => {
-          if (dataset.id === datasetid) {
-            return {
-              ...dataset,
-              name: newName, // aggiorna solo il nome
-            };
-          }
-          return dataset;
-        });
-
-        // Aggiorna filteredDatasets in modo coerente (se usi il filtro)
-        this.filteredDatasets = this.filteredDatasets.map((dataset) => {
-          if (dataset.id === datasetid) {
-            return {
-              ...dataset,
-              name: newName,
-            };
-          }
-          return dataset;
+        // Ricarica la lista completa dei dataset dal backend
+        this.datasetService.getAllDatasets().subscribe({
+          next: (datasets) => {
+            this.allDatasets = datasets;
+            this.filteredDatasets = [...this.allDatasets];
+          },
+          error: (err) => {
+            console.error(
+              'Errore durante il recupero dei dataset aggiornati:',
+              err
+            );
+          },
         });
       },
       error: (err) => {
@@ -138,6 +133,50 @@ export class DatasetListPageComponent {
         this.showMessage = true;
         console.error(err);
       },
+    });
+  }
+
+  private dialog = inject(MatDialog);
+
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(DatasetNameDialogComponent, {
+      data: { title: 'Crea Nuovo Dataset', name: '' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+
+      this.datasetService.createDatasetByName(result).subscribe({
+        next: (datasetDto) => {
+          this.resultMessage = 'Dataset creato con successo!';
+          this.messageType = 'success';
+          this.showMessage = true;
+
+          // Ricarica la lista completa dei dataset dal backend
+          this.datasetService.getAllDatasets().subscribe({
+            next: (datasets) => {
+              this.allDatasets = datasets;
+              this.filteredDatasets = [...this.allDatasets];
+            },
+            error: (err) => {
+              console.error(
+                'Errore durante il recupero dei dataset aggiornati:',
+                err
+              );
+            },
+          });
+
+          console.log('Dataset creato:', datasetDto);
+        },
+        error: (err) => {
+          this.resultMessage = 'Errore durante la creazione del dataset.';
+          this.messageType = 'error';
+          this.showMessage = true;
+          console.error('Errore nella creazione del dataset:', err);
+        },
+      });
+
+      console.log('Nome del nuovo dataset:', result);
     });
   }
 

@@ -29,6 +29,21 @@ export class DatasetService {
         )
       );
   }
+  deleteDatasetById(dataset_id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/datasets/${dataset_id}`);
+  }
+  
+  createDatasetByName(newName: string): Observable<any> {
+      const body = { name: newName };
+      return this.http.post(`${this.baseUrl}/datasets/`, body);
+  }
+  
+  renameDatasetById(dataset_id: string, newName: string): Observable<any> {
+    const body = { id:dataset_id, name: newName };
+    return this.http.put(`${this.baseUrl}/datasets/${dataset_id}`, body);
+  }
+  
+
   createTemporaryDataset(): Observable<DatasetDto> {
     return this.http.post<DatasetDto>(`${this.baseUrl}/create/dataset`, {});
   }
@@ -37,14 +52,7 @@ export class DatasetService {
     return this.http.delete(`${this.baseUrl}/deleteDatasetTemporary`);
   }
 
-  deleteDatasetById(dataset_id: string): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/datasets/${dataset_id}`);
-  }
 
-  renameDatasetById(dataset_id: string, newName: string): Observable<any> {
-    const body = { name: newName };
-    return this.http.put(`${this.baseUrl}/renameDataset/${dataset_id}`, body);
-  }
 
   cloneDatasetById(dataset_id: string): Observable<DatasetDto> {
     return this.http.post<DatasetDto>(

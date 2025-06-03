@@ -181,8 +181,6 @@ export class DatasetListPageComponent {
       this.datasetService.deleteDatasetById(this.datasetSelected.id).subscribe({
         next: () => {
           // Aggiorna la cache locale
-          //this.datasetService.removeDatasetFromCache(this.datasetid!);
-
           // Ricarica i dati aggiornati
           this.datasetService.getAllDatasets().subscribe((datasets) => {
             this.allDatasets = datasets;

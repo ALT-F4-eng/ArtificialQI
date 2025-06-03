@@ -4,25 +4,28 @@ from uuid import UUID
 
 from core.dataset import Dataset
 
-
 class DatasetRepository(ABC):
 
     @abstractmethod
-    def delete_dataset(self, id: UUID) -> Optional[UUID]:
+    def create(self, dataset: Dataset) -> Optional[Dataset]:
         raise NotImplementedError
 
     @abstractmethod
-    def update_dataset(self, dataset: Dataset) -> Optional[Dataset]:
+    def delete(self, id: UUID) -> Optional[UUID]:
         raise NotImplementedError
 
     @abstractmethod
-    def create_dataset(self, dataset: Dataset) -> Optional[Dataset]:
+    def update(self, dataset: Dataset) -> Optional[Dataset]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_dataset_by_id(self, id: UUID) -> Optional[Dataset]:
+    def get_all(self) -> Optional[list[Dataset]]:
         raise NotImplementedError
-
+    
     @abstractmethod
-    def get_all_datasets(self, q: str) -> Optional[list[Dataset]]:
+    def find_by_name(self, name: str) -> Optional[Dataset]:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_by_id(self, id: UUID) -> Optional[Dataset]:
         raise NotImplementedError

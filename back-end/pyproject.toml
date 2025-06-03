@@ -17,7 +17,6 @@ authors = [
 ]
 dependencies = [
     "flask == 3.1.0", 
-    "sentence-transformers == 3.4.1",
     "pydantic == 2.11.3",
     "dependency-injector == 4.46.0",
     "SQLAlchemy == 2.0.40",

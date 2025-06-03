@@ -5,7 +5,7 @@ WORKDIR /usr/src/ArtificialQI
 COPY ./pyproject.toml .
 RUN --mount=type=cache,target=/root/.cache/pip3 pip3 install -e .[dev]
 
-COPY ./ArtificialQI .
+COPY ./artificialqi .
 
 EXPOSE 5000
 

@@ -63,7 +63,7 @@ export class DatasetListPageComponent {
     this.datasetService.getAllDatasets().subscribe({
       next: (datasets) => {
         console.log('ciao', datasets);
-        this.allDatasets = datasets.filter((d) => d.tmp === false);
+        this.allDatasets = datasets;
         this.filteredDatasets = [...this.allDatasets]; // mostra tutti inizialmente
       },
       error: (err) => {
@@ -187,7 +187,7 @@ export class DatasetListPageComponent {
 
           // Ricarica i dati aggiornati
           this.datasetService.getAllDatasets().subscribe((datasets) => {
-            this.allDatasets = datasets.filter((d) => d.tmp === false);
+            this.allDatasets = datasets;
             this.filteredDatasets = [...this.allDatasets];
           });
 

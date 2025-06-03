@@ -3,7 +3,7 @@
     <div class="header">
       <div class="info">
         <mat-card-title>{{ dataset?.name }}</mat-card-title>
-        <p>Ultima modifica: {{ dataset?.last_save_date |date:'yyyy-MM-dd' }}</p>
+        <p>Ultima modifica: {{ dataset?.creation_date |date:'yyyy-MM-dd' }}</p>
       </div>
       <div class="dataset-actions">
         <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>

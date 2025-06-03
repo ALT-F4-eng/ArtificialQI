@@ -4,11 +4,11 @@ from flask import Flask
 from entry_point.dataset_blueprint import dataset_bp
 from entry_point.container import AppContainer
 from common.exceptions import DatasetNonExsistentError, DuplicateNameDatasetError, PersistenceError
-
+from flask_cors import CORS
 def create_app():
 
     app = Flask(__name__)
-
+    CORS(app)
     app.config.from_mapping(
         DB_URL=environ.get("DB_URL")
     )

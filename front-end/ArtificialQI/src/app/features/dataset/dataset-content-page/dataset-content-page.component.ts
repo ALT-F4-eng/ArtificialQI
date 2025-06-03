@@ -120,7 +120,6 @@ export class DatasetContentPageComponent implements OnInit {
           this.onChangeShowLabel();
           console.log('Hai cliccato Salva con:', result);
           //verra chiamata servizio di salvataggio
-          this.dataset.tmp = true;
           this.resultMessage = 'La coppia è stata aggiunta correttamente!';
           this.messageType = 'success';
           this.showMessage = true;

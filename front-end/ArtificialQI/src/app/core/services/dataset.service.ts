@@ -18,7 +18,7 @@ export class DatasetService {
   //rinomina il dataset
 
  getAllDatasets(): Observable<DatasetDto[]> {
-  return this.http.get<{ datasets: any[] }>(`${this.baseUrl}/datasets`).pipe(
+  return this.http.get<{ datasets: DatasetDto[] }>(`${this.baseUrl}/datasets`).pipe(
     map(response => response.datasets.map(dataset => ({
       ...dataset,
       creation_date: new Date(dataset.creation_date)

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
-import { FileUploadComponent } from '../../../features/dataset/json-file-upload/json-file-upload.component';
 import { DatasetListViewComponent } from '../../../features/dataset/dataset-list-view/dataset-list-view.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -23,7 +22,6 @@ import { MessageBoxComponent } from '../../../shared/error-message/message.compo
   imports: [
     CommonModule,
     SearchBarComponent,
-    FileUploadComponent,
     DatasetListViewComponent,
     MatIconModule,
     MatDividerModule,

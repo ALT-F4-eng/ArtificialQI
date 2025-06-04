@@ -1,7 +1,3 @@
-<h1 align="center">ArtificialQI</h1>
-
-<p align="center">Documentazione ufficiale del progetto ArtificialQI</p>
-
 # Progetto ArtificialQI
 
 Benvenuti nel progetto ArtificialQI!

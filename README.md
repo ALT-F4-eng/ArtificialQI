@@ -14,6 +14,7 @@ Per informazioni dettagliate sul progetto, inclusa l’architettura, le scelte p
 ArtificialQI è costruito con uno stack tecnologico full-stack moderno e solido:
 
 * **Angular**: Il framework scelto per sviluppare un’interfaccia utente dinamica e responsive.
+* **Node.js**: Ambiente di esecuzione JavaScript utilizzato per gestire il runtime del frontend e strumenti di sviluppo.
 * **Flask**: Un potente micro-framework Python utilizzato per costruire le API backend.
 * **Docker**: Utilizzato per la containerizzazione dell’applicazione, semplificando la gestione e il deployment dell’ambiente.
 

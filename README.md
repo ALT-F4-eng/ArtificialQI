@@ -23,8 +23,7 @@ Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizzi
 
 1.  **Prerequisiti**:
     * Assicurati di avere installato [Docker](https://www.docker.com/) sul tuo sistema.
-    * Verifica di avere anche installato [Docker Compose](https://docs.docker.com/compose/).
-
+      
 2.  **Clona il Repository**:
     ```bash
     git clone https://github.com/ALT-F4-eng/ArtificialQI.git

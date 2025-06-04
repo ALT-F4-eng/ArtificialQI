@@ -107,6 +107,7 @@ export class DatasetListPageComponent {
   }
 
   renameDataset(datasetid: string, newName: string) {
+  
     this.datasetService.renameDatasetById(datasetid, newName).subscribe({
       next: () => {
         this.resultMessage = 'Dataset rinominato con successo!';
@@ -127,6 +128,10 @@ export class DatasetListPageComponent {
         this.handleError('Errore durante la rinomina del dataset.', err);
       },
     });
+  }
+
+  checkName(name: string): boolean {
+    return name.trim().length > 0;
   }
 
   private dialog = inject(MatDialog);
@@ -152,10 +157,7 @@ export class DatasetListPageComponent {
               this.filteredDatasets = [...this.allDatasets];
             },
             error: (err) =>
-              this.handleError(
-                err,
-                'Errore durante il recupero dei dataset.'
-              ),
+              this.handleError(err, 'Errore durante il recupero dei dataset.'),
           });
 
           console.log('Dataset creato:', datasetDto);

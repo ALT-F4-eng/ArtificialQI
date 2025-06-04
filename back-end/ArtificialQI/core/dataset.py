@@ -4,10 +4,10 @@ from uuid import UUID, uuid4
 
 class Dataset:
 
-    def __init__(self, name: str, id: UUID = uuid4(), creation_date: date = date.today()):
-        self._name = name
-        self._id = id
-        self._creation_date = creation_date
+    def __init__(self, _name: str, _id: UUID = uuid4(), _creation_date: date = date.today()):
+        self.name = _name
+        self._id = _id
+        self.creation_date = _creation_date
 
     def __eq__(self, dataset: object):
 
@@ -33,7 +33,7 @@ class Dataset:
         if not n.strip():
             raise ValueError("Il nome di un dataset non può essere vuoto o composto da soli spazi.")
 
-        self._name = n 
+        self._name = n.strip() 
 
     @creation_date.setter
     def creation_date(self, d: date):

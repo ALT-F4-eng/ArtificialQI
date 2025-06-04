@@ -14,9 +14,9 @@ class DatasetService(DatasetUseCase):
 
     def create(self, name: str) -> Dataset:
         to_create: Dataset = Dataset(
-            name=name,
-            id=uuid4(),
-            creation_date=date.today()
+            _name=name,
+            _id=uuid4(),
+            _creation_date=date.today()
         )
 
         dataset_exists: Optional[Dataset] = self._dataset_repo.find_by_name(name)

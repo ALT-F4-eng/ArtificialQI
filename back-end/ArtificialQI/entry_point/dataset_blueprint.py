@@ -32,6 +32,7 @@ def create(service: DatasetUseCase = Provide[AppContainer.dataset_service]):
     try:
         dto: DatasetCreateDto = DatasetCreateDto.model_validate(request.json)
     except ValidationError as ex:
+        print(ex, flush=True)
         raise ex
 
     return DatasetResponseDto.to_dto(service.create(dto.name)).model_dump()

@@ -107,6 +107,7 @@ export class DatasetListPageComponent {
   }
 
   renameDataset(datasetid: string, newName: string) {
+  
     this.datasetService.renameDatasetById(datasetid, newName).subscribe({
       next: () => {
         this.resultMessage = 'Dataset rinominato con successo!';
@@ -119,21 +120,18 @@ export class DatasetListPageComponent {
             this.allDatasets = datasets;
             this.filteredDatasets = [...this.allDatasets];
           },
-          error: (err) => {
-            console.error(
-              'Errore durante il recupero dei dataset aggiornati:',
-              err
-            );
-          },
+          error: (err) =>
+            this.handleError(err, 'Errore durante il recupero dei dataset.'),
         });
       },
       error: (err) => {
-        this.resultMessage = 'Errore durante la rinomina del dataset.';
-        this.messageType = 'error';
-        this.showMessage = true;
-        console.error(err);
+        this.handleError('Errore durante la rinomina del dataset.', err);
       },
     });
+  }
+
+  checkName(name: string): boolean {
+    return name.trim().length > 0;
   }
 
   private dialog = inject(MatDialog);
@@ -158,26 +156,23 @@ export class DatasetListPageComponent {
               this.allDatasets = datasets;
               this.filteredDatasets = [...this.allDatasets];
             },
-            error: (err) => {
-              console.error(
-                'Errore durante il recupero dei dataset aggiornati:',
-                err
-              );
-            },
+            error: (err) =>
+              this.handleError(err, 'Errore durante il recupero dei dataset.'),
           });
 
           console.log('Dataset creato:', datasetDto);
         },
-        error: (err) => {
-          this.resultMessage = 'Errore durante la creazione del dataset.';
-          this.messageType = 'error';
-          this.showMessage = true;
-          console.error('Errore nella creazione del dataset:', err);
-        },
+        error: (err) =>
+          this.handleError(err, 'Errore nella creazione del dataset.'),
       });
-
-      console.log('Nome del nuovo dataset:', result);
     });
+  }
+
+  private handleError(err: any, fallbackMessage: string = 'Errore generico.') {
+    this.resultMessage = err?.error?.msg || fallbackMessage;
+    this.messageType = 'error';
+    this.showMessage = true;
+    console.error(err);
   }
 
   datasetCopied(id: string): void {
@@ -219,25 +214,26 @@ export class DatasetListPageComponent {
       this.mockDatasets = [...this.datasetService.getDataset()];*/
       this.datasetService.deleteDatasetById(this.datasetSelected.id).subscribe({
         next: () => {
-          // Aggiorna la cache locale
-          // Ricarica i dati aggiornati
-          this.datasetService.getAllDatasets().subscribe((datasets) => {
-            this.allDatasets = datasets;
-            this.filteredDatasets = [...this.allDatasets];
+          this.datasetService.getAllDatasets().subscribe({
+            next: (datasets) => {
+              this.allDatasets = datasets;
+              this.filteredDatasets = [...this.allDatasets];
+            },
+            error: (err) =>
+              this.handleError(
+                err,
+                'Errore durante il caricamento dei dataset aggiornati.'
+              ),
           });
 
           this.showConfirmDelete = false;
-          this.resultMessage = 'Test eliminato con successo!';
+          this.resultMessage = `Dataset eliminato con ID: ${
+            this.datasetSelected!.id
+          }`;
           this.messageType = 'success';
           this.showMessage = true;
-          console.log('Dataset eliminato con ID:', this.datasetSelected!.id);
         },
-        error: (err) => {
-          this.resultMessage = 'eliminazione fallito!';
-          this.messageType = 'error';
-          this.showMessage = true;
-          console.error('Errore durante la cancellazione:', err);
-        },
+        error: (err) => this.handleError(err, 'Eliminazione fallita!'),
       });
     }
   }

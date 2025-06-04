@@ -42,10 +42,7 @@ export class DatasetElementComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log('Nuovo nome nel elemento:', result);
-        this.renameSignal.emit({ id: this.dataset!.id, newName: result }); // Invia il nuovo nome al padre tramite l'evento
-      }
+      this.renameSignal.emit({ id: this.dataset!.id, newName: result }); // Invia il nuovo nome al padre tramite l'evento
     });
   }
 

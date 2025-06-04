@@ -46,13 +46,3 @@ Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizzi
     * **Frontend**: `http://localhost:4200`
     * **Backend**: `http://localhost:5000`
    
-## Componenti del Gruppo
-
-Questo progetto è stato sviluppato dai seguenti membri del team:
-
-* Enrico Bianchi  
-* Eghosa Matteo Igbinedion Osamwonyi  
-* Guirong Lan  
-* Pedro Leoni  
-* Marko Peric  
-* Francesco Savio

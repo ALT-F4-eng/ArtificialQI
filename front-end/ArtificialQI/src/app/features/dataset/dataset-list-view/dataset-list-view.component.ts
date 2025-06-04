@@ -25,7 +25,6 @@ export class DatasetListViewComponent {
 
   @Output() rename = new EventEmitter<{ id: string; newName: string }>();
   onRename(id: string, newName: string) {
-    console.log('Nuovo nome nel list view:', newName);
     this.rename.emit({ id, newName });
   }
 
@@ -36,7 +35,6 @@ export class DatasetListViewComponent {
 
   @Output() datasetDeleted = new EventEmitter<DatasetDto>();
   onDelete(dataset: DatasetDto) {
-    console.log('Indice ricevuto per cancellazione list view:', dataset);
     this.datasetDeleted.emit(dataset);
   }
 

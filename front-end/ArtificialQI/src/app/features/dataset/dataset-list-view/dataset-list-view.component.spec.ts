@@ -3,26 +3,16 @@ import { DatasetListViewComponent } from './dataset-list-view.component';
 import { DatasetElementComponent } from '../dataset-element/dataset-element.component';
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
 // Mock dati
-const mockDatasets: DatasetDto[] =  [
+const mockDatasets: DatasetDto[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Dataset Uno',
-    last_mod: new Date('2025-05-01'),
-    creation: new Date('2025-04-01'),
-    origin_id: 0,
-    tmp: false,
-    max_page: 12,
-    element_n: 120,
+    creation_date: new Date('2025-04-01T00:00:00.000Z'),
   },
   {
-    id: 2,
+    id: '2',
     name: 'Dataset Due',
-    last_mod: new Date('2025-06-10'),
-    creation: new Date('2025-05-10'),
-    origin_id: 1,
-    tmp: false,
-    max_page: 8,
-    element_n: 80,
+    creation_date: new Date('2025-05-10T00:00:00.000Z'),
   },
 ];
 

@@ -1,263 +1,159 @@
-import { render } from '@testing-library/angular';
-import { fireEvent } from '@testing-library/angular';
-import { screen } from '@testing-library/dom';
+import { render, screen, fireEvent } from '@testing-library/angular';
+import { of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+
 import { DatasetListPageComponent } from './dataset-list-page.component';
 import { DatasetService } from '../../../core/services/dataset.service';
-import { provideRouter } from '@angular/router';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { DatasetNameDialogComponent } from '../../../shared/components/dataset-name-dialog/dataset-name-dialog.component';
-import { of } from 'rxjs'; // Assicurati di importare 'of'
-import { DatasetDto } from '../../../core/models/dataset-dto.model';
-// Mock dati
-const mockDatasets: DatasetDto[] = [
-  {
-    id: "1",
-    name: 'Dataset Uno',
-    last_mod: new Date('2025-05-01'),
-    creation: new Date('2025-04-01'),
-    origin_id: 0,
-    tmp: false,
-    max_page: 12,
-    element_n: 120,
-  },
-  {
-    id: "2",
-    name: 'Dataset Due',
-    last_mod: new Date('2025-06-10'),
-    creation: new Date('2025-05-10'),
-    origin_id: 1,
-    tmp: false,
-    max_page: 8,
-    element_n: 80,
-  },
+
+// Mock dataset per i test
+const mockDatasets = [
+  { id: '0', name: 'Dataset Uno', creation_date: new Date() },
+  { id: '1', name: 'Dataset Due', creation_date: new Date() },
 ];
 
-// Mock del servizio
+// Mock del servizio DatasetService
 const mockDatasetService = {
-  getDataset: jest.fn(() => [...mockDatasets]),
-  renameDataset: jest.fn(),
-  copyDataset: jest.fn(),
-  deleteDataset: jest.fn(),
+  getAllDatasets: jest.fn().mockReturnValue(of(mockDatasets)),
+  renameDatasetById: jest.fn().mockReturnValue(of(void 0)), // qui ritorniamo un Observable vuoto
+  deleteDatasetById: jest.fn().mockReturnValue(of(void 0)),
 };
 
-describe('DatasetListPageComponent (con Jest e angular)', () => {
-  // Verifica che getDataset() sia stato chiamato → segnale che il componente ha cercato di caricare i dati al ngOnInit.
-  it('dovrebbe visualizzare il componente di ricerca', async () => {
-    const { container } = await render(DatasetListPageComponent, {
+describe('DatasetListPageComponent (con Jest e Angular 19)', () => {
+  const mockDialog = {
+    open: jest.fn().mockReturnValue({
+      afterClosed: () => of(undefined),
+    }),
+  };
+
+  const renderComponent = async (
+    options: {
+      providers?: any[];
+      componentProperties?: Partial<DatasetListPageComponent>;
+    } = {}
+  ) => {
+    return render(DatasetListPageComponent, {
       componentProviders: [
         { provide: DatasetService, useValue: mockDatasetService },
       ],
+      providers: [
+        HttpClient,
+        HttpHandler,
+        provideRouter([]),
+        { provide: MatDialog, useValue: mockDialog },
+        ...(options.providers || []),
+      ],
+      componentProperties: options.componentProperties || {},
+      imports: [CommonModule],
     });
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('dovrebbe creare il componente', async () => {
+    const { fixture } = await renderComponent();
+    expect(fixture.componentInstance).toBeTruthy();
+  });
+
+  it('dovrebbe visualizzare il componente di ricerca', async () => {
+    const { container } = await renderComponent();
     expect(container.querySelector('app-search-bar')).toBeTruthy();
   });
 
   it('dovrebbe visualizzare il pulsante per creare un dataset', async () => {
-    await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-      providers: [provideRouter([])], // Aggiungi l'indirizzo router se necessario
-    });
+    await renderComponent();
 
-    // Cerca il pulsante per testo visibile
     const button = screen.getByRole('button', { name: /crea dataset/i });
     expect(button).toBeInTheDocument();
   });
-  // tocca rivedere
-  it('dovrebbe reindirizzare alla pagina di creazione dataset quando si clicca su "Crea dataset"', async () => {
-    const routerMock = {
-      navigate: jest.fn(),
-    };
 
-    await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-        { provide: Router, useValue: routerMock },
-      ],
-      providers: [provideRouter([])],
-    });
+  it('dovrebbe visualizzare la lista dei dataset e gli elementi corrispondenti', async () => {
+    await renderComponent();
 
-    const button = screen.getByRole('button', { name: /crea dataset/i });
-    fireEvent.click(button);
-
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/datasetContentPage'], { queryParams: { mode: 'create' } });
-  });
-
-  it('dovrebbe visualizzare il pulsante per caricare un dataset da un file JSON', async () => {
-    const { container } = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
-    expect(container.querySelector('app-file-upload')).toBeTruthy();
-  });
-
-  it('dovrebbe visualizzare la lista dei dataset, DatasetListView ottenga correttamente la lista dei data set salvati', async () => {
-    await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
-
-    // Verifica che il sottocomponente DatasetListView sia presente
     const listView = screen.getByRole('list');
     expect(listView).toBeInTheDocument();
 
-    // Verifica che gli elementi siano presenti nella lista
     const listItems = screen.getAllByRole('listitem');
-    expect(listItems).toHaveLength(mockDatasets.length); // Due elementi nel mock
+    expect(listItems).toHaveLength(mockDatasets.length);
 
-    // Verifica che i nomi dei dataset siano visibili
     expect(listItems[0]).toHaveTextContent('Dataset Uno');
     expect(listItems[1]).toHaveTextContent('Dataset Due');
   });
 
-  // Verifica che la funzione di ricerca (handleSearch) filtri correttamente i dati.
-  it('DatasetListView dovrebbe ottenere correttamente la lista filtrata dei dataset salvati dopo un operazione di ricerca, e lo visualizza correttamente gli elementi', async () => {
-    const view = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
-
-    const instance = view.fixture.componentInstance;
+  it('dovrebbe filtrare correttamente i dataset con handleSearchDataset', async () => {
+    const { fixture } = await renderComponent();
+    const instance = fixture.componentInstance;
 
     instance.handleSearchDataset('Uno');
-    view.fixture.detectChanges(); // forza il re-render della view
+    fixture.detectChanges();
 
     expect(instance.filteredDatasets.length).toBe(1);
     expect(instance.filteredDatasets[0].name).toBe('Dataset Uno');
 
-    // Verifica che venga renderizzato 1 solo elemento (il risultato filtrato)
-
-    const listItems = screen.getAllByText(/Dataset Uno/i);
-    expect(listItems.length).toBe(1);
-    expect(listItems[0]).toHaveTextContent('Dataset Uno');
+    const filteredItems = screen.getAllByText(/Dataset Uno/i);
+    expect(filteredItems.length).toBe(1);
+    expect(filteredItems[0]).toHaveTextContent('Dataset Uno');
   });
 
-  //Testa che chiamando renameDataset() venga effettivamente invocato il servizio mock.
-  it('DatasetElement dovrebbe ottenere correttamente i dati aggiornati del dataset salvato dopo un operazione di rinominazione', async () => {
-    const view = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
+  it('dovrebbe chiamare renameDatasetById nel servizio quando si rinomina un dataset', async () => {
+    const { fixture } = await renderComponent();
+    const instance = fixture.componentInstance;
 
-    const instance = view.fixture.componentInstance;
-    instance.renameDataset(0, 'Nome Nuovo');
-    expect(mockDatasetService.renameDataset).toHaveBeenCalledWith(
-      0,
+    instance.renameDataset('0', 'Nome Nuovo');
+    expect(mockDatasetService.renameDatasetById).toHaveBeenCalledWith(
+      '0', // stringa
       'Nome Nuovo'
     );
   });
-  //Simula la chiamata a datasetCopied(index). Verifica che venga chiamato copyDataset(index) sul servizio.
 
-  it('DatasetListView dovrebbe ottenere correttamente la lista aggiornata dei dataset salvati dopo un operazione di copia', async () => {
-    const view = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
+  it('dovrebbe chiamare deleteDatasetById nel servizio dopo conferma eliminazione', async () => {
+    const { fixture } = await renderComponent();
+    const instance = fixture.componentInstance;
 
-    const instance = view.fixture.componentInstance;
-    instance.datasetCopied(1);
-    expect(mockDatasetService.copyDataset).toHaveBeenCalledWith(1);
-  });
-  //Test simile al precedente, ma verifica l'eliminazione.
-  it('DatasetListView dovrebbe ottenere correttamente la lista aggiornata dei dataset salvati dopo un operazione di eliminazione', async () => {
-    const view = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
-
-    const instance = view.fixture.componentInstance;
-    // Imposta selectedDatasetId prima di chiamare il metodo
-    instance.datasetid = 0;
-    instance.onDatasetDeleteConfirmed();
-    expect(mockDatasetService.deleteDataset).toHaveBeenCalledWith(0);
-  });
-
-  it("dovrebbe aprire il dialog quando l'utente clicca sul pulsante di rinominazione", async () => {
-    // Creiamo un mock del MatDialog
-    const mockDialog = {
-      open: jest.fn().mockReturnValue({
-        afterClosed: () => of(undefined), // ritorna un observable dato che la funzione afterClosed() serve ritornare un observable
-      }),
+    instance.datasetSelected = {
+      id: '0',
+      name: 'mock',
+      creation_date: new Date(),
     };
+    instance.onDatasetDeleteConfirmed();
 
-    // Renderizza il componente con il mock del MatDialog
-    await render(DatasetListPageComponent, {
-      providers: [
-        { provide: MatDialog, useValue: mockDialog }, // Iniettiamo il mock
-        { provide: DatasetService, useValue: mockDatasetService }, // Iniettiamo il mock del servizio
-      ],
-    });
+    expect(mockDatasetService.deleteDatasetById).toHaveBeenCalledWith('0');
+  });
 
-    // Ottieni tutti i pulsanti "Rinomina"
-    const renameButtons = screen.getAllByText('Rinomina'); // Assicurati che il testo corrisponda a quello del tuo template
-    // Verifica che esista almeno un pulsante "Rinomina"
+  it('dovrebbe aprire il dialog quando si clicca il pulsante "Rinomina"', async () => {
+    await renderComponent();
+
+    const renameButtons = screen.getAllByText('Rinomina');
     expect(renameButtons.length).toBeGreaterThan(0);
-    // Simula un click sul primo pulsante "Rinomina"
+
     fireEvent.click(renameButtons[0]);
-    // Verifica che il dialog sia stato aperto con il componente e i dati giusti
+
     expect(mockDialog.open).toHaveBeenCalledWith(DatasetNameDialogComponent, {
-      data: { name: 'Dataset Uno',"title": "Rinomina Dataset"}, // A seconda di come gestisci il dataset, puoi adattare questa parte
+      data: { name: 'Dataset Uno', title: 'Rinomina Dataset' },
     });
   });
-  it('dovrebbe impostare showConfirmLoad a true quando viene emesso datasetLoaded', async () => {
-    const { fixture } = await render(DatasetListPageComponent, {
+
+  it('dovrebbe mostrare conferma eliminazione quando viene richiesto', async () => {
+    const { fixture } = await renderComponent({
       componentProperties: {
         filteredDatasets: mockDatasets,
       },
     });
 
-    const component = fixture.componentInstance;
-
-    // Simulo l’evento datasetLoaded emesso dal figlio
-    component.onDatasetLoadRequest(mockDatasets[0]);
+    const instance = fixture.componentInstance;
+    instance.onDatasetDeleteRequest(mockDatasets[0]);
 
     fixture.detectChanges();
 
-    expect(component.showConfirmLoad).toBe(true);
-    expect(component.datasetSelected).toEqual(mockDatasets[0]);
+    expect(instance.showConfirmDelete).toBe(true);
+    expect(instance.datasetSelected).toEqual(mockDatasets[0]);
 
-    // Inoltre controllo che l'app-confirm per il caricamento sia visibile
     const confirmDialog = fixture.nativeElement.querySelector('app-confirm');
     expect(confirmDialog).toBeTruthy();
-  });
-
-  it('dovrebbe impostare showConfirmDelete a true quando viene emesso datasetDeleted', async () => {
-    const { fixture } = await render(DatasetListPageComponent, {
-      componentProperties: {
-        filteredDatasets: mockDatasets,
-      },
-    });
-
-    const component = fixture.componentInstance;
-
-    // Simulo l’evento datasetLoaded emesso dal figlio
-    component.onDatasetDeleteRequest(mockDatasets[0]); 
-
-    fixture.detectChanges();
-
-    expect(component.showConfirmDelete).toBe(true);
-    expect(component.datasetid).toEqual(mockDatasets[0].id);
-
-    // Inoltre controllo che l'app-confirm per il caricamento sia visibile
-    const confirmDialog = fixture.nativeElement.querySelector('app-confirm');
-    expect(confirmDialog).toBeTruthy();
-  });
-
-  it('dovrebbe creare correttamente il componente DatasetListPageComponent', async () => {
-    const { fixture } = await render(DatasetListPageComponent, {
-      componentProviders: [
-        { provide: DatasetService, useValue: mockDatasetService },
-      ],
-    });
-
-    const component = fixture.componentInstance;
-    expect(component).toBeTruthy();
   });
 });

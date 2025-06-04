@@ -2,17 +2,17 @@ import { render, screen, fireEvent } from '@testing-library/angular';
 import { DatasetElementComponent } from './dataset-element.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
+import localeIt from '@angular/common/locales/it';
 import { DatasetDto } from '../../../core/models/dataset-dto.model';
+
+// Registriamo i dati di localizzazione italiana per DatePipe
+registerLocaleData(localeIt);
+
 const mockDataset: DatasetDto = {
-  id: 1,
+  id: '123',
   name: 'Dataset Alpha',
-  last_mod: new Date('2025-05-01'),
-  creation: new Date('2025-04-01'),
-  origin_id: 0,
-  tmp: false,
-  max_page: 12,
-  element_n: 120,
+  creation_date: new Date('2025-05-01'),
 };
 
 describe('DatasetElementComponent', () => {
@@ -26,14 +26,16 @@ describe('DatasetElementComponent', () => {
     expect(nameElement).toBeInTheDocument();
   });
 
-  it("dovrebbe visualizzare correttamente la data dell'ultima modifica", async () => {
+  it('dovrebbe visualizzare correttamente la data della creazione', async () => {
     await render(DatasetElementComponent, {
       componentProperties: { dataset: mockDataset },
-      imports: [MatButtonModule, MatCardModule, DatePipe],
+      imports: [MatButtonModule, MatCardModule],
     });
-    const datePipe = new DatePipe('en-US'); // o 'it-IT'
-    const expectedDate = datePipe.transform(mockDataset.last_mod, 'short');
-    const dateElement = screen.getByText(`Ultima modifica: ${expectedDate}`);
+
+    const datePipe = new DatePipe('it-IT');
+    const expectedDate = datePipe.transform(mockDataset.creation_date, 'yyyy-MM-dd');
+    const dateElement = screen.getByText(`Data di creazione: ${expectedDate}`);
+
     expect(dateElement).toBeInTheDocument();
   });
 
@@ -47,16 +49,6 @@ describe('DatasetElementComponent', () => {
     expect(renameButton).toBeInTheDocument();
   });
 
-  it('dovrebbe visualizzare correttamente il pulsante di clonazione', async () => {
-    await render(DatasetElementComponent, {
-      componentProperties: { dataset: mockDataset },
-      imports: [MatButtonModule, MatCardModule],
-    });
-
-    const copyButton = screen.getByText('Copia');
-    expect(copyButton).toBeInTheDocument();
-  });
-
   it('dovrebbe visualizzare correttamente il pulsante di eliminazione', async () => {
     await render(DatasetElementComponent, {
       componentProperties: { dataset: mockDataset },
@@ -67,31 +59,7 @@ describe('DatasetElementComponent', () => {
     expect(deleteButton).toBeInTheDocument();
   });
 
-  it('dovrebbe visualizzare correttamente il pulsante di caricamento', async () => {
-    await render(DatasetElementComponent, {
-      componentProperties: { dataset: mockDataset },
-      imports: [MatButtonModule, MatCardModule],
-    });
-
-    const loadButton = screen.getByText('Carica');
-    expect(loadButton).toBeInTheDocument();
-  });
-
-  it('dovrebbe emettere copyClicked quando si preme il pulsante "Copia Dataset"', async () => {
-    const { fixture } = await render(DatasetElementComponent, {
-      componentProperties: { dataset: mockDataset },
-      imports: [MatButtonModule, MatCardModule],
-    });
-
-    const spy = jest.spyOn(fixture.componentInstance.copySignal, 'emit');
-
-    const copyButton = screen.getByText('Copia');
-    fireEvent.click(copyButton);
-
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('dovrebbe chiamare la funzione di eliminazione quando si preme il pulsante "Elimina Dataset"', async () => {
+  it('dovrebbe chiamare la funzione di eliminazione quando si preme il pulsante "Elimina"', async () => {
     const { fixture } = await render(DatasetElementComponent, {
       componentProperties: { dataset: mockDataset },
       imports: [MatButtonModule, MatCardModule],
@@ -105,8 +73,11 @@ describe('DatasetElementComponent', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('dovrebbe creare correttamente il componente DatasetListViewComponent', async () => {
-    const { fixture } = await render(DatasetElementComponent, {});
+  it('dovrebbe creare correttamente il componente DatasetElementComponent', async () => {
+    const { fixture } = await render(DatasetElementComponent, {
+      componentProperties: { dataset: mockDataset },
+      imports: [MatButtonModule, MatCardModule],
+    });
 
     const component = fixture.componentInstance;
     expect(component).toBeTruthy();

@@ -107,7 +107,20 @@ export class DatasetListPageComponent {
   }
 
   renameDataset(datasetid: string, newName: string) {
-  
+    if (newName === undefined || newName === null) return;
+    if (!this.checkNameEmpty(newName)) {
+      this.resultMessage =
+        'il nome del dataset da rinominare non può essere vuoto';
+      this.messageType = 'error';
+      this.showMessage = true;
+      return;
+    }
+    if (this.checkNameDuplicate(newName)) {
+      this.resultMessage = 'il nome del dataset da rinominare esiste gia';
+      this.messageType = 'error';
+      this.showMessage = true;
+      return;
+    }
     this.datasetService.renameDatasetById(datasetid, newName).subscribe({
       next: () => {
         this.resultMessage = 'Dataset rinominato con successo!';
@@ -125,13 +138,19 @@ export class DatasetListPageComponent {
         });
       },
       error: (err) => {
-        this.handleError('Errore durante la rinomina del dataset.', err);
+        this.handleError(err, 'Errore durante la rinomina del dataset.');
       },
     });
   }
 
-  checkName(name: string): boolean {
+  checkNameEmpty(name: string): boolean {
     return name.trim().length > 0;
+  }
+  checkNameDuplicate(name: string): boolean {
+    return this.allDatasets.some(
+      (dataset) =>
+        dataset.name.trim().toLowerCase() === name.trim().toLowerCase()
+    );
   }
 
   private dialog = inject(MatDialog);
@@ -142,8 +161,20 @@ export class DatasetListPageComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (!result) return;
-
+      if (result === undefined || result === null) return;
+      if (!this.checkNameEmpty(result)) {
+        this.resultMessage =
+          'Il nome del dataset non può essere vuoto né contenere soltanto spazi.';
+        this.messageType = 'error';
+        this.showMessage = true;
+        return;
+      }
+      if (this.checkNameDuplicate(result)) {
+        this.resultMessage = `Esiste già un dataset con nome: ${result}`;
+        this.messageType = 'error';
+        this.showMessage = true;
+        return;
+      }
       this.datasetService.createDatasetByName(result).subscribe({
         next: (datasetDto) => {
           this.resultMessage = 'Dataset creato con successo!';

@@ -4,11 +4,11 @@
 
 # Progetto ArtificialQI
 
-Benvenuti nel progetto ArtificialQI! Questo repository contiene il codice sorgente della nostra applicazione full-stack, che sfrutta tecnologie web moderne per offrire un’esperienza utente dinamica e responsive.
+Benvenuti nel progetto ArtificialQI!
 
 ---
 
-## 📚 Documentazione del Progetto
+## Documentazione del Progetto
 
 Per informazioni dettagliate sul progetto, inclusa l’architettura, le scelte progettuali e altro, consulta la nostra documentazione completa:
 
@@ -16,7 +16,7 @@ Per informazioni dettagliate sul progetto, inclusa l’architettura, le scelte p
 
 ---
 
-## 🛠️ Tecnologie Utilizzate
+## Tecnologie Utilizzate
 
 ArtificialQI è costruito con uno stack tecnologico full-stack moderno e solido:
 
@@ -26,7 +26,7 @@ ArtificialQI è costruito con uno stack tecnologico full-stack moderno e solido:
 
 ---
 
-## ▶️ Come Iniziare
+## Come Iniziare
 
 Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizziamo Docker Compose per una configurazione semplice e veloce. Segui questi passaggi:
 
@@ -54,10 +54,10 @@ Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizzi
     Quando i container sono avviati, puoi accedere all’applicazione tramite i seguenti URL:
     * **Frontend Angular**: `http://localhost:4200`
     * **API Backend Flask**: `http://localhost:5000`
-
+   
 ---
 
-## 👥 Componenti del Gruppo
+## Componenti del Gruppo
 
 Questo progetto è stato sviluppato dai seguenti membri del team:
 

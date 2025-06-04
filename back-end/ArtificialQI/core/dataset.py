@@ -11,7 +11,7 @@ class Dataset:
 
     def __eq__(self, dataset: object):
 
-        if not isinstance(dataset, "Dataset"):
+        if not isinstance(dataset, Dataset):
             return False
         
         return dataset.id == self.id

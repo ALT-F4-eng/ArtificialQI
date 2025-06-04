@@ -11,6 +11,6 @@ class DatasetUpdateDto(BaseModel):
     @staticmethod
     def to_domain(dto: "DatasetUpdateDto")->Dataset:
         return Dataset(
-            id=dto.id,
-            name=dto.name
-        )
+            _id=dto.id,
+            _name=dto.name
+    )

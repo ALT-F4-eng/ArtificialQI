@@ -7,17 +7,17 @@ class DatasetSqlAlchemyMapper:
     def to_domain(model: DatasetSqlAlchemyModel) -> Dataset:
 
         return Dataset(
-            name=model.name,
-            id=model.id, 
-            creation_date=model.creation_date
+            _name=model.name,
+            _id=model.id, 
+            _creation_date=model.creation_date
         )
 
     @staticmethod
     def to_model(domain: Dataset) -> DatasetSqlAlchemyModel:
 
         return DatasetSqlAlchemyModel(
-            name=domain.name,
-            id=domain.id, 
-            creation_date=domain.creation_date
+            _name=domain.name,
+            _id=domain.id, 
+            _creation_date=domain.creation_date
         )
 

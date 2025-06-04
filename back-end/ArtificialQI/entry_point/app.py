@@ -5,6 +5,7 @@ from entry_point.dataset_blueprint import dataset_bp
 from entry_point.container import AppContainer
 from common.exceptions import DatasetNonExsistentError, DuplicateNameDatasetError, PersistenceError
 from flask_cors import CORS
+from pydantic import ValidationError
 
 def create_app():
 
@@ -39,7 +40,17 @@ def create_app():
             "msg": str(e)
         }, 500
 
-
+    @app.errorhandler(ValidationError)
+    def validation_error(e: ValidationError): # type: ignore
+        return {
+            "msg": f"La validazione dell'input è fallita"
+        }, 400
+    
+    @app.errorhandler(ValueError)
+    def value_error(e: Exception): # type: ignore
+        return {
+            "msg": str(e)
+        }, 400
 
 
     return app

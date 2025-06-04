@@ -18,3 +18,5 @@ class DuplicateNameDatasetError(Exception):
 
     def __init__(self, name: str):
         super().__init__(f"Esiste già un dataset con nome: {name}")
+
+

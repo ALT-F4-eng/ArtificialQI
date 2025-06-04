@@ -6,15 +6,12 @@
 
 Benvenuti nel progetto ArtificialQI!
 
----
 
 ## Documentazione del Progetto
 
 Per informazioni dettagliate sul progetto, inclusa l’architettura, le scelte progettuali e altro, consulta la nostra documentazione completa:
 
 [**Visualizza la Documentazione del Progetto**](https://alt-f4-eng.github.io/Documentazione/)
-
----
 
 ## Tecnologie Utilizzate
 
@@ -23,8 +20,6 @@ ArtificialQI è costruito con uno stack tecnologico full-stack moderno e solido:
 * **Angular**: Il framework scelto per sviluppare un’interfaccia utente dinamica e responsive.
 * **Flask**: Un potente micro-framework Python utilizzato per costruire le API backend.
 * **Docker**: Utilizzato per la containerizzazione dell’applicazione, semplificando la gestione e il deployment dell’ambiente.
-
----
 
 ## Come Iniziare
 
@@ -55,8 +50,6 @@ Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizzi
     * **Frontend Angular**: `http://localhost:4200`
     * **API Backend Flask**: `http://localhost:5000`
    
----
-
 ## Componenti del Gruppo
 
 Questo progetto è stato sviluppato dai seguenti membri del team:

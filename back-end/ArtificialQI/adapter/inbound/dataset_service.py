@@ -63,7 +63,7 @@ class DatasetService(DatasetUseCase):
         
         datasets: Optional[list[Dataset]] = self._dataset_repo.get_all()
 
-        if datasets is None:
-            raise PersistenceError("Errore durante l'ottenimento dei dataset.")
+        # if datasets is None:
+        # raise PersistenceError("Errore durante l'ottenimento dei dataset.")
         
         return datasets

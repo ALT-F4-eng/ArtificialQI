@@ -37,7 +37,7 @@ class Dataset:
 
     @creation_date.setter
     def creation_date(self, d: date):
-        if not d > date.today():
+        if d > date.today():
             raise ValueError("La data di creazione del dataset non può essere futura.")
 
         self._creation_date = d 

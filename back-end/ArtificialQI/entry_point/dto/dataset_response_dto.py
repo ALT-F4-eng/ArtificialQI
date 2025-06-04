@@ -25,4 +25,4 @@ class DatasetResponseListDto(BaseModel):
 
     @staticmethod
     def to_dto(domain: list[Dataset])->"DatasetResponseListDto":
-        return DatasetResponseListDto(datasets=[DatasetResponseDto(id=d.id, name=d.name, creation_date=d.creation_date) for d in domain])
+        return DatasetResponseListDto(datasets=[DatasetResponseDto.to_dto(d) for d in domain])

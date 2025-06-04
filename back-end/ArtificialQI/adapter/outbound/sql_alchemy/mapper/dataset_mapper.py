@@ -16,8 +16,8 @@ class DatasetSqlAlchemyMapper:
     def to_model(domain: Dataset) -> DatasetSqlAlchemyModel:
 
         return DatasetSqlAlchemyModel(
-            _name=domain.name,
-            _id=domain.id, 
-            _creation_date=domain.creation_date
+            name=domain.name,
+            id=domain.id, 
+            creation_date=domain.creation_date
         )
 

@@ -43,7 +43,7 @@ def create_app():
     @app.errorhandler(ValidationError)
     def validation_error(e: ValidationError): # type: ignore
         return {
-            "msg": f"La validazione dell'input è fallita"
+            "msg": "La validazione dell'input è fallita"
         }, 400
     
     @app.errorhandler(ValueError)

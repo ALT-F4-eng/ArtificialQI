@@ -61,7 +61,7 @@ class SqlAlchemyDatasetAdapter(DatasetRepository):
         select_stmt = select(DatasetSqlAlchemyModel)
         
         try:
-            res = [DatasetSqlAlchemyMapper.to_domain(dataset) for dataset in self._session.scalars(select_stmt).all()]
+          res = [DatasetSqlAlchemyMapper.to_domain(dataset) for dataset in self._session.scalars(select_stmt).all()]
         except:
             res = None
 

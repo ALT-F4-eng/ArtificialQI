@@ -5,16 +5,18 @@
   (close)="onCloseMessage()"
 ></app-message-box>
 
+<app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
+
 <button mat-raised-button (click)="openCreateDialog()">
   <mat-icon>add</mat-icon> Crea dataset
 </button>
-<app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
+
 <app-dataset-list-view
-  [datasets]="filteredDatasets"
-  (rename)="renameDataset($event.id, $event.newName)"
-  (datasetCopied)="datasetCopied($event)"
-  (datasetDeleted)="onDatasetDeleteRequest($event)"
-  (datasetLoaded)="onDatasetLoadRequest($event)"
+[datasets]="filteredDatasets"
+(rename)="renameDataset($event.id, $event.newName)"
+(datasetCopied)="datasetCopied($event)"
+(datasetDeleted)="onDatasetDeleteRequest($event)"
+(datasetLoaded)="onDatasetLoadRequest($event)"
 ></app-dataset-list-view>
 
 <app-confirm

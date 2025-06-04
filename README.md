@@ -29,16 +29,14 @@ Per avviare l’intero progetto in ambiente locale, è necessario utilizzare Doc
 
 Costruisci i container:
 
-bash
-Copia
-Modifica
-docker compose build
+  ```bash
+  docker compose build
+
+  ```bash
+  Copia
+  docker compose up
 Avvia l’applicazione:
 
-bash
-Copia
-Modifica
-docker compose up
 Accedi ai servizi:
 
 Frontend Angular: http://localhost:4200

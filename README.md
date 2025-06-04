@@ -43,8 +43,8 @@ Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizzi
 
 5.  **Accedi ai Servizi**:
     Quando i container sono avviati, puoi accedere all’applicazione tramite i seguenti URL:
-    * **Frontend Angular**: `http://localhost:4200`
-    * **API Backend Flask**: `http://localhost:5000`
+    * **Frontend**: `http://localhost:4200`
+    * **Backend**: `http://localhost:5000`
    
 ## Componenti del Gruppo
 

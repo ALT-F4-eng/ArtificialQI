@@ -1,0 +1,45 @@
+:host {
+  display: block;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+}
+.subtitle{
+  font-size: 16px;
+}
+.llm-card {
+  background-color: transparent;
+  box-shadow: none;
+  color: black;
+}
+
+.llm-section {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.llm-section label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #444;
+  font-size: 14px;
+}
+
+.llm-section p {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.kv-item {
+  display: flex;
+  gap: 8px;
+  font-size: 15px;
+}
+
+mat-list-item {
+  padding-left: 0;
+}

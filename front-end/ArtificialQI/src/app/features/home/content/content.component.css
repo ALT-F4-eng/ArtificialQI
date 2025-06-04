@@ -1,0 +1,21 @@
+.content-text {
+  font-size: 1.2rem;
+  color: #333;
+  margin-top: 1rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  padding: 2rem;
+}
+
+.fade-in-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  will-change: opacity, transform;
+  margin-bottom: 2rem;
+}
+
+.fade-in-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

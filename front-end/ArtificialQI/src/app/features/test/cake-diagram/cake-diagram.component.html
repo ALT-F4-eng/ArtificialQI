@@ -1,0 +1,11 @@
+<!-- Mostriamo il grafico solo se doughnutData esiste -->
+<canvas *ngIf="doughnutData" baseChart
+        [data]="doughnutData"
+        [type]="'doughnut'"
+        [options]="doughnutOptions">
+</canvas>
+
+<!-- Oppure mostra un placeholder minimo in test -->
+<div *ngIf="!doughnutData" class="test-placeholder">
+  <!-- Vuoto o messaggio di test -->
+</div>

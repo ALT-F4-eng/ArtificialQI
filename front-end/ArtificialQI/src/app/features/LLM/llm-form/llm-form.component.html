@@ -1,0 +1,31 @@
+<app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+<form *ngIf="llmForm" [formGroup]="llmForm" (ngSubmit)="onSubmit()" class="llm-form">
+  <mat-form-field class="full-width">
+    <mat-label>Nome</mat-label>
+    <input matInput formControlName="name" />
+    <mat-error *ngIf="llmForm.get('name')?.hasError('required') && llmForm.get('name')?.touched">
+    Il campo Nome è obbligatorio.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field  class="full-width">
+    <mat-label>URL</mat-label>
+    <input matInput formControlName="url" />
+    <mat-error *ngIf="llmForm.get('url')?.hasError('required') && llmForm.get('url')?.touched">
+    Il campo URL è obbligatorio.
+    </mat-error>
+    <mat-error *ngIf="llmForm.get('url')?.hasError('invalidUrl') && llmForm.get('url')?.touched">
+      Inserire un URL valido.
+    </mat-error>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-raised-button type="submit">Salva</button>
+    <button mat-raised-button type="button" (click)="onCancel()">Annulla</button>
+  </div>
+</form>

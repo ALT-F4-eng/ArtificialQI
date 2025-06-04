@@ -1,0 +1,10 @@
+.bar-diagram-wrapper {
+  width: 100%;
+  max-width: 600px;        /* limite massimo */
+  min-width: 300px;        /* dimensione minima per non diventare troppo piccolo */
+  height: auto;
+  aspect-ratio: 600 / 350; /* mantiene proporzioni */
+  margin: auto;
+  padding-left: 2em;
+  box-sizing: border-box;
+}

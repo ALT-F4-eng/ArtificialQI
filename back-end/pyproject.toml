@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ArtificialQI-API"
+version = "0.0.0.0"
+requires-python = "== 3.12.10"
+license = "MIT"
+authors = [
+    { name="Pedro Leoni", email="pedro.leoni@studenti.unipd.com" },
+    { name="Giovanni Lan", email="Guirong.Lan@studenti.unipd.it" },
+    { name="Matteo Eghosa", email="pezzoloedoardo@gmail.com" },
+    { name="Francesco Savio", email="francesco.savio.2@studenti.unipd.it" },
+    { name="Marko Peric", email="peric182019@gmail.com" },
+    { name="Enrico Bianchi", email="Enrico.bianchi.4@studenti.unipd.it" }
+]
+dependencies = [
+    "flask == 3.1.0", 
+    "pydantic == 2.11.3",
+    "dependency-injector == 4.46.0",
+    "SQLAlchemy == 2.0.40",
+    "psycopg2-binary == 2.9.10",
+    "flask-cors == 5.0.1",
+    "flask_sqlalchemy == 3.1.1"
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "black == 25.1.0",
+    "pytest == 8.3.5"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+
+[tool.pytest.ini_options]
+addopts = "-rav"

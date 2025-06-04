@@ -1,0 +1,17 @@
+<mat-card class="test-element">
+  <mat-card-content>
+    <div class="header">
+      <div class="info">
+        <mat-card-title class="test-title">
+          <span class="test-name">{{ test?.name }}</span>
+        </mat-card-title>
+        <p>Data di esecuzione: {{ test?.exec_date | date: "short" }}</p>
+      </div>
+      <div class="test-actions">
+        <button mat-raised-button (click)="openRenameDialog()">Rinomina</button>
+        <button mat-raised-button (click)="deletetest()">Elimina</button>
+        <button mat-raised-button (click)="loadtest()">Carica</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

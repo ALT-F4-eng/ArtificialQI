@@ -1,0 +1,16 @@
+<mat-list role="list">
+  <app-dataset-element
+    *ngFor="let item of datasets; let i = index"
+    [dataset]="item"
+    (renameSignal)="onRename($event.id, $event.newName)"
+    (copySignal)="onCopy($event)"
+    (deleteSignal)="onDelete($event)"
+    (loadSignal)="onDatasetLoaded($event)"
+    role="listitem"
+  ></app-dataset-element>
+  <!-- Messaggio quando non ci sono dataset -->
+  <ng-container *ngIf="datasets.length === 0">
+    <p>Nessun dataset salvato</p> <!-- paragrafo contenente il messaggio che viene visualizzato dall’utente nel caso non ci siano dataset salvati nel sistem, si puo anche scrivere altro-->
+  </ng-container>
+
+</mat-list>

@@ -1,0 +1,48 @@
+nav {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  background: #4a90e2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+nav a {
+  position: relative;
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  padding-bottom: 0.2rem;
+}
+
+nav a:hover,
+nav a.active {
+  border-bottom: none;
+}
+
+nav a.disabled {
+  color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  cursor: default;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -8px;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+nav a:hover::after {
+  opacity: 1;
+}

@@ -1,0 +1,17 @@
+.scatter-container {
+  width: 85vw;
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Evita di impostare altezza rigida o aspect-ratio qui */
+}
+
+/* Lascia canvas adattarsi al contenitore */
+canvas {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+}

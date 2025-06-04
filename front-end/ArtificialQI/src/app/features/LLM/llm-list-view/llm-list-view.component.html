@@ -1,0 +1,16 @@
+<!--messaggio se lista llm vuota-->
+<mat-card *ngIf="llms.length === 0" class="empty-message">
+  <mat-card-content>
+    <p class="text-center">Nessun modello LLM salvato.</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-list role="list">
+  <app-llm-element
+    *ngFor="let llm of llms"
+    [llm]="llm"
+    (delete)="onDeleteLlm($event)"
+    (load)="onLoadLlm($event)"
+    role="listitem"
+  ></app-llm-element>
+</mat-list>

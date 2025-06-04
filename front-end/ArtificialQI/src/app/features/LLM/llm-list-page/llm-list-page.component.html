@@ -1,0 +1,23 @@
+<button mat-raised-button (click)="createLlm()">
+  <mat-icon>add</mat-icon> Add new LLM
+</button>
+
+<app-message-box
+  *ngIf="showMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
+<app-llm-list-view
+  [llms]="llms"
+  (deleteLlm)="onLlmDeleteRequest($event)"
+  (viewLlm)="onLlmViewRequest($event)"
+></app-llm-list-view>
+
+<app-confirm 
+  *ngIf="showConfirm"
+  [message]="confirmMessage"
+  (confirmed)="onLlmDeleteConfirmed()"
+  (canceled)="onLlmDeleteCanceled()"
+></app-confirm>

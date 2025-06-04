@@ -1,0 +1,27 @@
+<mat-form-field class="search-bar">
+  <mat-label>Ricerca</mat-label>
+  <input
+    matInput
+    [(ngModel)]="searchTerm"
+    placeholder="Search"
+    (keydown.enter)="onSearch()"
+  />
+  <!-- funziona anche con il tasto di invio -->
+  <!-- Pulsante di clear (visibile solo se c'è testo) -->
+  <span matSuffix class="button-group">
+    <button
+      *ngIf="searchTerm"
+      mat-icon-button
+      (click)="clearSearch()"
+      aria-label="Cancella campo"
+      class="circle-button"
+    >
+      <mat-icon class="icon-nero" >close</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onSearch($event)" class="circle-button">
+      <mat-icon class="icon-nero" >search</mat-icon>
+    </button>
+  </span>
+</mat-form-field>
+
+<!-- [(ngModel)]: Si occupa del two-way data binding -->

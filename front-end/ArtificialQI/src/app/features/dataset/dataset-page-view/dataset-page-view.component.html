@@ -1,0 +1,12 @@
+<app-qalist-view
+  [qaList]="visibleQaList"
+  (modify)="modifyQA_datasetPageView($event.id, $event.question, $event.answer)"
+  (delete)="deleteQA_datasetPageView($event)"
+></app-qalist-view>
+
+<app-page-navigation
+  [totalItems]="totalItems"
+  [pageSize]="pageSize"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange_datasetPageView($event)">
+</app-page-navigation>

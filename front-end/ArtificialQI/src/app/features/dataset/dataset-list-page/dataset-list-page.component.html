@@ -1,0 +1,30 @@
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
+<app-search-bar (search)="handleSearchDataset($event)"></app-search-bar>
+
+<button mat-raised-button (click)="openCreateDialog()">
+  <mat-icon>add</mat-icon> Crea dataset
+</button>
+
+<app-dataset-list-view
+[datasets]="filteredDatasets"
+(rename)="renameDataset($event.id, $event.newName)"
+(datasetCopied)="datasetCopied($event)"
+(datasetDeleted)="onDatasetDeleteRequest($event)"
+(datasetLoaded)="onDatasetLoadRequest($event)"
+></app-dataset-list-view>
+
+<app-confirm
+  *ngIf="showConfirmDelete"
+  [message]="'Sei sicuro di voler eliminare questo dataset?'"
+  [confirmLabel]="'Sì, elimina'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onDatasetDeleteConfirmed()"
+  (canceled)="onDatasetDeleteCanceled()"
+></app-confirm>
+<!-- message component -->

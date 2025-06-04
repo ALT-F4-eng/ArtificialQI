@@ -1,0 +1,19 @@
+<mat-card class="llm-card">
+  <mat-card-header>
+    <mat-card-title>{{ llm?.name }}</mat-card-title>
+    <mat-card-title class="subtitle">Ultima modifica: {{ llm?.save_date | date: 'short' }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    <section class="llm-section">
+      <label>URL</label>
+      <p>{{ llm?.url }}</p>
+    </section>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-raised-button (click)="onModifyRequest()">Modifica</button>
+  </mat-card-actions>
+</mat-card>

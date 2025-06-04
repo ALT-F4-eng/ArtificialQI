@@ -1,0 +1,52 @@
+<h2 *ngIf="qaService.cachedDatasetCaricato">
+  <span >
+    {{ qaService.cachedDatasetCaricato?.name }}
+  </span>
+  <span class="temporary-label">Temporaneo</span>
+</h2>
+
+<app-message-box
+  *ngIf="showMessage && resultMessage"
+  [message]="resultMessage"
+  [type]="messageType"
+  (close)="onCloseMessage()"
+></app-message-box>
+
+<app-search-bar (search)="handleSearchQA($event)"></app-search-bar>
+<button mat-raised-button (click)="addQA()">
+  <mat-icon>add</mat-icon> addQA
+  <!-- OPPURE play_arrow -->
+</button>
+<button mat-raised-button (click)="saveDataset()">
+  <mat-icon>save</mat-icon> Salva le modifiche
+</button>
+
+<button
+  mat-raised-button
+  class="visible-disabled"
+  [disabled]="isDatasetEmpty()"
+  (click)="openLlmDialog()"
+>
+  <mat-icon>bug_report</mat-icon> Test Dataset
+  <!-- OPPURE play_arrow -->
+</button>
+
+<app-dataset-page-view
+  [qa_list]="qa_list"
+  (modifyQASignal_datasetPageView)="
+    modifyQA($event.id, $event.question, $event.answer)
+  "
+  (deleteQASignal_datasetPageView)="onQADeleteRequest($event)"
+  (modifyEventShowLabel)="onChangeShowLabel()"
+></app-dataset-page-view>
+
+<app-confirm
+  *ngIf="showConfirmDelete"
+  [message]="
+    'Sei sicuro di voler eliminare questa coppia di domanda e risposta?'
+  "
+  [confirmLabel]="'Sì, elimina'"
+  [cancelLabel]="'Annulla'"
+  (confirmed)="onQADeleteConfirmed()"
+  (canceled)="onQADeleteCanceled()"
+></app-confirm>

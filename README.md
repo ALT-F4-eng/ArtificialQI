@@ -2,68 +2,68 @@
 
 <p align="center">Documentazione ufficiale del progetto ArtificialQI</p>
 
-# ArtificialQI Project
+# Progetto ArtificialQI
 
-Welcome to the ArtificialQI project! This repository contains the source code for our full-stack application, leveraging modern web technologies to deliver a dynamic and responsive user experience.
-
----
-
-## 📚 Project Documentation
-
-For detailed information about the project, including its architecture, design decisions, and more, please refer to our comprehensive documentation:
-
-[**View Project Documentation**](https://alt-f4-eng.github.io/Documentazione/)
+Benvenuti nel progetto ArtificialQI! Questo repository contiene il codice sorgente della nostra applicazione full-stack, che sfrutta tecnologie web moderne per offrire un’esperienza utente dinamica e responsive.
 
 ---
 
-## 🛠️ Technologies Used
+## 📚 Documentazione del Progetto
 
-ArtificialQI is built with a robust and modern full-stack technology stack:
+Per informazioni dettagliate sul progetto, inclusa l’architettura, le scelte progettuali e altro, consulta la nostra documentazione completa:
 
-* **Angular**: Our chosen framework for developing a dynamic and responsive user interface.
-* **Flask**: A powerful Python micro-framework used to build our backend APIs.
-* **Docker**: Utilized for application containerization, simplifying environment management and deployment.
+[**Visualizza la Documentazione del Progetto**](https://alt-f4-eng.github.io/Documentazione/)
 
 ---
 
-## ▶️ Getting Started
+## 🛠️ Tecnologie Utilizzate
 
-To get the entire ArtificialQI project up and running on your local machine, we leverage Docker Compose for a streamlined setup. Follow these steps:
+ArtificialQI è costruito con uno stack tecnologico full-stack moderno e solido:
 
-1.  **Prerequisites**:
-    * Ensure you have [Docker](https://www.docker.com/) installed on your system.
-    * Make sure [Docker Compose](https://docs.docker.com/compose/) is also installed.
+* **Angular**: Il framework scelto per sviluppare un’interfaccia utente dinamica e responsive.
+* **Flask**: Un potente micro-framework Python utilizzato per costruire le API backend.
+* **Docker**: Utilizzato per la containerizzazione dell’applicazione, semplificando la gestione e il deployment dell’ambiente.
 
-2.  **Clone the Repository**:
+---
+
+## ▶️ Come Iniziare
+
+Per avviare l’intero progetto ArtificialQI sulla tua macchina locale, utilizziamo Docker Compose per una configurazione semplice e veloce. Segui questi passaggi:
+
+1.  **Prerequisiti**:
+    * Assicurati di avere installato [Docker](https://www.docker.com/) sul tuo sistema.
+    * Verifica di avere anche installato [Docker Compose](https://docs.docker.com/compose/).
+
+2.  **Clona il Repository**:
     ```bash
-    git clone [https://github.com/ALT-F4-eng/ArtificialQI.git](https://github.com/ALT-F4-eng/ArtificialQI.git)
+    git clone https://github.com/ALT-F4-eng/ArtificialQI.git
     cd ArtificialQI
     ```
 
-3.  **Build the Containers**:
+3.  **Costruisci i Container**:
     ```bash
     docker compose build
     ```
 
-4.  **Start the Application**:
+4.  **Avvia l’Applicazione**:
     ```bash
     docker compose up
     ```
 
-5.  **Access the Services**:
-    Once the containers are running, you can access the application at the following URLs:
-    * **Angular Frontend**: `http://localhost:4200`
-    * **Flask Backend API**: `http://localhost:5000`
+5.  **Accedi ai Servizi**:
+    Quando i container sono avviati, puoi accedere all’applicazione tramite i seguenti URL:
+    * **Frontend Angular**: `http://localhost:4200`
+    * **API Backend Flask**: `http://localhost:5000`
 
 ---
 
-## 👥 Group Components
+## 👥 Componenti del Gruppo
 
-This project was developed by the following team members:
+Questo progetto è stato sviluppato dai seguenti membri del team:
 
-* Enrico Bianchi
-* Eghosa Matteo Igbinedion Osamwonyi
-* Guirong Lan
-* Pedro Leoni
-* Marko Peric
+* Enrico Bianchi  
+* Eghosa Matteo Igbinedion Osamwonyi  
+* Guirong Lan  
+* Pedro Leoni  
+* Marko Peric  
 * Francesco Savio

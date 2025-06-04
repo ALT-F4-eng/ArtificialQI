@@ -7,7 +7,7 @@ RUN npm install -g @angular/cli@19.1.0
 
 # INSTALLA LE DEPENDECIES USANDO LA CACHE DI NPM
 COPY ./ArtificialQI/package*.json .
-RUN --mount=type=cache,target=/root/.npm npm ci 
+RUN npm install 
 
 # COPIA IL PROGETTO ANGULAR
 COPY ./ArtificialQI .
